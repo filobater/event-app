@@ -1,0 +1,22 @@
+{
+  "name": "events-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n client,server -c cyan,green \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "npm run start -w client",
+    "dev:server": "npm run dev -w event-app-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
