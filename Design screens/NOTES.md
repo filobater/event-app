@@ -1,0 +1,8 @@
+- Admin needs on click on the user to view the user with the events related to him
+- Admin also in the create user we need to add password fields
+- In the profile page we need to make a tab or something like this to change the password from
+- Add modal to delete (events, users)
+- Admin cannot reserve event
+- Add speaker upload component to upload image
+- Add payments (optional)
+- Add pagination, sort for tables
