@@ -1,3 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+@plugin "daisyui" ;
+
+:root {
+  --main-color: #1f8fff;
+  --secondary-color: #f56e3d;
+  --accent-color: #22c38e;
+  --destructive-color: #e83030;
+  --warning-color: #ffc61a;
+  --gray-color: #262836;
+  --dark-color: #0f111a;
+}
+
+html {
+  background-color: var(--dark-color);
+}
