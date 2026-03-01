@@ -1,0 +1,33 @@
+<div class="space-y-2">
+  @if (!image().previewUrl) {
+    <label
+      tabindex="0"
+      role="button"
+      class="flex h-[75%] w-full aspect-video cursor-pointer items-center justify-center rounded-lg border border-base-content/20 bg-(--dark-color) p-4 text-center hover:border-info"
+      (keydown.enter)="fileInput.click()"
+    >
+      <input
+        id="image-upload"
+        #fileInput
+        type="file"
+        accept="image/*"
+        class="hidden"
+        aria-label="Upload image"
+        (change)="handleImageUpload($event)"
+      />
+      <span class="text-white">{{ label() }}</span>
+    </label>
+  } @else {
+    <div class="relative h-[75%] w-full aspect-video rounded-lg border bg-(--dark-color) p-4">
+      <img [src]="image().previewUrl" [alt]="image().file?.name" class="h-full w-full rounded-lg" />
+
+      <button
+        type="button"
+        class="absolute right-2 top-2 w-8 rounded-full bg-(--destructive-color) p-1 text-white cursor-pointer"
+        (click)="removeImage()"
+      >
+        X
+      </button>
+    </div>
+  }
+</div>

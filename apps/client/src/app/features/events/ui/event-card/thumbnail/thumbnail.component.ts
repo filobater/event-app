@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Event } from '../event.interface';
-import BadgeComponent from '../../badge/badge.component';
-
+import { BadgeComponent } from '../../../../../shared/components';
 @Component({
   selector: 'app-thumbnail',
   standalone: true,
@@ -10,4 +9,9 @@ import BadgeComponent from '../../badge/badge.component';
 })
 export default class ThumbnailComponent {
   event = input.required<Pick<Event, 'image' | 'title' | 'status' | 'isRegistered'>>();
+  variant = {
+    ongoing: 'bg-(--accent-color)',
+    upcoming: 'bg-(--main-color)',
+    completed: 'bg-(--gray-color)',
+  } as const;
 }

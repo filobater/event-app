@@ -1,0 +1,10 @@
+<div class="space-y-2">
+  <label class="label" [for]="id()">
+    <span class="label-text text-white">{{ labelText() }}</span>
+  </label>
+  <textarea
+    [id]="id()"
+    [placeholder]="placeholder()"
+    class="textarea textarea-bordered focus-within:input-info rounded-lg w-full bg-(--dark-color) min-h-24 focus:border-primary"
+  ></textarea>
+</div>

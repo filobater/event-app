@@ -1,13 +1,13 @@
 import { Component, input } from '@angular/core';
 import { Event } from './event.interface';
-import EventInfoLabelComponent from './event-info-label/event-info-label.component';
+import InfoLabelComponent from '../../../../shared/components/info-label/info-label.component';
 import ThumbnailComponent from './thumbnail/thumbnail.component';
-import ProgressComponent from '../progress/progress.component';
+import ProgressComponent from '../../../../shared/components/progress/progress.component';
 
 @Component({
   selector: 'app-event-card',
   standalone: true,
-  imports: [ThumbnailComponent, EventInfoLabelComponent, ProgressComponent],
+  imports: [ThumbnailComponent, InfoLabelComponent, ProgressComponent],
   templateUrl: './event-card.component.html',
 })
 export default class EventCardComponent {

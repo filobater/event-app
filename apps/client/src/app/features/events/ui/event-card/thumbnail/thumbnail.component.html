@@ -1,0 +1,9 @@
+<div class="relative w-full overflow-hidden rounded-t-xl">
+  <img [src]="event().image" [alt]="event().title" class="h-40 w-full object-cover" />
+  <div class="absolute top-3 right-3 flex gap-2">
+    <app-badge [color]="variant[event().status]" [label]="event().status" />
+  </div>
+  <div
+    class="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-black/60 to-transparent"
+  ></div>
+</div>

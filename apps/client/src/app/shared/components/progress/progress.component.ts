@@ -12,7 +12,7 @@ export default class ProgressComponent {
   color = computed(() => {
     if (this.value() === this.max()) {
       return 'progress-error';
-    } else if (this.value() < 75 && this.value() !== this.max()) {
+    } else if (this.value() < (this.max() * 0.75) && this.value() !== this.max()) {
       return 'progress-info';
     } else {
       return 'progress-warning';

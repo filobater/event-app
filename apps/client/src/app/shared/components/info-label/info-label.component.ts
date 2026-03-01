@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 
 @Component({
-  selector: 'app-event-info-label',
+  selector: 'app-info-label',
   standalone: true,
   imports: [],
   template: `
@@ -13,7 +13,7 @@ import { Component, computed, input } from '@angular/core';
     </div>
   `,
 })
-export default class EventInfoLabelComponent {
+export default class InfoLabelComponent {
   title = input.required<string>();
   textColorClass = input<string>('');
 
