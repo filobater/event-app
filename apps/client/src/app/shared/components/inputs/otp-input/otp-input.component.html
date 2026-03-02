@@ -1,0 +1,31 @@
+<div class="space-y-2">
+  <div class="flex justify-center gap-3" (click)="focus()">
+    <input
+      #otpInput
+      type="text"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      class="absolute opacity-0 pointer-events-none w-0 h-0"
+      (input)="handleInput($event)"
+      (keydown)="handleKeyDown($event)"
+      (paste)="handlePaste($event)"
+      (focus)="isFocused.set(true)"
+      (blur)="isFocused.set(false)"
+    />
+
+    @for (digit of digits(); track $index) {
+      <div
+        class="w-12 h-14 flex items-center justify-center rounded-lg border cursor-text text-xl font-semibold text-white bg-(--dark-color) transition-colors border-base-content/20"
+        [class.border-info]="isFocused() && $index === cursorIndex() && !digit"
+        [class.border-info]="digit"
+        [class.text-info]="digit"
+      >
+        @if (isFocused() && $index === cursorIndex() && !digit) {
+          <span class="animate-pulse">|</span>
+        } @else {
+          {{ digit }}
+        }
+      </div>
+    }
+  </div>
+</div>
