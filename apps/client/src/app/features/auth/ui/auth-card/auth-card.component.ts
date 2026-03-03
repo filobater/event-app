@@ -7,6 +7,6 @@ import { Component, input } from '@angular/core';
 })
 export default class AuthCardComponent {
   title = input.required<string>();
-  subtitle = input<string>('');
+  subtitle = input.required<string>();
   iconBackgroundColor = input<string>('bg-(--main-color)');
 }
