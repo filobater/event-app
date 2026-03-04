@@ -51,7 +51,7 @@ const eventSchema = new Schema(
       required: true,
 
       validate: {
-        validator: function (value) {
+        validator: function (value: []) {
           return value.length <= 2;
         },
         message: "Maximum 2 speakers allowed",
