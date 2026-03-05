@@ -13,6 +13,7 @@
   "packageManager": "npm@10.9.3",
   "dependencies": {
     "@events-app/shared-dtos": "*",
+    "@events-app/endpoints": "*",
     "@angular/common": "^21.2.0",
     "@angular/compiler": "^21.2.0",
     "@angular/core": "^21.2.0",

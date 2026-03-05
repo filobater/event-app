@@ -5,6 +5,10 @@
   <input
     type="datetime-local"
     id="event-date"
+    [value]="value()"
+    [disabled]="isDisabled()"
+    (input)="handleInput($event)"
+    (blur)="handleBlur()"
     class="input input-bordered rounded-lg w-full bg-(--dark-color) focus-within:input-info"
   />
 </div>

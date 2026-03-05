@@ -1,0 +1,63 @@
+<app-auth-card [title]="'Welcome back'" [subtitle]="'Sign in to your account'">
+  <svg
+    authCardIcon
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#000000"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M15 3h6v18h-6M10 17l5-5-5-5M13.8 12H3" />
+  </svg>
+  <form [formGroup]="signinForm" (ngSubmit)="handleSignin()" class="flex flex-col gap-5 mb-4">
+    <div class="space-y-2">
+      <app-text-input
+        labelText="Email"
+        type="email"
+        placeholder="Enter your email"
+        formControlName="email"
+      />
+      @if (email?.touched) {
+        @if (email?.errors?.['required']) {
+          <app-error-message [message]="'Email is required'"></app-error-message>
+        }
+        @if (email?.errors?.['email']) {
+          <app-error-message [message]="'Invalid email address'"></app-error-message>
+        }
+      }
+    </div>
+
+    <div class="space-y-2">
+      <app-password-input
+        labelText="Password"
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+      />
+      @if (password?.touched) {
+        @if (password?.errors?.['required']) {
+          <app-error-message [message]="'Password is required'"></app-error-message>
+        }
+        @if (password?.errors?.['minlength']) {
+          <app-error-message
+            [message]="'Password must be at least 8 characters'"
+          ></app-error-message>
+        }
+      }
+    </div>
+    <a
+      routerLink="/auth/forgot-password"
+      class="text-sm text-(--main-color) flex justify-end hover:underline"
+      >Forgot password?</a
+    >
+    <app-primary-button label="Sign in" type="submit" />
+  </form>
+  <p class="text-sm text-(--light-gray-color) text-center">
+    Don't have an account?
+    <a routerLink="/auth/signup" class="text-(--main-color) hover:underline">Sign up</a>
+  </p>
+</app-auth-card>

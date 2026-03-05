@@ -1,22 +1,22 @@
-<div
-  class="rounded-xl shadow-sm p-8 w-full max-w-md mx-auto bg-(--dark-gray-color) border border-base-content/15"
->
+<div class="h-screen w-full m-auto flex items-center justify-center">
   <div
-    class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6 *:first:w-6 *:first:h-6 *:first:text-black"
-    [class]="iconBackgroundColor()"
+    class="rounded-xl shadow-sm pt-8 pb-5 px-6 w-full max-w-md mx-auto bg-(--dark-gray-color) border border-base-content/15"
   >
-    <ng-content select="[authCardIcon]" />
-  </div>
+    <div
+      class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6 *:first:w-6 *:first:h-6 *:first:text-black"
+      [class]="iconBackgroundColor()"
+    >
+      <ng-content select="[authCardIcon]" />
+    </div>
 
- 
-  <div class="mb-6 flex flex-col items-center gap-1">
-    <h1 class="text-2xl font-bold text-white text-center mb-1">{{ title() }}</h1>
+    <div class="mb-6 flex flex-col items-center gap-1">
+      <h1 class="text-2xl font-bold text-white text-center mb-1">{{ title() }}</h1>
 
-    <p class="text-base-content/50 text-sm text-center">{{ subtitle() }}</p>
-  </div>
+      <p class="text-(--light-gray-color) text-sm text-center">{{ subtitle() }}</p>
+    </div>
 
-  <!-- Form content -->
-  <div class="space-y-4">
+    <!-- Form content -->
+
     <ng-content />
   </div>
 </div>

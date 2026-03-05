@@ -15,16 +15,21 @@ import {
   resetPasswordSchema,
 } from "../schemas/user.schema.ts";
 import { validate } from "../middlewares/validate.middleware.ts";
+import { API_ENDPOINTS } from "@events-app/endpoints";
 
 const router = Router();
 
-router.post("/signup", validate(signupSchema), signup);
-router.post("/verify-otp", validate(verifyOTPSchema), verifyOTP);
-router.post("/resend-otp", validate(emailSchema), resendOTP);
-router.post("/signin", validate(signinSchema), signin);
-router.post("/forgot-password", validate(emailSchema), forgotPassword);
+router.post(API_ENDPOINTS.auth.signup, validate(signupSchema), signup);
+router.post(API_ENDPOINTS.auth.verifyOtp, validate(verifyOTPSchema), verifyOTP);
+router.post(API_ENDPOINTS.auth.resendOtp, validate(emailSchema), resendOTP);
+router.post(API_ENDPOINTS.auth.signin, validate(signinSchema), signin);
 router.post(
-  "/reset-password/:resetToken",
+  API_ENDPOINTS.auth.forgotPassword,
+  validate(emailSchema),
+  forgotPassword,
+);
+router.post(
+  API_ENDPOINTS.auth.resetPassword(":resetToken"),
   validate(resetPasswordSchema),
   resetPassword,
 );

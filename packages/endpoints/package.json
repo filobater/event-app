@@ -1,0 +1,12 @@
+{
+  "name": "@events-app/endpoints",
+  "version": "1.0.0",
+  "description": "Shared API endpoints used by both the client and the server",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "types": "src/index.ts",
+  "license": "ISC"
+}

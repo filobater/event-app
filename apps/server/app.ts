@@ -1,7 +1,5 @@
 import express, {
-  type NextFunction,
   type Request,
-  type Response,
 } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -9,6 +7,7 @@ import morgan from "morgan";
 import { errorMiddleware } from "./middlewares/error.middleware.ts";
 import { AppError } from "utils/AppError.ts";
 import authRoutes from "routes/auth.routes.ts";
+import { API_ENDPOINTS } from "@events-app/endpoints";
 
 const app = express();
 
@@ -24,7 +23,7 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api/v1/auth", authRoutes);
+app.use(API_ENDPOINTS.auth.base, authRoutes);
 
 app.use((req: Request) => {
   throw new AppError(`the ${req.originalUrl} not found`, 404);

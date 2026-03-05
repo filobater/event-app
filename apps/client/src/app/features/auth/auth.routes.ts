@@ -22,7 +22,7 @@ export const authRoutes: Routes = [
     title: 'Reset Password',
   },
   {
-    path: 'otp',
+    path: 'verify-otp',
     loadComponent: () => import('./pages/otp/otp.component'),
     title: 'OTP Verification',
   },

@@ -8,4 +8,5 @@ import { Component, input } from '@angular/core';
 })
 export default class PrimaryButtonComponent {
   label = input<string>('');
+  type = input<string>('button');
 }

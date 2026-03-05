@@ -17,7 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@events-app/shared-dtos": ["../packages/shared-dtos/src/index.ts"],
-      "@events-app/shared-dtos/*": ["../packages/shared-dtos/src/*"]
+      "@events-app/shared-dtos/*": ["../packages/shared-dtos/src/*"],
+      "@events-app/endpoints": ["../packages/endpoints/src/index.ts"],
+      "@events-app/endpoints/*": ["../packages/endpoints/src/*"]
     }
   },
   "angularCompilerOptions": {

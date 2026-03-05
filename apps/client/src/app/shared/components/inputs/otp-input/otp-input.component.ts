@@ -1,11 +1,28 @@
-import { Component, ElementRef, viewChild, signal, computed, output, input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  viewChild,
+  signal,
+  computed,
+  output,
+  input,
+  forwardRef,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-otp-input',
   standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => OtpInputComponent),
+      multi: true,
+    },
+  ],
   templateUrl: './otp-input.component.html',
 })
-export default class OtpInputComponent {
+export default class OtpInputComponent implements ControlValueAccessor {
   length = input<number>(6);
   completed = output<string>();
 
@@ -13,6 +30,7 @@ export default class OtpInputComponent {
 
   private readonly value = signal('');
   readonly isFocused = signal(false);
+  protected isDisabled = signal(false);
 
   readonly digits = computed(() => {
     const val = this.value();
@@ -22,6 +40,25 @@ export default class OtpInputComponent {
   readonly cursorIndex = computed(() =>
     Math.min(this.value().length, this.length() - 1)
   );
+
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  writeValue(value: string): void {
+    this.value.set(value ?? '');
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
 
   focus() {
     this.inputRef()?.nativeElement.focus();
@@ -36,6 +73,7 @@ export default class OtpInputComponent {
     }
 
     this.value.set(val);
+    this.onChange(val);
 
     if (val.length === this.length()) {
       this.completed.emit(val);
@@ -45,6 +83,7 @@ export default class OtpInputComponent {
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Backspace') {
       this.value.update((v) => v.slice(0, -1));
+      this.onChange(this.value());
       event.preventDefault();
     }
   }
@@ -54,6 +93,7 @@ export default class OtpInputComponent {
     const paste = event.clipboardData?.getData('text') ?? '';
     const clean = paste.replace(/\D/g, '').slice(0, this.length());
     this.value.set(clean);
+    this.onChange(clean);
 
     if (clean.length === this.length()) {
       this.completed.emit(clean);

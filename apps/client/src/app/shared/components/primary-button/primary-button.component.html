@@ -1,5 +1,6 @@
 <button
-  class="btn bg-(--main-color) w-full text-sm rounded-xl cursor-pointer text-(--dark-color) hover:bg-(--main-color)/80 transition-colors duration-300"
+  [type]="type()"
+  class="btn bg-(--main-color) w-full rounded-xl cursor-pointer text-(--dark-color) hover:bg-(--main-color)/80 transition-colors duration-300"
 >
   {{ label() }}
 </button>

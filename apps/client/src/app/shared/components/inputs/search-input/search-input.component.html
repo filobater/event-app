@@ -19,6 +19,10 @@
       id="search"
       type="search"
       [placeholder]="placeholder()"
+      [value]="value()"
+      [disabled]="isDisabled()"
+      (input)="handleInput($event)"
+      (blur)="handleBlur()"
       class="grow focus-within:input-info"
     />
   </div>
