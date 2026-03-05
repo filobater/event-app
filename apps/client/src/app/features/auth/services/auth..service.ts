@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@events-app/endpoints';
-import type { SignupRequestDto,
+import type {
+  SignupRequestDto,
   SignupResponseDto,
   SigninRequestDto,
   SigninResponseDto,
@@ -21,54 +22,52 @@ import type { SignupRequestDto,
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = environment.apiUrl;
+  private baseAuthUrl = `${environment.apiUrl}${API_ENDPOINTS.auth.base}`;
 
   constructor(private http: HttpClient) {}
 
   signup(data: SignupRequestDto): Observable<SignupResponseDto> {
     return this.http.post<SignupResponseDto>(
-      `${this.baseUrl}${API_ENDPOINTS.auth.signup}`,
-      data
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.signup}`,
+      data,
     );
   }
 
   verifyOtp(data: VerifyOtpRequestDto): Observable<VerifyOtpResponseDto> {
     return this.http.post<VerifyOtpResponseDto>(
-      `${this.baseUrl}${API_ENDPOINTS.auth.verifyOtp}`,
-      data
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.verifyOtp}`,
+      data,
     );
   }
 
   resendOtp(data: ResendOtpRequestDto): Observable<ResendOtpResponseDto> {
     return this.http.post<ResendOtpResponseDto>(
-      `${this.baseUrl}${API_ENDPOINTS.auth.resendOtp}`,
-      data
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.resendOtp}`,
+      data,
     );
   }
 
   signin(data: SigninRequestDto): Observable<SigninResponseDto> {
     return this.http.post<SigninResponseDto>(
-      `${this.baseUrl}${API_ENDPOINTS.auth.signin}`,
-      data
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.signin}`,
+      data,
     );
   }
 
-  forgotPassword(
-    data: ForgotPasswordRequestDto
-  ): Observable<ForgotPasswordResponseDto> {
+  forgotPassword(data: ForgotPasswordRequestDto): Observable<ForgotPasswordResponseDto> {
     return this.http.post<ForgotPasswordResponseDto>(
-      `${this.baseUrl}${API_ENDPOINTS.auth.forgotPassword}`,
-      data
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.forgotPassword}`,
+      data,
     );
   }
 
   resetPassword(
     resetToken: string,
-    data: ResetPasswordRequestDto
+    data: ResetPasswordRequestDto,
   ): Observable<ResetPasswordResponseDto> {
     return this.http.post<ResetPasswordResponseDto>(
-      `${this.baseUrl}${API_ENDPOINTS.auth.resetPassword(resetToken)}`,
-      data
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.resetPassword(resetToken)}`,
+      data,
     );
   }
 }

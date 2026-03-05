@@ -4,7 +4,7 @@ export interface UserDto {
   _id: string;
   fullName: string;
   email: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
