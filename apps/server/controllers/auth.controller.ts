@@ -23,7 +23,7 @@ const generateOTP = () => {
 
 export const signup = async (req: Request, res: Response) => {
   const { body } = req;
-  console.log(body, "body");
+
   const { otp, hashedOtp } = generateOTP();
   const createdUser = await User.create({
     ...body,
@@ -109,13 +109,13 @@ export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError("No account found with this email", 404);
   }
 
   const resetToken = user.generatePasswordResetToken();
   await user.save({ validateBeforeSave: false });
-  // TODO: change the url to the frontend url
-  const resetPasswordUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/reset-password/${resetToken}`;
+
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/auth/reset-password?resetToken=${resetToken}`;
   try {
     await sendEmail({
       email: user.email,

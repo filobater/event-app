@@ -88,11 +88,19 @@
         }
       }
     </div>
-
-    <app-primary-button label="Sign up" type="submit" />
+    @if (requestState.error()) {
+      <div class="flex justify-center">
+        <app-error-message [message]="requestState.error()" />
+      </div>
+    }
+    <app-primary-button
+      [label]="requestState.loading() ? 'Signing up...' : 'Sign up'"
+      type="submit"
+      [disabled]="requestState.loading()"
+    />
   </form>
   <p class="text-sm text-(--light-gray-color) text-center">
     Already have an account?
-    <a routerLink="/auth/signin" class="text-(--main-color) hover:underline">Sign in</a>
+    <a [routerLink]="nav.auth.signin" class="text-(--main-color) hover:underline">Sign in</a>
   </p>
 </app-auth-card>

@@ -7,6 +7,7 @@ import { Component, input } from '@angular/core';
   templateUrl: './primary-button.component.html',
 })
 export default class PrimaryButtonComponent {
+  disabled = input<boolean>(false);
   label = input<string>('');
   type = input<string>('button');
 }

@@ -37,9 +37,7 @@ export default class OtpInputComponent implements ControlValueAccessor {
     return Array.from({ length: this.length() }, (_, i) => val[i] ?? '');
   });
 
-  readonly cursorIndex = computed(() =>
-    Math.min(this.value().length, this.length() - 1)
-  );
+  readonly cursorIndex = computed(() => Math.min(this.value().length, this.length() - 1));
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -64,6 +62,11 @@ export default class OtpInputComponent implements ControlValueAccessor {
     this.inputRef()?.nativeElement.focus();
   }
 
+  private syncNativeInput(val: string) {
+    const el = this.inputRef()?.nativeElement;
+    if (el) el.value = val;
+  }
+
   handleInput(event: Event) {
     const input = event.target as HTMLInputElement;
     let val = input.value.replace(/\D/g, '');
@@ -74,6 +77,7 @@ export default class OtpInputComponent implements ControlValueAccessor {
 
     this.value.set(val);
     this.onChange(val);
+    this.syncNativeInput(val);
 
     if (val.length === this.length()) {
       this.completed.emit(val);
@@ -82,9 +86,10 @@ export default class OtpInputComponent implements ControlValueAccessor {
 
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Backspace') {
+      event.preventDefault();
       this.value.update((v) => v.slice(0, -1));
       this.onChange(this.value());
-      event.preventDefault();
+      this.syncNativeInput(this.value());
     }
   }
 
@@ -94,6 +99,7 @@ export default class OtpInputComponent implements ControlValueAccessor {
     const clean = paste.replace(/\D/g, '').slice(0, this.length());
     this.value.set(clean);
     this.onChange(clean);
+    this.syncNativeInput(clean);
 
     if (clean.length === this.length()) {
       this.completed.emit(clean);

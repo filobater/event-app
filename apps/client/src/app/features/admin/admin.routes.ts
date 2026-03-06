@@ -1,13 +1,16 @@
 import { Routes } from '@angular/router';
+import { ROUTE_SEGMENTS } from 'src/app/core';
+
+const SEGMENT_NAMES = ROUTE_SEGMENTS.admin;
 
 export const adminRoutes: Routes = [
   {
-    path: 'users',
+    path: SEGMENT_NAMES.users,
     loadComponent: () => import('./pages/users/users.component'),
     title: 'Admin - Users',
   },
   {
-    path: 'events',
+    path: SEGMENT_NAMES.events,
     loadComponent: () => import('./pages/events/events.component'),
     title: 'Admin - Events',
   },

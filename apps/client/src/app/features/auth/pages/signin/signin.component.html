@@ -50,14 +50,23 @@
       }
     </div>
     <a
-      routerLink="/auth/forgot-password"
+      [routerLink]="nav.auth.forgotPassword"
       class="text-sm text-(--main-color) flex justify-end hover:underline"
       >Forgot password?</a
     >
-    <app-primary-button label="Sign in" type="submit" />
+    @if (requestState.error()) {
+      <div class="flex justify-center">
+        <app-error-message [message]="requestState.error()" />
+      </div>
+    }
+    <app-primary-button
+      [label]="requestState.loading() ? 'Signing in...' : 'Sign in'"
+      type="submit"
+      [disabled]="requestState.loading()"
+    />
   </form>
   <p class="text-sm text-(--light-gray-color) text-center">
     Don't have an account?
-    <a routerLink="/auth/signup" class="text-(--main-color) hover:underline">Sign up</a>
+    <a [routerLink]="nav.auth.signup" class="text-(--main-color) hover:underline">Sign up</a>
   </p>
 </app-auth-card>

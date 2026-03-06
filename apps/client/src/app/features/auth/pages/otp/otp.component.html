@@ -19,9 +19,13 @@
     />
   </svg>
 
-  <form class="flex flex-col gap-6 mb-4">
-    <app-otp-input />
-
-    <app-primary-button label="Verify" type="submit" />
+  <form class="flex flex-col gap-6 mb-4" [formGroup]="otpForm" (ngSubmit)="handleVerifyOtp()">
+    <app-otp-input formControlName="otp" />
+    @if (requestState.error()) {
+      <div class="flex justify-center">
+        <app-error-message [message]="requestState.error()" />
+      </div>
+    }
+    <app-primary-button [label]="requestState.loading() ? 'Verifying...' : 'Verify'" type="submit" [disabled]="otpForm.invalid || requestState.loading()" />
   </form>
 </app-auth-card>
