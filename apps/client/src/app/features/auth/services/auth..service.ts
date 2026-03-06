@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
@@ -24,7 +24,7 @@ import type {
 export class AuthService {
   private baseAuthUrl = `${environment.apiUrl}${API_ENDPOINTS.auth.base}`;
 
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   signup(data: SignupRequestDto): Observable<SignupResponseDto> {
     return this.http.post<SignupResponseDto>(

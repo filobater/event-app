@@ -9,10 +9,10 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
 import { AuthService } from '../../services/auth..service';
-import { RequestStateClass } from 'src/app/core';
+import { RequestStateClass, BASE_PATH, NAV, UserService } from 'src/app/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResetPasswordRequestDto } from '@events-app/shared-dtos';
-import { NAV } from 'src/app/core/navigation';
+
 @Component({
   selector: 'app-reset-password',
   standalone: true,
@@ -31,6 +31,7 @@ export default class ResetPasswordComponent {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private userService = inject(UserService);
   protected readonly nav = NAV;
   // this to handle the error and loading state
   requestState = new RequestStateClass();
@@ -62,15 +63,17 @@ export default class ResetPasswordComponent {
       return;
     }
     this.requestState.start();
-    this.authService.resetPassword(this.resetToken, this.resetPasswordForm.value as ResetPasswordRequestDto).subscribe({
-      next: (response) => {
-        this.requestState.success(response.message);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        this.router.navigate([this.nav.auth.signin]);
-      },
-      error: (error) => {
-        this.requestState.fail(error);
-      },
-    });
+    this.authService
+      .resetPassword(this.resetToken, this.resetPasswordForm.value as ResetPasswordRequestDto)
+      .subscribe({
+        next: (response) => {
+          this.requestState.success(response.message);
+          this.userService.setUser(response.data.user);
+          this.router.navigate([BASE_PATH]);
+        },
+        error: (error) => {
+          this.requestState.fail(error);
+        },
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { AuthCardComponent } from '../../ui';
 import {
   PasswordInputComponent,
@@ -11,7 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResendOtpRequestDto, SigninRequestDto } from '@events-app/shared-dtos';
 import { AuthService } from '../../services/auth..service';
-import { RequestStateClass } from 'src/app/core';
+import { BASE_PATH, RequestStateClass, UserService } from 'src/app/core';
 import { NAV } from 'src/app/core/navigation';
 
 @Component({
@@ -32,6 +32,7 @@ export default class SigninComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private userService = inject(UserService);
   protected readonly nav = NAV;
 
   // this to handle the error and loading state
@@ -72,7 +73,8 @@ export default class SigninComponent {
     this.authService.signin(this.signinForm.value as SigninRequestDto).subscribe({
       next: (response) => {
         this.requestState.success();
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        this.userService.setUser(response.data.user);
+        this.router.navigate([BASE_PATH]);
       },
       error: (error) => {
         if (error.error.message.includes('Please verify your account')) {

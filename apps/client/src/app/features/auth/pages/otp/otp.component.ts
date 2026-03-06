@@ -8,7 +8,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth..service';
-import { RequestStateClass } from 'src/app/core';
+import { RequestStateClass, UserService } from 'src/app/core';
 import { VerifyOtpRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';
 @Component({
@@ -29,6 +29,7 @@ export default class OtpComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   protected readonly nav = NAV;
+  private userService = inject(UserService);
   // this to handle the error and loading state
   requestState = new RequestStateClass();
   snapshot = this.route.snapshot;
@@ -50,7 +51,7 @@ export default class OtpComponent {
       .subscribe({
         next: (response) => {
           this.requestState.success();
-          localStorage.setItem('user', JSON.stringify(response.data.user));
+          this.userService.setUser(response.data.user);
           this.router.navigate([this.nav.auth.signin]);
         },
         error: (error) => {

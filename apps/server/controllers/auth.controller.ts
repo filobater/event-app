@@ -5,13 +5,23 @@ import { User } from "../models/user.model.ts";
 import { AppError } from "../utils/AppError.ts";
 import { sendOTPEmail } from "../utils/sendOTPEmail.ts";
 import sendEmail from "utils/sendEmail.ts";
+import { sendResponse } from "../utils/sendResponse.ts";
 
 //TODO: handle the token in the http only cookie
-//TODO: handle the res status repeated code
 
 const generateToken = (id: string): string => {
   return jwt.sign({ id }, process.env.JWT_SECRET!, {
     expiresIn: (process.env.JWT_EXPIRES_IN ?? "1h") as SignOptions["expiresIn"],
+  });
+};
+
+const sendToken = (res: Response, token: string) => {
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    // this is here to test the token in the browser 
+    maxAge: 10 * 60 * 1000, // 10 minutes
   });
 };
 
@@ -33,8 +43,9 @@ export const signup = async (req: Request, res: Response) => {
   }); // 10 minutes
 
   await sendOTPEmail(createdUser.email, otp);
-  res.status(201).json({
-    status: "success",
+  sendResponse({
+    res,
+    statusCode: 201,
     message:
       "User created successfully, please check your email to verify your account",
   });
@@ -56,10 +67,11 @@ export const verifyOTP = async (req: Request, res: Response) => {
   user.otpExpiresAt = undefined;
   await user.save();
   const token = generateToken(user._id.toString());
-  res.status(200).json({
-    status: "success",
+  sendToken(res, token);
+  sendResponse({
+    res,
+    statusCode: 200,
     message: "OTP verified successfully",
-    token,
     data: { user },
   });
 };
@@ -80,8 +92,9 @@ export const resendOTP = async (req: Request, res: Response) => {
   await user.save({ validateBeforeSave: false });
 
   await sendOTPEmail(user.email, otp);
-  res.status(200).json({
-    status: "success",
+  sendResponse({
+    res,
+    statusCode: 200,
     message: "A new OTP has been sent to your email",
   });
 };
@@ -96,9 +109,10 @@ export const signin = async (req: Request, res: Response) => {
     throw new AppError("Please verify your account first", 400);
   }
   const token = generateToken(user._id.toString());
-  res.status(200).json({
-    status: "success",
-    token,
+  sendToken(res, token);
+  sendResponse({
+    res,
+    statusCode: 200,
     data: { user },
   });
 };
@@ -129,8 +143,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
     throw new AppError("Failed to send password reset email", 500);
   }
 
-  res.status(200).json({
-    status: "success",
+  sendResponse({
+    res,
+    statusCode: 200,
     message: "Password reset email sent",
   });
 };
@@ -162,10 +177,11 @@ export const resetPassword = async (req: Request, res: Response) => {
   await user.save();
 
   const token = generateToken(user._id.toString());
-  res.status(200).json({
-    status: "success",
+  sendToken(res, token);
+  sendResponse({
+    res,
+    statusCode: 200,
     message: "Password reset successfully",
-    token,
     data: { user },
   });
 };

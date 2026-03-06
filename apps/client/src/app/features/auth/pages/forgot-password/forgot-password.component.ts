@@ -10,6 +10,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth..service';
 import { RequestStateClass } from 'src/app/core';
 import { ForgotPasswordRequestDto } from '@events-app/shared-dtos';
+import { NAV } from 'src/app/core/navigation';
 
 @Component({
   selector: 'app-forgot-password',
@@ -27,6 +28,7 @@ import { ForgotPasswordRequestDto } from '@events-app/shared-dtos';
 export default class ForgotPasswordComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  protected readonly nav = NAV;
   // this to handle the error and loading state
   requestState = new RequestStateClass();
   forgotPasswordForm = this.fb.group({
