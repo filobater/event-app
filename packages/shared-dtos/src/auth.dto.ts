@@ -22,7 +22,7 @@ export interface BaseResponseDto {
 }
 
 export interface AuthResponseDto extends BaseResponseDto {
-  data: { user: UserDto };
+  data: { user: UserDto; token: string };
 }
 
 // ─── Requests ────────────────────────────────────────────────────────────────

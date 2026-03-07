@@ -9,6 +9,8 @@ export const API_ENDPOINTS = {
     signin: `/signin`,
     forgotPassword: `/forgot-password`,
     resetPassword: (resetToken: string) => `/reset-password/${resetToken}`,
+    refreshToken: `/refresh-token`,
+    signout: `/signout`,
   },
   // users: {
   //   base: `${API_BASE}/users`,

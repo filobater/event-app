@@ -1,27 +1,22 @@
 import type { Request, Response } from "express";
-import jwt, { type SignOptions } from "jsonwebtoken";
 import crypto from "crypto";
 import { User } from "../models/user.model.ts";
 import { AppError } from "../utils/AppError.ts";
 import { sendOTPEmail } from "../utils/sendOTPEmail.ts";
 import sendEmail from "utils/sendEmail.ts";
 import { sendResponse } from "../utils/sendResponse.ts";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "utils/generateToken.ts";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 
-//TODO: handle the token in the http only cookie
-
-const generateToken = (id: string): string => {
-  return jwt.sign({ id }, process.env.JWT_SECRET!, {
-    expiresIn: (process.env.JWT_EXPIRES_IN ?? "1h") as SignOptions["expiresIn"],
-  });
-};
-
-const sendToken = (res: Response, token: string) => {
-  res.cookie("jwt", token, {
+const sendRefreshToken = (res: Response, token: string) => {
+  res.cookie("refreshToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    // this is here to test the token in the browser 
-    maxAge: 10 * 60 * 1000, // 10 minutes
+    maxAge: Number(process.env.JWT_REFRESH_EXPIRES_IN) * 24 * 60 * 60 * 1000,
   });
 };
 
@@ -66,13 +61,14 @@ export const verifyOTP = async (req: Request, res: Response) => {
   user.otp = undefined;
   user.otpExpiresAt = undefined;
   await user.save();
-  const token = generateToken(user._id.toString());
-  sendToken(res, token);
+  const accessToken = generateAccessToken(user._id.toString());
+  const refreshToken = generateRefreshToken(user._id.toString());
+  sendRefreshToken(res, refreshToken);
   sendResponse({
     res,
     statusCode: 200,
     message: "OTP verified successfully",
-    data: { user },
+    data: { user, token: accessToken },
   });
 };
 
@@ -108,12 +104,13 @@ export const signin = async (req: Request, res: Response) => {
   if (!user.isVerified) {
     throw new AppError("Please verify your account first", 400);
   }
-  const token = generateToken(user._id.toString());
-  sendToken(res, token);
+  const accessToken = generateAccessToken(user._id.toString());
+  const refreshToken = generateRefreshToken(user._id.toString());
+  sendRefreshToken(res, refreshToken);
   sendResponse({
     res,
     statusCode: 200,
-    data: { user },
+    data: { user, token: accessToken },
   });
 };
 
@@ -176,12 +173,45 @@ export const resetPassword = async (req: Request, res: Response) => {
   user.passwordResetExpiresAt = null;
   await user.save();
 
-  const token = generateToken(user._id.toString());
-  sendToken(res, token);
+  const accessToken = generateAccessToken(user._id.toString());
+  const refreshToken = generateRefreshToken(user._id.toString());
+  sendRefreshToken(res, refreshToken);
   sendResponse({
     res,
     statusCode: 200,
     message: "Password reset successfully",
-    data: { user },
+    data: { user, token: accessToken },
+  });
+};
+
+export const refreshToken = async (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+  if (!refreshToken) {
+    throw new AppError("Refresh token not found", 404);
+  }
+  try {
+    const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!);
+
+    const newAccessToken = generateAccessToken((payload as JwtPayload).id);
+    const newRefreshToken = generateRefreshToken((payload as JwtPayload).id);
+
+    sendRefreshToken(res, newRefreshToken);
+
+    sendResponse({
+      res,
+      statusCode: 200,
+      data: { token: newAccessToken },
+    });
+  } catch {
+    res.clearCookie("refreshToken");
+  }
+};
+
+export const signout = (_req: Request, res: Response) => {
+  res.clearCookie("refreshToken");
+  sendResponse({
+    res,
+    statusCode: 200,
+    message: "Signed out successfully",
   });
 };
