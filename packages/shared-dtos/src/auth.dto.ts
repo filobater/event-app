@@ -63,3 +63,10 @@ export type ResendOtpResponseDto = BaseResponseDto;
 export type ForgotPasswordResponseDto = BaseResponseDto;
 
 export interface ResetPasswordResponseDto extends AuthResponseDto {}
+
+export interface RefreshTokenResponseDto extends Omit<
+  AuthResponseDto,
+  "message"
+> {}
+
+export type SignoutResponseDto = BaseResponseDto;

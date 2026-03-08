@@ -26,6 +26,7 @@ export const signupSchema = z
     role: z.enum(["admin", "user"]).default("user"),
     otp: z.string().nullable().optional(),
     otpExpiresAt: z.date().nullable().optional(),
+    passwordChangedAt: z.date().nullable().optional(),
     passwordResetToken: z.string().nullable().optional(),
     passwordResetExpiresAt: z.number().nullable().optional(),
     isVerified: z.boolean().default(false),

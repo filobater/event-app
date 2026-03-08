@@ -16,6 +16,8 @@ import type {
   ForgotPasswordResponseDto,
   ResetPasswordRequestDto,
   ResetPasswordResponseDto,
+  RefreshTokenResponseDto,
+  SignoutResponseDto,
 } from '@events-app/shared-dtos';
 
 @Injectable({
@@ -68,6 +70,20 @@ export class AuthService {
     return this.http.post<ResetPasswordResponseDto>(
       `${this.baseAuthUrl}${API_ENDPOINTS.auth.resetPassword(resetToken)}`,
       data,
+    );
+  }
+
+  refreshToken(): Observable<RefreshTokenResponseDto> {
+    return this.http.post<RefreshTokenResponseDto>(
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.refreshToken}`,
+      {},
+    );
+  }
+
+  signout(): Observable<SignoutResponseDto> {
+    return this.http.post<SignoutResponseDto>(
+      `${this.baseAuthUrl}${API_ENDPOINTS.auth.signout}`,
+      {},
     );
   }
 }

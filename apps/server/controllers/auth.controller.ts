@@ -1,6 +1,6 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import crypto from "crypto";
-import { User } from "../models/user.model.ts";
+import { User, type UserDocument } from "../models/user.model.ts";
 import { AppError } from "../utils/AppError.ts";
 import { sendOTPEmail } from "../utils/sendOTPEmail.ts";
 import sendEmail from "utils/sendEmail.ts";
@@ -214,4 +214,35 @@ export const signout = (_req: Request, res: Response) => {
     statusCode: 200,
     message: "Signed out successfully",
   });
+};
+
+// protect middleware to check if the user is authenticated
+// get the access token from the header if it exist we will do the following: 1- decoded to know if there is user or not
+// then check if this user changed the password after the iat if not we continue else we throw error
+
+export const protect = async (
+  req: Request & { user?: UserDocument },
+  res: Response,
+  next: NextFunction,
+) => {
+  let token: string | undefined;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  if (!token) {
+    throw new AppError("Token not found", 401);
+  }
+  const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!);
+  const user = await User.findById((decoded as JwtPayload).id);
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+  if (user.isPasswordChangedAfter((decoded as JwtPayload).iat ?? 0)) {
+    throw new AppError("Please login again", 401);
+  }
+  req.user = user;
+  next();
 };

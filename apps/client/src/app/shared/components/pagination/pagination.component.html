@@ -1,0 +1,34 @@
+<div class="join flex justify-center">
+  <button
+    type="button"
+    class="join-item btn btn-sm"
+    [disabled]="!hasPrev"
+    (click)="goTo(currentPage() - 1)"
+    aria-label="Previous page"
+  >
+    «
+  </button>
+  @for (item of pageNumbers(); track item === 'ellipsis' ? $index : item) {
+    @if (item === 'ellipsis') {
+      <button type="button" class="join-item btn btn-sm btn-disabled" disabled>…</button>
+    } @else {
+      <button
+        type="button"
+        class="join-item btn btn-sm"
+        [class.btn-active]="item === currentPage()"
+        (click)="goTo(item)"
+      >
+        {{ item }}
+      </button>
+    }
+  }
+  <button
+    type="button"
+    class="join-item btn btn-sm"
+    [disabled]="!hasNext"
+    (click)="goTo(currentPage() + 1)"
+    aria-label="Next page"
+  >
+    »
+  </button>
+</div>

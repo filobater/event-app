@@ -8,7 +8,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
-import { AuthService } from '../../services/auth..service';
+import { AuthService } from '../../services/auth.service';
 import { RequestStateClass, BASE_PATH, NAV, UserService } from 'src/app/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResetPasswordRequestDto } from '@events-app/shared-dtos';
@@ -69,6 +69,7 @@ export default class ResetPasswordComponent {
         next: (response) => {
           this.requestState.success(response.message);
           this.userService.setUser(response.data.user);
+          this.userService.setToken(response.data.token);
           this.router.navigate([BASE_PATH]);
         },
         error: (error) => {

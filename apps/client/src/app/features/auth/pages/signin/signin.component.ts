@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResendOtpRequestDto, SigninRequestDto } from '@events-app/shared-dtos';
-import { AuthService } from '../../services/auth..service';
+import { AuthService } from '../../services/auth.service';
 import { BASE_PATH, RequestStateClass, UserService } from 'src/app/core';
 import { NAV } from 'src/app/core/navigation';
 
@@ -74,6 +74,7 @@ export default class SigninComponent {
       next: (response) => {
         this.requestState.success();
         this.userService.setUser(response.data.user);
+        this.userService.setToken(response.data.token);
         this.router.navigate([BASE_PATH]);
       },
       error: (error) => {

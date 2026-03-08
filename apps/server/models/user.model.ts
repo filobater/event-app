@@ -7,6 +7,7 @@ interface IUserMethods {
   comparePassword(enteredPassword: string): Promise<boolean>;
   generateOTP(): { otp: string; otpExpiresAt: Date };
   generatePasswordResetToken(): string;
+  isPasswordChangedAfter(iat: number): boolean;
 }
 
 type UserModel = Model<SignupInput, object, IUserMethods>;
@@ -33,6 +34,11 @@ const userSchema = new Schema<SignupInput, UserModel, IUserMethods>(
       required: [true, "Password is required"],
       trim: true,
       minlength: 8,
+      select: false,
+    },
+    passwordChangedAt: {
+      type: Date,
+      default: null,
       select: false,
     },
     role: {
@@ -75,6 +81,7 @@ userSchema.set("toJSON", {
     delete ret["otpExpiresAt"];
     delete ret["passwordResetToken"];
     delete ret["passwordResetExpiresAt"];
+    delete ret["__v"]
     return ret;
   },
 });
@@ -96,6 +103,14 @@ userSchema.methods.generatePasswordResetToken = function () {
     .digest("hex");
   this.passwordResetExpiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
   return resetToken;
+};
+
+userSchema.methods.isPasswordChangedAfter = function (iat: number) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt((this.passwordChangedAt.getTime() / 1000).toString(), 10);
+    return iat < changedTimestamp;
+  }
+  return false;
 };
 
 export const User = model<SignupInput, UserModel>("User", userSchema);

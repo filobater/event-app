@@ -7,7 +7,7 @@ import {
 } from 'src/app/shared/components';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth..service';
+import { AuthService } from '../../services/auth.service';
 import { RequestStateClass } from 'src/app/core';
 import { ForgotPasswordRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';

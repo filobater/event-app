@@ -7,7 +7,7 @@ import {
 } from 'src/app/shared/components';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth..service';
+import { AuthService } from '../../services/auth.service';
 import { RequestStateClass, UserService } from 'src/app/core';
 import { VerifyOtpRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';
@@ -52,6 +52,7 @@ export default class OtpComponent {
         next: (response) => {
           this.requestState.success();
           this.userService.setUser(response.data.user);
+          this.userService.setToken(response.data.token);
           this.router.navigate([this.nav.auth.signin]);
         },
         error: (error) => {

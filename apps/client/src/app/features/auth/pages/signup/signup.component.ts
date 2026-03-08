@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
 import { RequestStateClass } from 'src/app/core';
-import { AuthService } from '../../services/auth..service';
+import { AuthService } from '../../services/auth.service';
 import { SignupRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';
 @Component({
@@ -67,7 +67,9 @@ export default class SignupComponent {
     this.authService.signup(this.signupForm.value as SignupRequestDto).subscribe({
       next: () => {
         this.requestState.success();
-        this.router.navigate([this.nav.auth.verifyOtp], { queryParams: { email: this.email?.value } });
+        this.router.navigate([this.nav.auth.verifyOtp], {
+          queryParams: { email: this.email?.value },
+        });
       },
       error: (error) => {
         this.requestState.fail(error);

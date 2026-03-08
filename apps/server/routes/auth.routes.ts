@@ -8,6 +8,7 @@ import {
   resetPassword,
   refreshToken,
   signout,
+  protect,
 } from "../controllers/auth.controller.ts";
 import {
   signinSchema,
@@ -36,6 +37,7 @@ router.post(
   resetPassword,
 );
 // this will use the protect middleware to check if the user is authenticated
+router.use(protect);
 router.post(API_ENDPOINTS.auth.refreshToken, refreshToken);
 router.post(API_ENDPOINTS.auth.signout, signout);
 export default router;
