@@ -70,6 +70,10 @@ const userSchema = new Schema<SignupInput, UserModel, IUserMethods>(
       default: null,
       select: false,
     },
+    profilePicture: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true },
 );
@@ -81,7 +85,7 @@ userSchema.set("toJSON", {
     delete ret["otpExpiresAt"];
     delete ret["passwordResetToken"];
     delete ret["passwordResetExpiresAt"];
-    delete ret["__v"]
+    delete ret["__v"];
     return ret;
   },
 });
@@ -107,7 +111,10 @@ userSchema.methods.generatePasswordResetToken = function () {
 
 userSchema.methods.isPasswordChangedAfter = function (iat: number) {
   if (this.passwordChangedAt) {
-    const changedTimestamp = parseInt((this.passwordChangedAt.getTime() / 1000).toString(), 10);
+    const changedTimestamp = parseInt(
+      (this.passwordChangedAt.getTime() / 1000).toString(),
+      10,
+    );
     return iat < changedTimestamp;
   }
   return false;

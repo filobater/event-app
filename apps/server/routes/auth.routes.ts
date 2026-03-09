@@ -16,7 +16,7 @@ import {
   verifyOTPSchema,
   emailSchema,
   resetPasswordSchema,
-} from "../schemas/user.schema.ts";
+} from "../schemas/auth.schema.ts";
 import { validate } from "../middlewares/validate.middleware.ts";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 

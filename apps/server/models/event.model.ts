@@ -34,8 +34,8 @@ const eventSchema = new Schema(
       required: true,
     },
     photo: {
-      data: Buffer,
-      contentType: String,
+      type: String,
+      default: null,
     },
     speakers: {
       type: [

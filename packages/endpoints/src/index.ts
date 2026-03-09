@@ -12,10 +12,30 @@ export const API_ENDPOINTS = {
     refreshToken: `/refresh-token`,
     signout: `/signout`,
   },
-  // users: {
-  //   base: `${API_BASE}/users`,
-  //   byId: (id: string) => `${API_BASE}/users/${id}`,
-  // },
+  users: {
+    base: `${API_BASE}/users`,
+    // post request for the admin to create a new user
+    create: "/",
+    // get request for the admin to get all users
+    getAll: "/",
+    // get user, update user by id "admin"
+    byId: (id: string) => `/:${id}`,
+    
+    // patch request for the logged in user
+    updateProfile: "/profile",
+    updatePassword: `/password`,
+  },
+
+  // /users
+  //   post
+  //   getAll
+  //   /:id
+  //   getOneUser
+  //   UpdateOneUser> admin
+  //   deleteOneUser
+  //   /update-profile
+  //   /update-password
+
   // events: {
   //   base: `${API_BASE}/events`,
   //   byId: (id: string) => `${API_BASE}/events/${id}`,
