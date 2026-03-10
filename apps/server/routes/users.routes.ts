@@ -2,6 +2,7 @@ import { Router } from "express";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 import {
   createUser,
+  getAllUsers,
   getUser,
   updateUser,
   updateUserProfile,
@@ -50,6 +51,9 @@ router.post(
   validate(signupSchema),
   createUser,
 );
+
+router.get(API_ENDPOINTS.users.getAll, getAllUsers);
+
 router.get(API_ENDPOINTS.users.byId("id"), getUser);
 
 // router.get(API_ENDPOINTS.users.getAll, getAllUsers);

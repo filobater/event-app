@@ -120,4 +120,12 @@ userSchema.methods.isPasswordChangedAfter = function (iat: number) {
   return false;
 };
 
+// text index searches words, not inside the word.
+userSchema.index({ fullName: "text" });
+
+// default sort (newest first)
+userSchema.index({ createdAt: -1 });
+
+userSchema.index({ fullName: 1, createdAt: -1 });
+
 export const User = model<SignupInput, UserModel>("User", userSchema);

@@ -20,29 +20,15 @@ export const API_ENDPOINTS = {
     getAll: "/",
     // get user, update user by id "admin"
     byId: (id: string) => `/:${id}`,
-    
+
     // patch request for the logged in user
     updateProfile: "/profile",
     updatePassword: `/password`,
   },
 
-  // /users
-  //   post
-  //   getAll
-  //   /:id
-  //   getOneUser
-  //   UpdateOneUser> admin
-  //   deleteOneUser
-  //   /update-profile
-  //   /update-password
-
   // events: {
   //   base: `${API_BASE}/events`,
   //   byId: (id: string) => `${API_BASE}/events/${id}`,
-  // },
-  // admins: {
-  //   base: `${API_BASE}/admins`,
-  //   byId: (id: string) => `${API_BASE}/admins/${id}`,
   // },
   // registrations: {
   //   base: `${API_BASE}/registrations`,

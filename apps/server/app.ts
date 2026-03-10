@@ -7,6 +7,7 @@ import { AppError } from "utils/AppError.ts";
 import authRoutes from "routes/auth.routes.ts";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 import path from "path";
+
 import { protect, restrictTo } from "controllers/auth.controller.ts";
 import usersRoutes from "routes/users.routes.ts";
 
@@ -24,12 +25,17 @@ app.use(
 
 app.use(express.json());
 
-// app.use(
-//   "/uploads",
-//   protect,
-//   restrictTo("admin"),
-//   express.static(path.join(__dirname, "uploads")),
-// );
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(
+  "/uploads",
+  protect,
+  restrictTo("admin"),
+  express.static(path.join(__dirname, "uploads")),
+);
 
 app.use(API_ENDPOINTS.auth.base, authRoutes);
 app.use(API_ENDPOINTS.users.base, usersRoutes);
