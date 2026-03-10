@@ -1,0 +1,13 @@
+<div class="avatar" [class.avatar-placeholder]="!showImage">
+  @if (showImage) {
+    <div class="w-12 rounded-full">
+      <img [src]="imageUrl()!" [alt]="label()" (error)="onError()" />
+    </div>
+  } @else {
+    <div class="bg-neutral text-neutral-content w-12 rounded-full">
+      <span class="text-xl">
+        {{ label() | slice: 0 : 1 | uppercase }}
+      </span>
+    </div>
+  }
+</div>

@@ -1,0 +1,44 @@
+<div class="overflow-x-auto">
+  <table class="table table-zebra">
+    <!-- head -->
+    <thead>
+      <tr>
+        @for (col of columns(); track col.label) {
+          <th>
+            @if (col.headerTemplate) {
+              <ng-container
+                [ngTemplateOutlet]="col.headerTemplate"
+                [ngTemplateOutletContext]="{
+                  label: col.label,
+                  column: col.key,
+                  sort: sort.bind(this),
+                }"
+              ></ng-container>
+            } @else {
+              {{ col.label }}
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track row._id) {
+        <tr class="hover">
+          @for (col of columns(); track col.label) {
+            <td>
+              @if (col.cellTemplate) {
+                <ng-container
+                  [ngTemplateOutlet]="col.cellTemplate"
+                  [ngTemplateOutletContext]="{ $implicit: row }"
+                >
+                </ng-container>
+              } @else {
+                {{ row[col.key] }}
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
