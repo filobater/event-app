@@ -4,6 +4,7 @@ export interface UserDto {
   _id: string;
   fullName: string;
   email: string;
+  profilePicture?: string;
   role: "admin" | "user";
   isVerified: boolean;
   createdAt: string;

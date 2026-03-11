@@ -17,7 +17,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(addToken(req, userService.getToken())).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !req.url.includes('refresh')) {
+      const skipRefresh = req.url.includes('refresh') || req.url.includes('signout');
+      if (error.status === 401 && !skipRefresh) {
         return handle401(req, next, userService, authService, router);
       }
       return throwError(() => error);

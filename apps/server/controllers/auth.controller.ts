@@ -204,6 +204,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     });
   } catch {
     res.clearCookie("refreshToken");
+    throw new AppError("Refresh token invalid or expired", 401);
   }
 };
 
@@ -235,7 +236,9 @@ export const protect = async (
   if (!token) {
     throw new AppError("Token not found", 401);
   }
-  const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET!);
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
   const user = await User.findById((decoded as JwtPayload).id);
   if (!user) {
     throw new AppError("User not found", 404);

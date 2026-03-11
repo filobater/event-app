@@ -1,5 +1,6 @@
 import { Component, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LucideAngularModule, Search } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-input',
@@ -11,9 +12,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
     },
   ],
+  imports: [LucideAngularModule],
   templateUrl: './search-input.component.html',
 })
 export default class SearchInputComponent implements ControlValueAccessor {
+  readonly SearchIcon = Search;
   placeholder = input<string>('Search');
 
   protected value = signal('');

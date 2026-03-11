@@ -1,0 +1,65 @@
+<div class="border-b h-17 sticky top-0 z-50 bg-[#181a2580] backdrop-blur-sm">
+  <div class="container mx-auto navbar">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="btn btn-link lg:hidden text-(--main-color)">
+          <i-lucide [img]="MenuIcon" class="h-5 w-5" />
+        </div>
+        <ul
+          tabindex="-1"
+          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+        >
+          <!-- Nav tabs in the mobile menu -->
+          @for (link of navLinks; track link.label) {
+            <app-nav-tab [link]="link" />
+          }
+        </ul>
+      </div>
+      <a class="flex items-center gap-2" [routerLink]="basePath">
+        <div
+          class="size-8 rounded-xl flex items-center justify-center *:first:text-black bg-(--main-color)"
+        >
+          <i-lucide [img]="TicketIcon" class="size-5" />
+        </div>
+        <span class="text-white text-xl font-bold">Eventify</span>
+      </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal px-1">
+        <!-- Nav tabs in the desktop menu -->
+        @for (link of navLinks; track link.label) {
+          <app-nav-tab [link]="link" />
+        }
+      </ul>
+    </div>
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="flex items-center gap-2 cursor-pointer">
+          <app-avatar
+            [class]="'w-8! ring-2! ring-(--main-color)'"
+            [imageUrl]="user()?.profilePicture ?? null"
+            [label]="user()?.fullName ?? 'Guest'"
+          />
+          <div class="flex flex-col">
+            <span class="text-white text-[0.8rem] font-medium">{{
+              (user()?.fullName | titlecase) ?? 'Guest'
+            }}</span>
+            <span class="text-(--light-gray-color) text-xs">{{
+              (user()?.role | titlecase) ?? 'User'
+            }}</span>
+          </div>
+        </div>
+        <ul
+          tabindex="-1"
+          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+        >
+          <li>
+            <a class="justify-between"> Profile </a>
+          </li>
+
+          <li (click)="userService.logout()"><a>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

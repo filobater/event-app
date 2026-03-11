@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { AuthCardComponent } from '../../ui';
 import {
   TextInputComponent,
@@ -24,10 +25,12 @@ import { NAV } from 'src/app/core/navigation';
     PrimaryButtonComponent,
     ErrorMessageComponent,
     ReactiveFormsModule,
+    LucideAngularModule,
   ],
   templateUrl: './signup.component.html',
 })
 export default class SignupComponent {
+  readonly UserPlusIcon = UserPlus;
   private fb = inject(FormBuilder);
 
   private authService = inject(AuthService);

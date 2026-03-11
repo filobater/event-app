@@ -15,7 +15,9 @@ export const NAV = {
     base: 'admin',
     users: BASE_PATH + 'admin/users',
     events: BASE_PATH + 'admin/events',
+    dashboard: BASE_PATH + 'admin/dashboard',
   },
+  events: BASE_PATH,
 } as const;
 
 // Segments — these in route definitions (child routes only need the last segment)

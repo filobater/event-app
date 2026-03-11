@@ -9,6 +9,7 @@ import {
   updateUserPassword,
   checkUserId,
   deleteUser,
+  getMe,
 } from "../controllers/users.controller.ts";
 import { restrictTo, protect } from "controllers/auth.controller.ts";
 import { validate } from "middlewares/validate.middleware.ts";
@@ -43,6 +44,7 @@ router.patch(
   updateUserPassword,
 );
 
+router.get(API_ENDPOINTS.users.getMe, getMe);
 router.use(restrictTo("admin"));
 
 router.post(

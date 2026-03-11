@@ -3,14 +3,19 @@ import { Event } from './event.interface';
 import InfoLabelComponent from '../../../../shared/components/info-label/info-label.component';
 import ThumbnailComponent from './thumbnail/thumbnail.component';
 import ProgressComponent from '../../../../shared/components/progress/progress.component';
+import { LucideAngularModule, Calendar, Clock, MapPin, Users } from 'lucide-angular';
 
 @Component({
   selector: 'app-event-card',
   standalone: true,
-  imports: [ThumbnailComponent, InfoLabelComponent, ProgressComponent],
+  imports: [ThumbnailComponent, InfoLabelComponent, ProgressComponent, LucideAngularModule],
   templateUrl: './event-card.component.html',
 })
 export default class EventCardComponent {
+  readonly CalendarIcon = Calendar;
+  readonly ClockIcon = Clock;
+  readonly MapPinIcon = MapPin;
+  readonly UsersIcon = Users;
   event = input.required<Event>();
   variant = {
     ongoing: 'border-l-(--accent-color)',

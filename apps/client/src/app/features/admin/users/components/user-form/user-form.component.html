@@ -1,0 +1,89 @@
+<form [formGroup]="userForm" class="flex flex-col gap-6" (ngSubmit)="handleSubmit()">
+  <div>
+    <app-image-upload formControlName="profilePicture" label="Profile Picture"></app-image-upload>
+  </div>
+
+  <div class="space-y-2">
+    <app-text-input
+      formControlName="fullName"
+      labelText="Full Name"
+      placeholder="Enter full name"
+    ></app-text-input>
+    @if (formData.fullName?.touched) {
+      @if (formData.fullName?.errors?.['required']) {
+        <app-error-message [message]="'Full Name is required'"></app-error-message>
+      }
+      @if (formData.fullName?.errors?.['minlength']) {
+        <app-error-message
+          [message]="'Full Name must be at least 3 characters'"
+        ></app-error-message>
+      }
+    }
+  </div>
+
+  <div class="space-y-2">
+    <app-text-input
+      formControlName="email"
+      labelText="Email"
+      placeholder="Enter email"
+      type="email"
+    ></app-text-input>
+    @if (formData.email?.touched) {
+      @if (formData.email?.errors?.['required']) {
+        <app-error-message [message]="'Email is required'"></app-error-message>
+      }
+      @if (formData.email?.errors?.['email']) {
+        <app-error-message [message]="'Invalid email address'"></app-error-message>
+      }
+    }
+  </div>
+  <div class="space-y-2">
+    <app-password-input
+      formControlName="password"
+      labelText="Password"
+      placeholder="Enter password"
+    ></app-password-input>
+    @if (formData.password?.touched) {
+      @if (formData.password?.errors?.['required']) {
+        <app-error-message [message]="'Password is required'"></app-error-message>
+      }
+      @if (formData.password?.errors?.['minlength']) {
+        <app-error-message [message]="'Password must be at least 8 characters'"></app-error-message>
+      }
+    }
+  </div>
+  <div class="space-y-2">
+    <app-password-input
+      labelText="Confirm Password"
+      type="password"
+      placeholder="Confirm your password"
+      formControlName="confirmPassword"
+    />
+    @if (formData.confirmPassword?.touched) {
+      @if (formData.confirmPassword?.errors?.['required']) {
+        <app-error-message [message]="'Confirm password is required'"></app-error-message>
+      } @else if (userForm.hasError('passwordMismatch')) {
+        <app-error-message [message]="'Passwords do not match'"></app-error-message>
+      }
+    }
+  </div>
+
+  <app-select-input
+    formControlName="role"
+    [labelText]="'Role'"
+    [placeholder]="'Select role'"
+    [options]="roleOptions"
+  ></app-select-input>
+  @if (requestState()?.error()) {
+    <app-error-message [message]="requestState()?.error()"></app-error-message>
+  }
+
+  <div class="flex justify-end gap-2">
+    <app-secondary-button [label]="'Cancel'" (handleClick)="handleCancel()"></app-secondary-button>
+    <app-primary-button
+      type="submit"
+      [disabled]="userForm.invalid || (requestState()?.loading() ?? false)"
+      [label]="requestState()?.loading() ? 'Saving...' : 'Save User'"
+    />
+  </div>
+</form>

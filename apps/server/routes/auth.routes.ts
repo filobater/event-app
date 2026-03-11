@@ -36,8 +36,8 @@ router.post(
   validate(resetPasswordSchema),
   resetPassword,
 );
-// this will use the protect middleware to check if the user is authenticated
+
 router.use(protect);
-router.post(API_ENDPOINTS.auth.refreshToken, refreshToken);
 router.post(API_ENDPOINTS.auth.signout, signout);
+router.post(API_ENDPOINTS.auth.refreshToken, refreshToken);
 export default router;

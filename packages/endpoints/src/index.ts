@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
     create: "/",
     // get request for the admin to get all users
     getAll: "/",
+    getMe: "/me",
     // get user, update user by id "admin"
     byId: (id: string) => `/:${id}`,
 

@@ -6,3 +6,4 @@ export { default as DatetimeInputComponent } from './datetime-input/datetime-inp
 export { default as TextareaComponent } from './textarea/textarea.component';
 export { default as ImageUploadComponent } from './image-upload/image-upload.component';
 export { default as OtpInputComponent } from './otp-input/otp-input.component';
+export { default as SelectInputComponent } from './select-input/select-input.component';

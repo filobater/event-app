@@ -24,12 +24,12 @@ export const checkUserId = async (
 // create user from admin
 // in this step we take directly the user because there will ba validation from zod
 
-
-// admin 
+// admin
 
 export const createUser = async (req: Request, res: Response) => {
   const createdUser = await User.create({
     ...req.body,
+    isVerified: true,
     profilePicture: req?.file?.path || null,
   });
 
@@ -75,13 +75,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
       users,
       count: users.length,
       totalData: totalUsers,
-      totalPages: Math.ceil(totalUsers / features.query.limit),
+      totalPages: Math.ceil(totalUsers / features.query.limit) || 1,
       page: Number(req.query.page) || 1,
     },
   });
 };
-
-
 
 export const updateUser = async (req: UserRequest, res: Response) => {
   const { targetUser } = req;
@@ -113,8 +111,17 @@ export const deleteUser = async (req: UserRequest, res: Response) => {
   });
 };
 
+// user
 
-// user update profile
+export const getMe = async (req: UserRequest, res: Response) => {
+  const { user } = req;
+  sendResponse({
+    res,
+    statusCode: 200,
+    message: "User fetched successfully",
+    data: user,
+  });
+};
 
 export const updateUserProfile = async (req: UserRequest, res: Response) => {
   const { user } = req;
@@ -156,4 +163,3 @@ export const updateUserPassword = async (req: UserRequest, res: Response) => {
     data: user,
   });
 };
-

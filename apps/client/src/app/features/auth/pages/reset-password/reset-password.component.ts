@@ -1,4 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
+import { LucideAngularModule, KeyRound } from 'lucide-angular';
 import { AuthCardComponent } from '../../ui';
 import {
   PasswordInputComponent,
@@ -23,10 +24,12 @@ import { ResetPasswordRequestDto } from '@events-app/shared-dtos';
     PrimaryButtonComponent,
     ErrorMessageComponent,
     ReactiveFormsModule,
+    LucideAngularModule,
   ],
   templateUrl: './reset-password.component.html',
 })
 export default class ResetPasswordComponent {
+  readonly KeyRoundIcon = KeyRound;
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);

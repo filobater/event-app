@@ -3,7 +3,7 @@
     <label
       tabindex="0"
       role="button"
-      class="flex h-[75%] w-full aspect-video cursor-pointer items-center justify-center rounded-lg border border-base-content/20 bg-(--dark-color) p-4 text-center hover:border-info"
+      class="flex w-full h-40 cursor-pointer items-center justify-center rounded-lg border border-base-content/20 bg-(--dark-color) p-4 text-center hover:border-info"
       (keydown.enter)="fileInput.click()"
     >
       <input
@@ -15,11 +15,14 @@
         aria-label="Upload image"
         (change)="handleImageUpload($event)"
       />
-      <span class="text-white">{{ label() }}</span>
+      <div class="flex flex-col gap-2 items-center justify-center">
+        <i-lucide [img]="ImageIcon" class="size-4 shrink-0 text-white" />
+        <span class="text-white">{{ label() }}</span>
+      </div>
     </label>
   } @else {
-    <div class="relative h-[75%] w-full aspect-video rounded-lg border bg-(--dark-color) p-4">
-      <img [src]="image().previewUrl" [alt]="image().file?.name" class="h-full w-full rounded-lg" />
+    <div class="relative min-h-80 w-full aspect-video rounded-lg border bg-(--dark-color) p-4">
+      <img [src]="image().previewUrl" [alt]="image().file?.name" class="h-full w-full rounded-lg object-contain" />
 
       <button
         type="button"

@@ -6,12 +6,12 @@ const SEGMENT_NAMES = ROUTE_SEGMENTS.admin;
 export const adminRoutes: Routes = [
   {
     path: SEGMENT_NAMES.users,
-    loadComponent: () => import('./pages/users/users.component'),
+    loadComponent: () => import('./users/pages/users.component'),
     title: 'Admin - Users',
   },
   {
     path: SEGMENT_NAMES.events,
-    loadComponent: () => import('./pages/events/events.component'),
+    loadComponent: () => import('./events/events.component'),
     title: 'Admin - Events',
   },
 ];

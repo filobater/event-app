@@ -3,7 +3,7 @@
     <!-- head -->
     <thead>
       <tr>
-        @for (col of columns(); track col.label) {
+        @for (col of tableConfiguration().columns; track col.label) {
           <th>
             @if (col.headerTemplate) {
               <ng-container
@@ -11,7 +11,6 @@
                 [ngTemplateOutletContext]="{
                   label: col.label,
                   column: col.key,
-                  sort: sort.bind(this),
                 }"
               ></ng-container>
             } @else {
@@ -22,9 +21,9 @@
       </tr>
     </thead>
     <tbody>
-      @for (row of rows(); track row._id) {
+      @for (row of tableConfiguration().rows; track row._id) {
         <tr class="hover">
-          @for (col of columns(); track col.label) {
+          @for (col of tableConfiguration().columns; track col.label) {
             <td>
               @if (col.cellTemplate) {
                 <ng-container

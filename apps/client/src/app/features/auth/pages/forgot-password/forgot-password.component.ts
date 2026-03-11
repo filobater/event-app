@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { LucideAngularModule, Mail } from 'lucide-angular';
 import { AuthCardComponent } from '../../ui';
 import {
   TextInputComponent,
@@ -22,10 +23,12 @@ import { NAV } from 'src/app/core/navigation';
     PrimaryButtonComponent,
     ErrorMessageComponent,
     ReactiveFormsModule,
+    LucideAngularModule,
   ],
   templateUrl: './forgot-password.component.html',
 })
 export default class ForgotPasswordComponent {
+  readonly MailIcon = Mail;
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   protected readonly nav = NAV;

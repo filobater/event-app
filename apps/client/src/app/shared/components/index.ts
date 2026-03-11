@@ -3,7 +3,8 @@ export { default as ErrorMessageComponent } from './error-message/error-message.
 export { default as ProgressComponent } from './progress/progress.component';
 export { default as InfoLabelComponent } from './info-label/info-label.component';
 export { default as BadgeComponent } from './badge/badge.component';
-export { default as PrimaryButtonComponent } from './primary-button/primary-button.component';
 export { default as PaginationComponent } from './pagination/pagination.component';
 export { default as AvatarComponent } from './avatar/avatar.component';
+export { default as NavTabComponent } from './nav-tab/nav-tab.component';
 export * from './inputs';
+export * from './buttons';

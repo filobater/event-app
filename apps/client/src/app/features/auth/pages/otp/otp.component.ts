@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
 import { AuthCardComponent } from '../../ui';
 import {
   ErrorMessageComponent,
@@ -20,10 +21,12 @@ import { NAV } from 'src/app/core/navigation';
     PrimaryButtonComponent,
     ReactiveFormsModule,
     ErrorMessageComponent,
+    LucideAngularModule,
   ],
   templateUrl: './otp.component.html',
 })
 export default class OtpComponent {
+  readonly ShieldCheckIcon = ShieldCheck;
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);

@@ -1,0 +1,26 @@
+<ng-template #userTemplate let-user>
+  <div class="flex items-center gap-2">
+    <app-avatar [imageUrl]="user.profilePicture" [label]="user.fullName"> </app-avatar>
+    <span class="text-white text-sm font-medium">{{ user.fullName | titlecase }}</span>
+  </div>
+</ng-template>
+
+<ng-template #dateTemplate let-user>
+  <span class="text-white text-xs font-mono">
+    {{ user.createdAt | date: 'dd/MM/yyyy' }}
+  </span>
+</ng-template>
+
+<ng-template #statusTemplate let-user>
+  <div class="flex items-center gap-2">
+    <app-badge
+      [color]="
+        user.isVerified ? 'bg-(--accent-color) text-white' : 'bg-(--destructive-color) text-white'
+      "
+      [label]="user.isVerified ? 'Verified' : 'Unverified'"
+    >
+    </app-badge>
+  </div>
+</ng-template>
+
+<admin-table [tableConfiguration]="{ columns: columns(), rows: users() }" />

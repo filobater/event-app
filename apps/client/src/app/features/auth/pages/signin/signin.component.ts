@@ -1,4 +1,5 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LucideAngularModule, LogIn } from 'lucide-angular';
 import { AuthCardComponent } from '../../ui';
 import {
   PasswordInputComponent,
@@ -25,10 +26,12 @@ import { NAV } from 'src/app/core/navigation';
     PrimaryButtonComponent,
     ReactiveFormsModule,
     ErrorMessageComponent,
+    LucideAngularModule,
   ],
   templateUrl: './signin.component.html',
 })
 export default class SigninComponent {
+  readonly LogInIcon = LogIn;
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);

@@ -1,0 +1,36 @@
+<div class="space-y-4">
+  <div class="flex items-center justify-between flex-wrap gap-4">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-2">
+        <i-lucide [img]="UsersIcon" class="size-6 text-(--secondary-color)" />
+        <h1 class="text-3xl font-display font-bold text-white flex items-center gap-2">
+          Manage Users
+        </h1>
+      </div>
+      <p class="text-(--light-gray-color) text-lg">{{ totalUsers() }} total users</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <app-search-input [placeholder]="'Search users'" />
+      <app-secondary-button [label]="'Add User'" (handleClick)="handleAddUser()">
+        <i-lucide [img]="PlusIcon" class="size-4" />
+      </app-secondary-button>
+    </div>
+  </div>
+
+  <app-modal
+    [title]="'Add User'"
+    [isOpen]="isAddUserModalOpen()"
+    (closed)="handleCloseAddUserModal()"
+  >
+    <app-user-form
+      [requestState]="requestState"
+      (closed)="handleCloseAddUserModal()"
+      (onSave)="handleSaveUser($event)"
+    />
+  </app-modal>
+  @if (requestState.loading()) {
+    <admin-loading />
+  } @else {
+    <app-user-table [users]="users()" />
+  }
+</div>

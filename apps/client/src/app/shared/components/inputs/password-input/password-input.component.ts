@@ -1,5 +1,6 @@
 import { Component, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LucideAngularModule, Lock, Eye, EyeOff } from 'lucide-angular';
 
 @Component({
   selector: 'app-password-input',
@@ -11,9 +12,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
     },
   ],
+  imports: [LucideAngularModule],
   templateUrl: './password-input.component.html',
 })
 export default class PasswordInputComponent implements ControlValueAccessor {
+  readonly LockIcon = Lock;
+  readonly EyeIcon = Eye;
+  readonly EyeOffIcon = EyeOff;
   labelText = input<string>('');
   placeholder = input<string>('Password');
   id = input<string>('password');
