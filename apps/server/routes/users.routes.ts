@@ -11,8 +11,9 @@ import {
   deleteUser,
   getMe,
 } from "../controllers/users.controller.ts";
-import { restrictTo, protect } from "controllers/auth.controller.ts";
+import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import { validate } from "middlewares/validate.middleware.ts";
+import { protect } from "middlewares/auth.middleware.ts";
 import { signupSchema } from "schemas/auth.schema.ts";
 import {
   updateUserProfileSchema,

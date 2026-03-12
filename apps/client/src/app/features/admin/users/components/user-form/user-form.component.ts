@@ -30,7 +30,7 @@ import { RequestStateClass } from 'src/app/core/request-state';
 })
 export default class UserFormComponent {
   private fb = inject(FormBuilder);
-  requestState = input<RequestStateClass<unknown>>();
+  requestState = input<RequestStateClass>();
   closed = output<void>();
   onSave = output<CreateUserRequestDto | Partial<CreateUserRequestDto>>();
   readonly roleOptions = [

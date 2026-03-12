@@ -11,6 +11,7 @@
                 [ngTemplateOutletContext]="{
                   label: col.label,
                   column: col.key,
+                  sort: sort.emit.bind(sort),
                 }"
               ></ng-container>
             } @else {
@@ -21,22 +22,28 @@
       </tr>
     </thead>
     <tbody>
-      @for (row of tableConfiguration().rows; track row._id) {
-        <tr class="hover">
-          @for (col of tableConfiguration().columns; track col.label) {
-            <td>
-              @if (col.cellTemplate) {
-                <ng-container
-                  [ngTemplateOutlet]="col.cellTemplate"
-                  [ngTemplateOutletContext]="{ $implicit: row }"
-                >
-                </ng-container>
-              } @else {
-                {{ row[col.key] }}
-              }
-            </td>
-          }
+      @if (tableConfiguration().rows.length === 0) {
+        <tr class="h-[50vh]">
+          <td colspan="100%" class="text-center text-white text-xl">No data found</td>
         </tr>
+      } @else {
+        @for (row of tableConfiguration().rows; track row._id) {
+          <tr class="hover">
+            @for (col of tableConfiguration().columns; track col.label) {
+              <td>
+                @if (col.cellTemplate) {
+                  <ng-container
+                    [ngTemplateOutlet]="col.cellTemplate"
+                    [ngTemplateOutletContext]="{ $implicit: row }"
+                  >
+                  </ng-container>
+                } @else {
+                  {{ row[col.key] }}
+                }
+              </td>
+            }
+          </tr>
+        }
       }
     </tbody>
   </table>

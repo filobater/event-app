@@ -78,7 +78,11 @@ export default class SigninComponent {
         this.requestState.success();
         this.userService.setUser(response.data.user);
         this.userService.setToken(response.data.token);
-        this.router.navigate([BASE_PATH]);
+        if (this.userService.currentUser()?.role === 'admin') {
+          this.router.navigate([NAV.admin.events]);
+        } else {
+          this.router.navigate([BASE_PATH]);
+        }
       },
       error: (error) => {
         if (error.error.message.includes('Please verify your account')) {

@@ -1,19 +1,14 @@
 import { signal } from '@angular/core';
 
-export class RequestStateClass<T> {
+export class RequestStateClass {
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
   successMessage = signal<string | null>(null);
-  data = signal<T | null>(null);
 
   start() {
     this.loading.set(true);
     this.error.set(null);
     this.successMessage.set(null);
-  }
-
-  setData(data: T) {
-    this.data.set(data);
   }
 
   success(successMessage?: string) {

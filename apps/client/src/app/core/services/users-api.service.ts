@@ -15,7 +15,7 @@ import type {
   UpdateUserPasswordResponseDto,
   DeleteUserResponseDto,
 } from '@events-app/shared-dtos';
-import { toHttpParams } from 'src/app/shared/utils';
+import { createPaginatedResource, toHttpParams } from 'src/app/shared/utils';
 
 export interface GetAllUsersQueryParams {
   page?: number;
@@ -41,12 +41,9 @@ export class UsersApiService {
     );
   }
 
-  getAllUsers(params?: GetAllUsersQueryParams): Observable<GetAllUsersResponseDto> {
-    const httpParams = toHttpParams(params ?? {});
-
-    return this.http.get<GetAllUsersResponseDto>(
-      `${this.baseUsersUrl}${API_ENDPOINTS.users.getAll}`,
-      { params: httpParams },
+  getAllUsers<GetAllUsersResponseDto>() {
+    return createPaginatedResource<GetAllUsersResponseDto>(
+      () => `${this.baseUsersUrl}${API_ENDPOINTS.users.getAll}`,
     );
   }
 

@@ -1,6 +1,7 @@
+import type { BaseResponseDto } from './base.dto.js';
 // ─── Shared User shape returned in responses ────────────────────────────────
 
-export interface UserDto {
+export type UserDto = {
   _id: string;
   fullName: string;
   email: string;
@@ -9,65 +10,57 @@ export interface UserDto {
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 // ─── Shared base types ───────────────────────────────────────────────────────
 
-export interface EmailDto {
+export type EmailDto = {
   email: string;
-}
+};
 
-export interface BaseResponseDto {
-  status: string;
-  message: string;
-}
-
-export interface AuthResponseDto extends BaseResponseDto {
+export type AuthResponseDto = BaseResponseDto & {
   data: { user: UserDto; token: string };
-}
+};
 
 // ─── Requests ────────────────────────────────────────────────────────────────
 
-export interface SignupRequestDto extends EmailDto {
+export type SignupRequestDto = EmailDto & {
   fullName: string;
   password: string;
   confirmPassword: string;
-}
+};
 
-export interface SigninRequestDto extends EmailDto {
+export type SigninRequestDto = EmailDto & {
   password: string;
-}
+};
 
-export interface VerifyOtpRequestDto extends EmailDto {
+export type VerifyOtpRequestDto = EmailDto & {
   otp: string;
-}
+};
 
 export type ResendOtpRequestDto = EmailDto;
 
 export type ForgotPasswordRequestDto = EmailDto;
 
-export interface ResetPasswordRequestDto {
+export type ResetPasswordRequestDto = {
   password: string;
   confirmPassword: string;
-}
+};
 
 // ─── Responses ───────────────────────────────────────────────────────────────
 
 export type SignupResponseDto = BaseResponseDto;
 
-export interface SigninResponseDto extends Omit<AuthResponseDto, "message"> {}
+export type SigninResponseDto = Omit<AuthResponseDto, "message">;
 
-export interface VerifyOtpResponseDto extends AuthResponseDto {}
+export type VerifyOtpResponseDto = AuthResponseDto;
 
 export type ResendOtpResponseDto = BaseResponseDto;
 
 export type ForgotPasswordResponseDto = BaseResponseDto;
 
-export interface ResetPasswordResponseDto extends AuthResponseDto {}
+export type ResetPasswordResponseDto = AuthResponseDto;
 
-export interface RefreshTokenResponseDto extends Omit<
-  AuthResponseDto,
-  "message"
-> {}
+export type RefreshTokenResponseDto = Omit<AuthResponseDto, "message">;
 
 export type SignoutResponseDto = BaseResponseDto;

@@ -1,5 +1,5 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, input, output } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideAngularModule, Search } from 'lucide-angular';
 
 @Component({
@@ -15,39 +15,16 @@ import { LucideAngularModule, Search } from 'lucide-angular';
   imports: [LucideAngularModule],
   templateUrl: './search-input.component.html',
 })
-export default class SearchInputComponent implements ControlValueAccessor {
+export default class SearchInputComponent {
   readonly SearchIcon = Search;
   placeholder = input<string>('Search');
+  value = input<string>('');
 
-  protected value = signal('');
-  protected isDisabled = signal(false);
+  onSearch = output<string>();
 
-  private onChange: (value: string) => void = () => {};
-  private onTouched: () => void = () => {};
-
-  writeValue(value: string): void {
-    this.value.set(value ?? '');
-  }
-
-  registerOnChange(fn: (value: string) => void): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
-  }
-
-  protected handleInput(event: Event): void {
+  handleSearch(event: Event) {
     const value = (event.target as HTMLInputElement).value;
-    this.value.set(value);
-    this.onChange(value);
+    this.onSearch.emit(value ?? '');
   }
-
-  protected handleBlur(): void {
-    this.onTouched();
-  }
+  
 }

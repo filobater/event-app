@@ -7,10 +7,16 @@
           Manage Users
         </h1>
       </div>
-      <p class="text-(--light-gray-color) text-lg">{{ totalUsers() }} total users</p>
+      <p class="text-(--light-gray-color) text-lg">
+        {{ usersResource.resource.value()?.data?.totalData ?? 0 }} total users
+      </p>
     </div>
     <div class="flex items-center gap-2">
-      <app-search-input [placeholder]="'Search users'" />
+      <app-search-input
+        [placeholder]="'Search users by name'"
+        [value]="usersResource.searchInput()"
+        (onSearch)="handleSearch($event)"
+      />
       <app-secondary-button [label]="'Add User'" (handleClick)="handleAddUser()">
         <i-lucide [img]="PlusIcon" class="size-4" />
       </app-secondary-button>
@@ -28,9 +34,16 @@
       (onSave)="handleSaveUser($event)"
     />
   </app-modal>
-  @if (requestState.loading()) {
+  @if (usersResource.resource.isLoading()) {
     <admin-loading />
-  } @else {
-    <app-user-table [users]="users()" />
+  }
+  @if (usersResource.resource.error()) {
+    <app-error-message [message]="'Failed to load users'" />
+  }
+  @if (usersResource.resource.value()) {
+    <app-user-table
+      [users]="usersResource.resource.value()?.data?.users ?? []"
+      (sort)="handleSort($event)"
+    />
   }
 </div>

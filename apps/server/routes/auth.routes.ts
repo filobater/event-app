@@ -8,8 +8,8 @@ import {
   resetPassword,
   refreshToken,
   signout,
-  protect,
 } from "../controllers/auth.controller.ts";
+
 import {
   signinSchema,
   signupSchema,
@@ -19,6 +19,7 @@ import {
 } from "../schemas/auth.schema.ts";
 import { validate } from "../middlewares/validate.middleware.ts";
 import { API_ENDPOINTS } from "@events-app/endpoints";
+import { protect } from "middlewares/auth.middleware.ts";
 
 const router = Router();
 

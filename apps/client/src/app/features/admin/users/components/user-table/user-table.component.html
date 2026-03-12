@@ -1,3 +1,12 @@
+<ng-template #sortableHeader let-label="label" let-column="column">
+  <sort-button
+    [label]="label | titlecase"
+    [value]="column"
+    (sort)="handleSort({ label: column, direction: $event.direction })"
+  >
+  </sort-button>
+</ng-template>
+
 <ng-template #userTemplate let-user>
   <div class="flex items-center gap-2">
     <app-avatar [imageUrl]="user.profilePicture" [label]="user.fullName"> </app-avatar>
@@ -6,8 +15,8 @@
 </ng-template>
 
 <ng-template #dateTemplate let-user>
-  <span class="text-white text-xs font-mono">
-    {{ user.createdAt | date: 'dd/MM/yyyy' }}
+  <span class="text-white text-xs">
+    {{ user.createdAt | date: 'short' }}
   </span>
 </ng-template>
 
@@ -23,4 +32,7 @@
   </div>
 </ng-template>
 
-<admin-table [tableConfiguration]="{ columns: columns(), rows: users() }" />
+<admin-table
+  [tableConfiguration]="{ columns: columns(), rows: users() }"
+  (sort)="handleSort($event)"
+/>

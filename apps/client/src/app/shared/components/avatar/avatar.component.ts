@@ -10,21 +10,16 @@ import { environment } from 'src/environments/environment';
 })
 export default class AvatarComponent {
   readonly baseUrl = environment.apiUrl;
+  private imageFailed = false;
   imageUrl = input<string | null | undefined>(null);
   label = input<string>('');
   class = input<string>('');
-  private imageFailed = false;
 
   get showImage(): boolean {
     return !!this.imageUrl() && !this.imageFailed;
-  }
-  
-  constructor() {
-    console.log(this.baseUrl + '/' + this.imageUrl());
   }
 
   onError() {
     this.imageFailed = true;
   }
 }
-

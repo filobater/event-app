@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { guestGuard, NAV } from './core';
+import { authGuard, guestGuard, NAV } from './core';
 import { AuthLayoutComponent, MainLayoutComponent } from './layouts/';
 
 export const routes: Routes = [
@@ -21,6 +21,7 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./features/admin/admin.routes').then((m) => m.adminRoutes),
+        canActivate: [authGuard],
       },
     ],
   },

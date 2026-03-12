@@ -1,46 +1,35 @@
 import type {
-  BaseResponseDto,
   ResetPasswordRequestDto,
   SignupRequestDto,
   UserDto,
 } from "./auth.dto.js";
-
-// ─── Paginated wrapper ────────────────────────────────────────────────────────
-
-export interface PaginatedResponseDto<T> extends BaseResponseDto {
-  data: {
-    users: T[];
-    count: number;
-    totalData: number;
-    totalPages: number;
-    page: number;
-  };
-}
-
-export interface UserResponseDto extends BaseResponseDto {
-  data: UserDto;
-}
+import type { PaginatedResponseDto } from "./paginated.dto.js";
+import type { BaseResponseDto } from "./base.dto.js";
 
 // ─── Requests ────────────────────────────────────────────────────────────────
 
-export interface CreateUserRequestDto extends SignupRequestDto {
+export type CreateUserRequestDto = SignupRequestDto & {
   role: "admin" | "user";
-}
+};
 
-export interface UpdateUserRequestDto extends SignupRequestDto {}
+export type UpdateUserRequestDto = SignupRequestDto;
 
-export interface UpdateUserProfileRequestDto extends Partial<SignupRequestDto> {}
+export type UpdateUserProfileRequestDto = Partial<SignupRequestDto>;
 
-export interface UpdateUserPasswordRequestDto extends ResetPasswordRequestDto {}
+export type UpdateUserPasswordRequestDto = ResetPasswordRequestDto;
 
 // ─── Responses ───────────────────────────────────────────────────────────────
 
-export type GetAllUsersResponseDto = PaginatedResponseDto<UserDto>;
+export type UserResponseDto = BaseResponseDto & {
+  data: UserDto;
+};
 
-export interface UpdateUserResponseDto extends UserResponseDto {}
+export type GetAllUsersResponseDto = PaginatedResponseDto<{ users: UserDto[] }>;
 
-export interface UpdateUserProfileResponseDto extends UserResponseDto {}
+export type UpdateUserResponseDto = UserResponseDto;
 
-export interface UpdateUserPasswordResponseDto extends UserResponseDto {}
+export type UpdateUserProfileResponseDto = UserResponseDto;
+
+export type UpdateUserPasswordResponseDto = UserResponseDto;
 
 export type DeleteUserResponseDto = BaseResponseDto;

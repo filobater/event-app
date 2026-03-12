@@ -1,11 +1,16 @@
-import { Component, input, TemplateRef } from '@angular/core';
+import { Component, input, output, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+export interface HeaderContext<T> {
+  label: string;
+  column: keyof T;
+  sort: (params: { label: string; direction: 'asc' | 'desc' | null }) => void;
+}
 
 export interface ColumnDef<T> {
   label: string;
   key: keyof T;
   cellTemplate?: TemplateRef<{ $implicit: T }>;
-  headerTemplate?: TemplateRef<unknown>;
+  headerTemplate?: TemplateRef<HeaderContext<T>>;
 }
 
 export interface TableComponentInterface<T extends { _id: string }> {
@@ -20,4 +25,5 @@ export interface TableComponentInterface<T extends { _id: string }> {
 })
 export default class TableComponent<T extends { _id: string }> {
   tableConfiguration = input.required<TableComponentInterface<T>>();
+  sort = output<{ label: string; direction: 'asc' | 'desc' | null }>();
 }

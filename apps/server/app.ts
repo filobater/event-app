@@ -8,7 +8,8 @@ import authRoutes from "routes/auth.routes.ts";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 import path from "path";
 
-import { protect, restrictTo } from "controllers/auth.controller.ts";
+import { protect } from "middlewares/auth.middleware.ts";
+import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import usersRoutes from "routes/users.routes.ts";
 
 const app = express();

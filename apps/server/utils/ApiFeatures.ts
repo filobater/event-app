@@ -10,7 +10,7 @@ export class ApiFeatures {
   search() {
     if (this.requestQuery.search) {
       this.query = this.query.find({
-        $text: [{ $search: this.requestQuery.search }],
+        $text: { $search: this.requestQuery.search },
       });
     }
     return this;
