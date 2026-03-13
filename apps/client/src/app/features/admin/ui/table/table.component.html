@@ -15,7 +15,9 @@
                 }"
               ></ng-container>
             } @else {
-              {{ col.label }}
+              <p [class.ml-[41px]]="col.key === 'actions'">
+                {{ col.label }}
+              </p>
             }
           </th>
         }

@@ -20,6 +20,20 @@
   </span>
 </ng-template>
 
+<ng-template #actionsTemplate let-user>
+  <div class="flex items-center gap-2">
+    <button class="btn btn-sm btn-ghost">
+      <i-lucide [img]="EditIcon" class="size-4 text-white"></i-lucide>
+    </button>
+    <button class="btn btn-sm btn-ghost">
+      <i-lucide [img]="EyeIcon" class="size-4 text-white"></i-lucide>
+    </button>
+    <button class="btn btn-sm btn-ghost">
+      <i-lucide [img]="DeleteIcon" class="size-4 text-white"></i-lucide>
+    </button>
+  </div>
+</ng-template>
+
 <ng-template #statusTemplate let-user>
   <div class="flex items-center gap-2">
     <app-badge

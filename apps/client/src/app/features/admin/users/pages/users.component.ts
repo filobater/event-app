@@ -53,13 +53,13 @@ export default class UsersComponent {
   handleCloseAddUserModal() {
     this.isAddUserModalOpen.set(false);
   }
+
   // TODO: handle also the edit user functionality
   handleSaveUser(user: CreateUserRequestDto | Partial<CreateUserRequestDto>) {
     this.requestState.start();
     this.usersApiService.createUser(user as CreateUserRequestDto).subscribe({
       next: (response) => {
         this.requestState.success();
-        // this.users.update((users) => [...users, response.data]);
         this.isAddUserModalOpen.set(false);
       },
       error: (error) => {

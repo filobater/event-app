@@ -40,7 +40,7 @@
   @if (usersResource.resource.error()) {
     <app-error-message [message]="'Failed to load users'" />
   }
-  @if (usersResource.resource.value()) {
+  @if (usersResource.resource.value() && usersResource.resource.status() === 'resolved') {
     <app-user-table
       [users]="usersResource.resource.value()?.data?.users ?? []"
       (sort)="handleSort($event)"

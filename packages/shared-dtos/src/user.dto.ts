@@ -21,7 +21,7 @@ export type UpdateUserPasswordRequestDto = ResetPasswordRequestDto;
 // ─── Responses ───────────────────────────────────────────────────────────────
 
 export type UserResponseDto = BaseResponseDto & {
-  data: UserDto;
+  data: { user: UserDto };
 };
 
 export type GetAllUsersResponseDto = PaginatedResponseDto<{ users: UserDto[] }>;

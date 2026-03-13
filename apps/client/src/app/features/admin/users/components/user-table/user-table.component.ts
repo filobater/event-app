@@ -5,6 +5,7 @@ import AdminTableComponent, { ColumnDef, HeaderContext } from '../../../ui/table
 import { AvatarComponent, BadgeComponent } from 'src/app/shared/components';
 import SortButtonComponent from '../../../ui/sort-button/sort-button.component';
 import { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils';
+import { Eye, Pencil, Trash, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-user-table',
@@ -17,17 +18,24 @@ import { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils
     TitleCasePipe,
     DatePipe,
     SortButtonComponent,
+    LucideAngularModule,
   ],
 })
 export default class UserTableComponent {
   userTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('userTemplate');
   dateTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('dateTemplate');
   statusTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('statusTemplate');
+  actionsTemplate = viewChild<TemplateRef<any>>('actionsTemplate');
   sortableHeader = viewChild<TemplateRef<HeaderContext<UserDto>>>('sortableHeader');
+
+  // icons
+  readonly EditIcon = Pencil;
+  readonly DeleteIcon = Trash;
+  readonly EyeIcon = Eye;
 
   users = input.required<UserDto[]>();
 
-  readonly columns = computed<ColumnDef<UserDto>[]>(() => [
+  readonly columns = computed<ColumnDef<UserDto & { actions?: TemplateRef<any> }>[]>(() => [
     {
       label: 'User',
       key: 'fullName',
@@ -46,6 +54,11 @@ export default class UserTableComponent {
       key: 'isVerified',
       cellTemplate: this.statusTemplate(),
       headerTemplate: this.sortableHeader(),
+    },
+    {
+      label: 'Actions',
+      key: 'actions',
+      cellTemplate: this.actionsTemplate(),
     },
   ]);
 

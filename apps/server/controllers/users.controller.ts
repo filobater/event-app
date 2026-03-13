@@ -37,7 +37,9 @@ export const createUser = async (req: Request, res: Response) => {
     res,
     statusCode: 201,
     message: "User created successfully",
-    data: createdUser,
+    data: {
+      user: createdUser,
+    },
   });
 };
 
@@ -48,7 +50,9 @@ export const getUser = async (req: UserRequest, res: Response) => {
     res,
     statusCode: 200,
     message: "User fetched successfully",
-    data: targetUser,
+    data: {
+      user: targetUser,
+    },
   });
 };
 
@@ -96,7 +100,9 @@ export const updateUser = async (req: UserRequest, res: Response) => {
     res,
     statusCode: 200,
     message: "User updated successfully",
-    data: updatedUser,
+    data: {
+      user: updatedUser,
+    },
   });
 };
 
@@ -119,7 +125,9 @@ export const getMe = async (req: UserRequest, res: Response) => {
     res,
     statusCode: 200,
     message: "User fetched successfully",
-    data: user,
+    data: {
+      user,
+    },
   });
 };
 
@@ -142,7 +150,9 @@ export const updateUserProfile = async (req: UserRequest, res: Response) => {
     res,
     statusCode: 200,
     message: "Profile updated successfully",
-    data: updatedUser,
+    data: {
+      user: updatedUser,
+    },
   });
 };
 
@@ -160,6 +170,8 @@ export const updateUserPassword = async (req: UserRequest, res: Response) => {
     res,
     statusCode: 200,
     message: "Password updated successfully",
-    data: user,
+    data: {
+      user,
+    },
   });
 };
