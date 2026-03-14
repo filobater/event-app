@@ -1,20 +1,20 @@
 <div class="join flex justify-center">
   <button
     type="button"
-    class="join-item btn btn-sm"
+    class="join-item btn btn-md"
     [disabled]="!hasPrev"
-    (click)="goTo(currentPage() - 1)"
+    (click)="prev()"
     aria-label="Previous page"
   >
     «
   </button>
   @for (item of pageNumbers(); track item === 'ellipsis' ? $index : item) {
     @if (item === 'ellipsis') {
-      <button type="button" class="join-item btn btn-sm btn-disabled" disabled>…</button>
+      <button type="button" class="join-item btn btn-md btn-disabled" disabled>…</button>
     } @else {
       <button
         type="button"
-        class="join-item btn btn-sm"
+        class="join-item btn btn-md"
         [class.btn-active]="item === currentPage()"
         (click)="goTo(item)"
       >
@@ -24,9 +24,9 @@
   }
   <button
     type="button"
-    class="join-item btn btn-sm"
+    class="join-item btn btn-md"
     [disabled]="!hasNext"
-    (click)="goTo(currentPage() + 1)"
+    (click)="next()"
     aria-label="Next page"
   >
     »

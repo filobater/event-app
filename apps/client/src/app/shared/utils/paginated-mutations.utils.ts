@@ -1,10 +1,13 @@
-import { WritableResource } from '@angular/core';
+import { HttpResourceRef } from '@angular/common/http';
 import { PaginatedResponseDto } from '@events-app/shared-dtos';
 
-export function createPaginatedMutations<Item extends { id: string }>(
-  resource: WritableResource<PaginatedResponseDto<{ items: Item[] }> | undefined>,
+export function createPaginatedMutations<Item extends { _id: string }, Key extends string>(
+  resource: HttpResourceRef<PaginatedResponseDto<Record<Key, Item[]>> | undefined>,
+  dataKey: Key,
 ) {
   const getCurrent = () => resource.value();
+
+  const getItems = (): Item[] => getCurrent()?.data?.[dataKey] ?? [];
 
   return {
     removeItem: (id: string) => {
@@ -15,8 +18,9 @@ export function createPaginatedMutations<Item extends { id: string }>(
         ...current,
         data: {
           ...current.data,
-          items: current.data.items.filter((item: Item) => item.id !== id),
+          [dataKey]: getItems().filter((item) => item._id !== id),
           totalData: current.data.totalData - 1,
+          count: current.data.count - 1,
         },
       });
     },
@@ -29,8 +33,9 @@ export function createPaginatedMutations<Item extends { id: string }>(
         ...current,
         data: {
           ...current.data,
-          items: [item, ...current.data.items],
+          [dataKey]: [item, ...getItems()],
           totalData: current.data.totalData + 1,
+          count: current.data.count + 1,
         },
       });
     },
@@ -43,8 +48,8 @@ export function createPaginatedMutations<Item extends { id: string }>(
         ...current,
         data: {
           ...current.data,
-          items: current.data.items?.map((item: Item) =>
-            item.id === id ? { ...item, ...updated } : item,
+          [dataKey]: getItems().map((item: Item) =>
+            item._id === id ? { ...item, ...updated } : item,
           ),
         },
       });

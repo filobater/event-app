@@ -12,7 +12,7 @@
   >
     <option disabled value="">{{ placeholder() }}</option>
     @for (option of options(); track option.value) {
-      <option [value]="option.value">
+      <option [selected]="option.value === value()" [value]="option.value">
         {{ option.label }}
       </option>
     }

@@ -1,11 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@events-app/endpoints';
 import type {
   CreateUserRequestDto,
-  GetAllUsersResponseDto,
   UserResponseDto,
   UpdateUserRequestDto,
   UpdateUserResponseDto,
@@ -14,8 +13,9 @@ import type {
   UpdateUserPasswordRequestDto,
   UpdateUserPasswordResponseDto,
   DeleteUserResponseDto,
+  UserDto,
 } from '@events-app/shared-dtos';
-import { createPaginatedResource, toHttpParams } from 'src/app/shared/utils';
+import { createPaginatedResource } from 'src/app/shared/utils';
 
 export interface GetAllUsersQueryParams {
   page?: number;
@@ -41,9 +41,10 @@ export class UsersApiService {
     );
   }
 
-  getAllUsers<GetAllUsersResponseDto>() {
-    return createPaginatedResource<GetAllUsersResponseDto>(
+  getAllUsers() {
+    return createPaginatedResource<UserDto, 'users'>(
       () => `${this.baseUsersUrl}${API_ENDPOINTS.users.getAll}`,
+      'users',
     );
   }
 
@@ -52,20 +53,22 @@ export class UsersApiService {
   }
 
   getUser(id: string): Observable<UserResponseDto> {
-    return this.http.get<UserResponseDto>(`${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id)}`);
+    return this.http.get<UserResponseDto>(
+      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id).replace(':', '')}`,
+    );
   }
 
   updateUser(id: string, data: UpdateUserRequestDto): Observable<UpdateUserResponseDto> {
     const formData = this.toFormData(data);
     return this.http.patch<UpdateUserResponseDto>(
-      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id)}`,
+      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id).replace(':', '')}`,
       formData,
     );
   }
 
   deleteUser(id: string): Observable<DeleteUserResponseDto> {
     return this.http.delete<DeleteUserResponseDto>(
-      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id)}`,
+      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id).replace(':', '')}`,
     );
   }
 

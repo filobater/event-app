@@ -20,6 +20,8 @@ const userSchema = new Schema<SignupInput, UserModel, IUserMethods>(
       type: String,
       required: [true, "Full name is required"],
       trim: true,
+      minlength: 3,
+      maxlength: 50,
     },
     email: {
       type: String,
@@ -28,6 +30,7 @@ const userSchema = new Schema<SignupInput, UserModel, IUserMethods>(
       lowercase: true,
       trim: true,
       validate: [validator.isEmail, "Please provide a valid email"],
+      maxlength: 50,
     },
     password: {
       type: String,

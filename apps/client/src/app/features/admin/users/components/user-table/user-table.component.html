@@ -14,6 +14,15 @@
   </div>
 </ng-template>
 
+<ng-template #roleTemplate let-user>
+  <app-badge
+    [label]="user.role | titlecase"
+    [color]="
+      user.role === 'admin' ? 'bg-(--secondary-color) text-white' : 'bg-(--main-color) text-white'
+    "
+  />
+</ng-template>
+
 <ng-template #dateTemplate let-user>
   <span class="text-white text-xs">
     {{ user.createdAt | date: 'short' }}
@@ -22,13 +31,13 @@
 
 <ng-template #actionsTemplate let-user>
   <div class="flex items-center gap-2">
-    <button class="btn btn-sm btn-ghost">
+    <button class="btn btn-sm btn-ghost" (click)="handleActions('edit', user._id)">
       <i-lucide [img]="EditIcon" class="size-4 text-white"></i-lucide>
     </button>
-    <button class="btn btn-sm btn-ghost">
+    <button class="btn btn-sm btn-ghost" (click)="handleActions('view', user._id)">
       <i-lucide [img]="EyeIcon" class="size-4 text-white"></i-lucide>
     </button>
-    <button class="btn btn-sm btn-ghost">
+    <button class="btn btn-sm btn-ghost" (click)="handleActions('delete', user._id)">
       <i-lucide [img]="DeleteIcon" class="size-4 text-white"></i-lucide>
     </button>
   </div>
@@ -49,4 +58,5 @@
 <admin-table
   [tableConfiguration]="{ columns: columns(), rows: users() }"
   (sort)="handleSort($event)"
+  [paginationOptions]="paginationOptions()"
 />

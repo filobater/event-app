@@ -1,11 +1,16 @@
 import { Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { UserDto } from '@events-app/shared-dtos';
-import AdminTableComponent, { ColumnDef, HeaderContext } from '../../../ui/table/table.component';
+import AdminTableComponent, {
+  ColumnDef,
+  HeaderContext,
+  PaginationOptions,
+} from '../../../ui/table/table.component';
 import { AvatarComponent, BadgeComponent } from 'src/app/shared/components';
 import SortButtonComponent from '../../../ui/sort-button/sort-button.component';
 import { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils';
-import { Eye, Pencil, Trash, LucideAngularModule } from 'lucide-angular';
+import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
+import { ModalType } from '../../pages/users.component';
 
 @Component({
   selector: 'app-user-table',
@@ -23,6 +28,7 @@ import { Eye, Pencil, Trash, LucideAngularModule } from 'lucide-angular';
 })
 export default class UserTableComponent {
   userTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('userTemplate');
+  roleTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('roleTemplate');
   dateTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('dateTemplate');
   statusTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('statusTemplate');
   actionsTemplate = viewChild<TemplateRef<any>>('actionsTemplate');
@@ -32,8 +38,12 @@ export default class UserTableComponent {
   readonly EditIcon = Pencil;
   readonly DeleteIcon = Trash;
   readonly EyeIcon = Eye;
+  readonly ShieldIcon = Shield;
 
   users = input.required<UserDto[]>();
+  paginationOptions = input<PaginationOptions>();
+
+  openModal = output<{ modal: ModalType; userId: string }>();
 
   readonly columns = computed<ColumnDef<UserDto & { actions?: TemplateRef<any> }>[]>(() => [
     {
@@ -44,7 +54,13 @@ export default class UserTableComponent {
     },
     { label: 'Email', key: 'email', headerTemplate: this.sortableHeader() },
     {
-      label: 'Created At',
+      label: 'Role',
+      key: 'role',
+      cellTemplate: this.roleTemplate(),
+      headerTemplate: this.sortableHeader(),
+    },
+    {
+      label: 'Joined At',
       key: 'createdAt',
       cellTemplate: this.dateTemplate(),
       headerTemplate: this.sortableHeader(),
@@ -65,7 +81,13 @@ export default class UserTableComponent {
   sort = output<SortParams>();
 
   handleSort(params: SortParams) {
-    console.log(params);
     this.sort.emit(params);
+  }
+
+  handleActions(action: ModalType, userId: string) {
+    this.openModal.emit({
+      modal: action,
+      userId: userId,
+    });
   }
 }

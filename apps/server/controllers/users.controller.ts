@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from "express";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
+import bcrypt from "bcryptjs";
 
 interface UserRequest extends Request {
   targetUser?: UserDocument;
@@ -79,7 +80,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
       users,
       count: users.length,
       totalData: totalUsers,
-      totalPages: Math.ceil(totalUsers / features.query.limit) || 1,
+      totalPages: Math.ceil(totalUsers / 10) || 1,
       page: Number(req.query.page) || 1,
     },
   });
@@ -89,13 +90,25 @@ export const updateUser = async (req: UserRequest, res: Response) => {
   const { targetUser } = req;
 
   if (req.body.email) {
-    throw new AppError("email is not allowed to be updated", 400);
+    throw new AppError("Email is not allowed to be updated", 400);
   }
 
-  const updatedUser = await User.findByIdAndUpdate(targetUser?._id, req.body, {
-    new: true,
-    runValidators: false,
-  });
+  if (req.body.password) {
+    req.body.password = await bcrypt.hash(req.body.password, 12);
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    targetUser?._id,
+    {
+      ...req.body,
+      profilePicture: req.file?.path || null,
+    },
+    {
+      returnDocument: "after",
+      runValidators: false,
+    },
+  );
+
   sendResponse({
     res,
     statusCode: 200,

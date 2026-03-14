@@ -11,10 +11,19 @@ import path from "path";
 import { protect } from "middlewares/auth.middleware.ts";
 import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import usersRoutes from "routes/users.routes.ts";
+import { rateLimit } from "express-rate-limit";
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 const app = express();
 
 app.use(morgan("dev"));
+
+app.use(limiter);
 
 // Enable security headers while still allowing cross-origin images (uploads)
 app.use(

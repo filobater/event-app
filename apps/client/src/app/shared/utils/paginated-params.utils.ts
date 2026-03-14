@@ -54,13 +54,9 @@ export function createPaginatedParams() {
     sort,
     requestParams,
 
-    nextPage: () => {
-      page.update((p) => p + 1);
-      syncQueryParams({ page: page() });
-    },
-    prevPage: () => {
-      page.update((p) => (p > 1 ? p - 1 : 1));
-      syncQueryParams({ page: page() });
+    goToPage: (target: number) => {
+      page.set(target);
+      syncQueryParams({ page: target });
     },
 
     setSearch: (term: string) => {

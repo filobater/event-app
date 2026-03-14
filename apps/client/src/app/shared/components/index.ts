@@ -1,4 +1,5 @@
 export { default as ModalComponent } from './modal/modal.component';
+export { default as AlertModalComponent } from './alert-modal/alert-modal.component';
 export { default as ErrorMessageComponent } from './error-message/error-message.component';
 export { default as ProgressComponent } from './progress/progress.component';
 export { default as InfoLabelComponent } from './info-label/info-label.component';

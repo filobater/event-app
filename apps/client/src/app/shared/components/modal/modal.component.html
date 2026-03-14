@@ -1,6 +1,7 @@
 <dialog #dialog class="modal" (close)="handleClose()" (click)="handleBackdropClick($event)">
   <div
     class="modal-box max-h-[90vh] overflow-y-auto w-11/12 max-w-3xl relative bg-(--dark-gray-color)"
+    [class]="class()"
   >
     <button
       type="submit"

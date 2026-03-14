@@ -1,4 +1,5 @@
 import { httpResource } from '@angular/common/http';
+import { PaginatedResponseDto } from '@events-app/shared-dtos';
 
 import { toHttpParams } from './http.utils';
 import {
@@ -6,6 +7,7 @@ import {
   type PaginatedParams,
   type SortParams,
 } from './paginated-params.utils';
+import { createPaginatedMutations } from './paginated-mutations.utils';
 
 export type { SortParams, PaginatedParams };
 
@@ -14,18 +16,23 @@ export interface PaginatedResourceConfig {
   params?: PaginatedParams;
 }
 
-export function createPaginatedResource<T>(url: () => string) {
+export function createPaginatedResource<Item extends { _id: string }, Key extends string>(
+  url: () => string,
+  dataKey: Key,
+) {
   const params = createPaginatedParams();
 
-  const resource = httpResource<T>(() => ({
+  const resource = httpResource<PaginatedResponseDto<Record<Key, Item[]>>>(() => ({
     url: url(),
     method: 'GET',
     params: toHttpParams(params.requestParams()),
   }));
 
+  const mutations = createPaginatedMutations<Item, Key>(resource, dataKey);
+
   return {
     resource,
-
+    ...mutations,
     ...params,
   };
 }

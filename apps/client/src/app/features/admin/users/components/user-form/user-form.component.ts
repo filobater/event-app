@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   TextInputComponent,
@@ -9,9 +9,10 @@ import {
   SelectInputComponent,
   SecondaryButtonComponent,
 } from 'src/app/shared/components';
-import { CreateUserRequestDto } from '@events-app/shared-dtos';
+import { CreateUserRequestDto, UpdateUserRequestDto, UserDto } from '@events-app/shared-dtos';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
 import { RequestStateClass } from 'src/app/core/request-state';
+import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 
 @Component({
   selector: 'app-user-form',
@@ -31,14 +32,16 @@ import { RequestStateClass } from 'src/app/core/request-state';
 export default class UserFormComponent {
   private fb = inject(FormBuilder);
   requestState = input<RequestStateClass>();
+  user = input<UserDto | null>(null);
+  isEdit = computed(() => !!this.user());
   closed = output<void>();
-  onSave = output<CreateUserRequestDto | Partial<CreateUserRequestDto>>();
+  onSave = output<CreateUserRequestDto | UpdateUserRequestDto>();
   readonly roleOptions = [
     { label: 'Admin', value: 'admin' },
     { label: 'User', value: 'user' },
   ];
 
-  userForm = this.fb.group(
+  userForm = this.fb.nonNullable.group(
     {
       profilePicture: [null],
       fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -49,6 +52,27 @@ export default class UserFormComponent {
     },
     { validators: confirmPasswordValidator() },
   );
+
+  constructor() {
+    effect(() => {
+      const passwordControl = this.userForm.get('password');
+      const confirmPasswordControl = this.userForm.get('confirmPassword');
+      const emailControl = this.userForm.get('email');
+      if (this.isEdit()) {
+        emailControl?.disable();
+        passwordControl?.clearValidators();
+        confirmPasswordControl?.clearValidators();
+        // TODO: fix this any
+        this.userForm.patchValue(this.user() as any);
+      } else {
+        emailControl?.enable();
+        passwordControl?.setValidators([Validators.required, Validators.minLength(8)]);
+        confirmPasswordControl?.setValidators([Validators.required, Validators.minLength(8)]);
+      }
+      passwordControl?.updateValueAndValidity();
+      confirmPasswordControl?.updateValueAndValidity();
+    });
+  }
 
   get formData() {
     return {
@@ -71,6 +95,13 @@ export default class UserFormComponent {
       this.userForm.markAllAsTouched();
       return;
     }
-    this.onSave.emit(this.userForm.value as Partial<CreateUserRequestDto>);
+
+    if (this.isEdit()) {
+      const dirtyFields = getDirtyFields(this.userForm);
+      //TODO: fix this any
+      this.onSave.emit({ ...dirtyFields, _id: this.user()?._id } as any);
+    } else {
+      this.onSave.emit(this.userForm.value as CreateUserRequestDto);
+    }
   }
 }

@@ -4,7 +4,8 @@ export const emailSchema = z.object({
   email: z
     .email({ message: "Please provide a valid email" })
     .toLowerCase()
-    .trim(),
+    .trim()
+    .max(50, "Email must be less than 50 characters"),
 });
 
 export const signupSchema = z
@@ -12,7 +13,8 @@ export const signupSchema = z
     fullName: z
       .string({ message: "Full name is required" })
       .min(3, "Full name must be at least 3 characters")
-      .trim(),
+      .trim()
+      .max(50, "Full name must be less than 50 characters"),
 
     ...emailSchema.shape,
 

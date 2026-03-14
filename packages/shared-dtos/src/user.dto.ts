@@ -9,7 +9,7 @@ import type { BaseResponseDto } from "./base.dto.js";
 // ─── Requests ────────────────────────────────────────────────────────────────
 
 export type CreateUserRequestDto = SignupRequestDto & {
-  role: "admin" | "user";
+  role?: "admin" | "user";
 };
 
 export type UpdateUserRequestDto = SignupRequestDto;

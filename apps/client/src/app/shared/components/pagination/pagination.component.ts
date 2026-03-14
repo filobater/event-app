@@ -45,4 +45,12 @@ export default class PaginationComponent {
     if (page < 1 || page > this.totalPages()) return;
     this.pageChange.emit(page);
   }
+
+  protected next() {
+    this.goTo(this.currentPage() + 1);
+  }
+
+  protected prev() {
+    this.goTo(this.currentPage() - 1);
+  }
 }

@@ -1,14 +1,12 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
-export function confirmPasswordValidator(
-  passwordKey = 'password',
-  confirmPasswordKey = 'confirmPassword',
-): ValidatorFn {
-  return (group: AbstractControl): ValidationErrors | null => {
-    const password = group.get(passwordKey)?.value;
-    const confirmPassword = group.get(confirmPasswordKey)?.value;
+export function confirmPasswordValidator() {
+  return (group: AbstractControl) => {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
 
-    if (!confirmPassword) return null;
+    // if password is not touched this will not trigger the validator
+    if (!password && !confirmPassword) return null;
 
     return password === confirmPassword ? null : { passwordMismatch: true };
   };

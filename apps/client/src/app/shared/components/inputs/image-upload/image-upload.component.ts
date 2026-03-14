@@ -1,6 +1,7 @@
 import { Component, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideAngularModule, Image } from 'lucide-angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-image-upload',
@@ -23,14 +24,16 @@ export default class ImageUploadComponent implements ControlValueAccessor {
     previewUrl: '',
     file: null,
   });
+
   protected isDisabled = signal(false);
 
   private onChange: (value: File | null) => void = () => {};
   private onTouched: () => void = () => {};
 
   writeValue(file: File | null): void {
+    let url = environment.apiUrl + '/' + file;
     if (file) {
-      this.image.set({ previewUrl: URL.createObjectURL(file), file });
+      this.image.set({ previewUrl: url, file });
     } else {
       this.image.set({ previewUrl: '', file: null });
     }
