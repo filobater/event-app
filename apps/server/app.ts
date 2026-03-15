@@ -12,6 +12,7 @@ import { protect } from "middlewares/auth.middleware.ts";
 import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import usersRoutes from "routes/users.routes.ts";
 import { rateLimit } from "express-rate-limit";
+import { fileURLToPath } from "url";
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -23,7 +24,7 @@ const app = express();
 
 app.use(morgan("dev"));
 
-app.use(limiter);
+// app.use(limiter);
 
 // Enable security headers while still allowing cross-origin images (uploads)
 app.use(
@@ -39,8 +40,6 @@ app.use(
 );
 
 app.use(express.json());
-
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

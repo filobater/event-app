@@ -19,8 +19,9 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
         data: {
           ...current.data,
           [dataKey]: getItems().filter((item) => item._id !== id),
+          ...(current.data.count >= 1 && { count: current.data.count - 1 }),
+          ...(current.data.count === 1 && { totalPages: current.data.totalPages - 1 }),
           totalData: current.data.totalData - 1,
-          count: current.data.count - 1,
         },
       });
     },
@@ -35,7 +36,8 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
           ...current.data,
           [dataKey]: [item, ...getItems()],
           totalData: current.data.totalData + 1,
-          count: current.data.count + 1,
+          ...(current.data.count < 10 && { count: current.data.count + 1 }),
+          ...(current.data.count === 10 && { totalPages: current.data.totalPages + 1 }),
         },
       });
     },

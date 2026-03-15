@@ -54,21 +54,21 @@ export class UsersApiService {
 
   getUser(id: string): Observable<UserResponseDto> {
     return this.http.get<UserResponseDto>(
-      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id).replace(':', '')}`,
+      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId.replace(':id', id)}`,
     );
   }
 
   updateUser(id: string, data: UpdateUserRequestDto): Observable<UpdateUserResponseDto> {
     const formData = this.toFormData(data);
     return this.http.patch<UpdateUserResponseDto>(
-      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id).replace(':', '')}`,
+      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId.replace(':id', id)}`,
       formData,
     );
   }
 
   deleteUser(id: string): Observable<DeleteUserResponseDto> {
     return this.http.delete<DeleteUserResponseDto>(
-      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId(id).replace(':', '')}`,
+      `${this.baseUsersUrl}${API_ENDPOINTS.users.byId.replace(':id', id)}`,
     );
   }
 

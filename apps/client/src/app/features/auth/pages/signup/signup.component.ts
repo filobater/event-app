@@ -68,8 +68,8 @@ export default class SignupComponent {
     }
     this.requestState.start();
     this.authService.signup(this.signupForm.value as SignupRequestDto).subscribe({
-      next: () => {
-        this.requestState.success();
+      next: (response) => {
+        this.requestState.success(response.message);
         this.router.navigate([this.nav.auth.verifyOtp], {
           queryParams: { email: this.email?.value },
         });

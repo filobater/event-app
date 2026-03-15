@@ -31,7 +31,7 @@ const handleCastErrorDB = (err: any) => {
 
 const handleDuplicateFieldsDB = (err: any) => {
   const duplicateField = Object.keys(err.keyValue)[0];
-  const message = `${duplicateField} already exists`;
+  const message = `${duplicateField.charAt(0).toUpperCase() + duplicateField.slice(1)} already exists`;
   return new AppError(message, 400);
 };
 

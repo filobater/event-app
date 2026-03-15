@@ -1,11 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
 import { AuthCardComponent } from '../../ui';
-import {
-  ErrorMessageComponent,
-  OtpInputComponent,
-  PrimaryButtonComponent,
-} from 'src/app/shared/components';
+import { OtpInputComponent, PrimaryButtonComponent } from 'src/app/shared/components';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -20,7 +16,6 @@ import { NAV } from 'src/app/core/navigation';
     OtpInputComponent,
     PrimaryButtonComponent,
     ReactiveFormsModule,
-    ErrorMessageComponent,
     LucideAngularModule,
   ],
   templateUrl: './otp.component.html',
@@ -53,7 +48,7 @@ export default class OtpComponent {
       .verifyOtp({ email: this.email, otp: this.otp?.value } as VerifyOtpRequestDto)
       .subscribe({
         next: (response) => {
-          this.requestState.success();
+          this.requestState.success(response.message);
           this.userService.setUser(response.data.user);
           this.userService.setToken(response.data.token);
           this.router.navigate([this.nav.auth.signin]);

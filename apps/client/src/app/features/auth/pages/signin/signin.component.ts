@@ -75,7 +75,7 @@ export default class SigninComponent {
     this.requestState.start();
     this.authService.signin(this.signinForm.value as SigninRequestDto).subscribe({
       next: (response) => {
-        this.requestState.success();
+        this.requestState.success(response.message);
         this.userService.setUser(response.data.user);
         this.userService.setToken(response.data.token);
         if (this.userService.currentUser()?.role === 'admin') {

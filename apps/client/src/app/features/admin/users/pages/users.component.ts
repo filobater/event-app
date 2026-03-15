@@ -43,7 +43,7 @@ export default class UsersComponent {
   /** Request state for fetching the selected user (edit modal). */
   readonly getUserRequestState = new RequestStateClass();
   /** Request state for create/update user (add & edit save). */
-  readonly saveRequestState = new RequestStateClass();
+  readonly mutationRequestState = new RequestStateClass();
 
   modals = signal({
     add: false,
@@ -68,6 +68,7 @@ export default class UsersComponent {
       this.userSelected.set(null);
 
       if (!id) return;
+      if (this.modals().delete) return;
       this.getUserRequestState.start();
       this.usersApiService.getUser(id).subscribe({
         next: (response) => {
@@ -107,14 +108,13 @@ export default class UsersComponent {
   handleCreateUser(user: CreateUserRequestDto) {
     this.usersApiService.createUser(user).subscribe({
       next: (response) => {
-        this.saveRequestState.success();
+        this.mutationRequestState.success(response.message);
         this.handleCloseModal('add');
         this.usersResource.addItem(response.data.user);
         this.resetUserForm();
       },
       error: (error) => {
-        this.saveRequestState.fail(error);
-        this.usersResource.resource.reload();
+        this.mutationRequestState.fail(error);
       },
     });
   }
@@ -122,20 +122,19 @@ export default class UsersComponent {
   handleUpdateUser(id: string, user: UpdateUserRequestDto) {
     this.usersApiService.updateUser(id, user).subscribe({
       next: (response) => {
-        this.saveRequestState.success();
+        this.mutationRequestState.success(response.message);
         this.handleCloseModal('edit');
         this.usersResource.updateItem(id, response.data.user);
         this.resetUserForm();
       },
       error: (error) => {
-        this.saveRequestState.fail(error);
-        this.usersResource.resource.reload();
+        this.mutationRequestState.fail(error);
       },
     });
   }
 
   handleSaveUser(user: CreateUserRequestDto | UpdateUserRequestDto) {
-    this.saveRequestState.start();
+    this.mutationRequestState.start();
     if ('_id' in user) {
       this.handleUpdateUser(user._id as string, user);
     } else {
@@ -144,16 +143,15 @@ export default class UsersComponent {
   }
 
   handleDeleteUser(userId: string) {
-    this.saveRequestState.start();
+    this.mutationRequestState.start();
     this.usersApiService.deleteUser(userId).subscribe({
       next: () => {
-        this.saveRequestState.success();
+        this.mutationRequestState.success('User deleted successfully');
         this.handleCloseModal('delete');
         this.usersResource.removeItem(userId);
       },
       error: (error) => {
-        this.saveRequestState.fail(error);
-        this.usersResource.resource.reload();
+        this.mutationRequestState.fail(error);
       },
     });
   }

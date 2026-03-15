@@ -20,7 +20,7 @@ export const API_ENDPOINTS = {
     getAll: "/",
     getMe: "/me",
     // get user, update user by id "admin"
-    byId: (id: string) => `/:${id}`,
+    byId: `/:id`,
 
     // patch request for the logged in user
     updateProfile: "/profile",

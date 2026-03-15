@@ -41,11 +41,7 @@
       class="text-sm text-(--main-color) flex justify-end hover:underline"
       >Forgot password?</a
     >
-    @if (requestState.error()) {
-      <div class="flex justify-center">
-        <app-error-message [message]="requestState.error()" />
-      </div>
-    }
+
     <app-primary-button
       [label]="requestState.loading() ? 'Signing in...' : 'Sign in'"
       type="submit"

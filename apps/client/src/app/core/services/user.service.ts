@@ -4,12 +4,14 @@ import { UserDto } from '@events-app/shared-dtos';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { Router } from '@angular/router';
 import { NAV } from '../navigation';
+import { RequestStateClass } from '../request-state';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
   private authService = inject(AuthService);
+  readonly requestState = new RequestStateClass();
   private router = inject(Router);
 
   private user = signal<UserDto | null>(this.getUserFromStorage());
@@ -58,12 +60,13 @@ export class UserService {
 
   logout() {
     this.authService.signout().subscribe({
-      next: () => {
+      next: (response) => {
         this.clearSession();
+        this.requestState.success(response.message);
         this.router.navigate([NAV.auth.signin]);
       },
       error: (error) => {
-        console.error('Error signing out', error);
+        this.requestState.fail(error);
       },
     });
   }

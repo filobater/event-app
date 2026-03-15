@@ -72,11 +72,6 @@
         }
       }
     </div>
-    @if (requestState.error()) {
-      <div class="flex justify-center">
-        <app-error-message [message]="requestState.error()" />
-      </div>
-    }
     <app-primary-button
       [label]="requestState.loading() ? 'Signing up...' : 'Sign up'"
       type="submit"

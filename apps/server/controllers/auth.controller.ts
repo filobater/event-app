@@ -109,6 +109,7 @@ export const signin = async (req: Request, res: Response) => {
   sendRefreshToken(res, refreshToken);
   sendResponse({
     res,
+    message: "Signed in successfully",
     statusCode: 200,
     data: { user, token: accessToken },
   });

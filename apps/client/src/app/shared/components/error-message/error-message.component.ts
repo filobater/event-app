@@ -4,11 +4,18 @@ import { Component, input } from '@angular/core';
   selector: 'app-error-message',
   standalone: true,
   template: `
-    @if (message()) {
+    @if (message() && typeof message() === 'string') {
       <p class="text-sm text-(--destructive-color) mt-1">{{ message() }}</p>
+    }
+    @if(message() && typeof message() === 'object') {
+      <ul class="text-sm text-(--destructive-color) mt-1">
+        @for (error of message(); track error) {
+          <li class="list-disc list-inside">{{ error }}</li>
+        }
+      </ul>
     }
   `,
 })
 export default class ErrorMessageComponent {
-  message = input<string | null | undefined>('');
+  message = input<string | string[] | null | undefined>('');
 }

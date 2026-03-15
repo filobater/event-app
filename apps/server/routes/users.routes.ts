@@ -57,15 +57,15 @@ router.post(
 
 router.get(API_ENDPOINTS.users.getAll, getAllUsers);
 
-router.get(API_ENDPOINTS.users.byId("id"), getUser);
+router.get(API_ENDPOINTS.users.byId, getUser);
 
 // router.get(API_ENDPOINTS.users.getAll, getAllUsers);
 router.patch(
-  API_ENDPOINTS.users.byId("id"),
+  API_ENDPOINTS.users.byId,
   uploadUserProfilePicture,
   validate(updateUserSchema),
   updateUser,
 );
-router.delete(API_ENDPOINTS.users.byId("id"), deleteUser);
+router.delete(API_ENDPOINTS.users.byId, deleteUser);
 
 export default router;

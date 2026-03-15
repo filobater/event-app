@@ -27,10 +27,10 @@ export const protect = async (
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     const user = await User.findById((decoded as JwtPayload).id);
     if (!user) {
-      throw new AppError("User not found", 404);
+      throw new AppError("Invalid token", 401);
     }
     if (user.isPasswordChangedAfter((decoded as JwtPayload).iat ?? 0)) {
-      throw new AppError("Please login again", 401);
+      throw new AppError("Password changed, please login again", 401);
     }
     req.user = user;
     next();

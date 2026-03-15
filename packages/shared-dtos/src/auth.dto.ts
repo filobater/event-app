@@ -1,4 +1,4 @@
-import type { BaseResponseDto } from './base.dto.js';
+import type { BaseResponseDto } from "./base.dto.js";
 // ─── Shared User shape returned in responses ────────────────────────────────
 
 export type UserDto = {
@@ -51,7 +51,7 @@ export type ResetPasswordRequestDto = {
 
 export type SignupResponseDto = BaseResponseDto;
 
-export type SigninResponseDto = Omit<AuthResponseDto, "message">;
+export type SigninResponseDto = AuthResponseDto;
 
 export type VerifyOtpResponseDto = AuthResponseDto;
 
@@ -61,6 +61,6 @@ export type ForgotPasswordResponseDto = BaseResponseDto;
 
 export type ResetPasswordResponseDto = AuthResponseDto;
 
-export type RefreshTokenResponseDto = Omit<AuthResponseDto, "message">;
+export type RefreshTokenResponseDto = AuthResponseDto;
 
 export type SignoutResponseDto = BaseResponseDto;
