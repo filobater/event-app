@@ -32,8 +32,6 @@ const eventSchema = new Schema(
     },
     registeredSeats: {
       type: Number,
-      required: true,
-      min: 0,
       default: 0,
     },
     status: {
@@ -98,6 +96,10 @@ eventSchema.pre("save", function () {
     this.type = "free";
   } else {
     this.type = "paid";
+  }
+  // when a new event is created, the registered seats are set to 0
+  if (this.isNew) {
+    this.registeredSeats = 0;
   }
 });
 

@@ -3,7 +3,6 @@ import type { Request, Response } from "express";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
-import bcrypt from "bcryptjs";
 
 // create user from admin
 // in this step we take directly the user because there will ba validation from zod
@@ -90,7 +89,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   const { targetUser } = req;
-  await targetUser.deleteOne(); 
+  await targetUser.deleteOne();
   sendResponse({
     res,
     statusCode: 204,

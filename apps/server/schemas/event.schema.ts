@@ -6,7 +6,6 @@ export const eventSchema = z.object({
   location: z.string().min(1, "Location is required"),
   dateTime: z.coerce.date().min(new Date(), "Date and time must be in the future"),
   totalSeats: z.number().min(0, "Total seats must be greater than or equal to 0"),
-  registeredSeats: z.number().min(0, "Registered seats must be greater than or equal to 0"),
   status: z.enum(["ongoing", "upcoming", "completed"], {
     message: "Status is required",
   }),

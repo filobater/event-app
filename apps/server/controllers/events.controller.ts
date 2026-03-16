@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { Event } from "models/event.model.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
 import { sendResponse } from "utils/sendResponse.ts";
+import { AppError } from "utils/AppError.ts";
 
 // here in all controllers we can directly take the req body and put it because of the validation
 
@@ -60,6 +61,9 @@ export const getEvent = async (req: Request, res: Response) => {
 };
 
 export const updateEvent = async (req: Request, res: Response) => {
+  if ("registeredSeats" in req.body && req.body.registeredSeats !== undefined) {
+    throw new AppError("Registered seats cannot be updated", 400);
+  }
   const updatedEvent = Object.assign(req.event, req.body);
   await updatedEvent.save();
   sendResponse({
