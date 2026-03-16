@@ -9,16 +9,13 @@ export const eventSchema = z.object({
   status: z.enum(["ongoing", "upcoming", "completed"], {
     message: "Status is required",
   }),
-  photo: z.string().nullable().optional(),
+  photo: z.string(),
   speakers: z
     .array(
       z.object({
         name: z.string().min(1, "Speaker name is required"),
         title: z.string().min(1, "Speaker title is required"),
-        image: z.object({
-          data: z.any().optional(),
-          contentType: z.string().optional(),
-        }),
+        image: z.string(),
       }),
     )
     .max(2, "Maximum 2 speakers allowed")
