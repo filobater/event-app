@@ -9,6 +9,7 @@ import {
   Menu,
   Ticket,
   Users,
+  LayoutDashboard,
 } from 'lucide-angular';
 import AvatarComponent from '../avatar/avatar.component';
 import { UserService } from 'src/app/core/services/user.service';
@@ -25,6 +26,7 @@ export class NavbarComponent {
   readonly EventsIcon = CalendarDays;
   readonly DashboardIcon = ChartColumn;
   readonly ManageUsersIcon = Users;
+  readonly ManageEventsIcon = LayoutDashboard;
 
   protected readonly nav = NAV;
   protected readonly basePath = BASE_PATH;
@@ -44,7 +46,7 @@ export class NavbarComponent {
     {
       label: 'Manage Events',
       path: this.nav.admin.events,
-      icon: this.TicketIcon,
+      icon: this.ManageEventsIcon,
     },
     {
       label: 'Manage Users',

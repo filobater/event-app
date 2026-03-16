@@ -1,14 +1,20 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, type HydratedDocument } from "mongoose";
+import type { EventSchema } from "schemas/event.schema.ts";
+
+export type EventDocument = HydratedDocument<EventSchema>;
 
 const eventSchema = new Schema(
   {
     title: {
       type: String,
       required: true,
+      minlength: 3,
+      maxlength: 100,
     },
     description: {
       type: String,
       required: true,
+      minlength: 10,
     },
     location: {
       type: String,
@@ -17,6 +23,7 @@ const eventSchema = new Schema(
     dateTime: {
       type: Date,
       required: true,
+      default: new Date(),
     },
     totalSeats: {
       type: Number,
@@ -27,6 +34,7 @@ const eventSchema = new Schema(
       type: Number,
       required: true,
       min: 0,
+      default: 0,
     },
     status: {
       type: String,
@@ -40,11 +48,18 @@ const eventSchema = new Schema(
     speakers: {
       type: [
         {
-          name: String,
-          title: String,
+          name: {
+            type: String,
+            required: true,
+          },
+          title: {
+            type: String,
+            required: true,
+          },
           image: {
-            data: Buffer,
-            contentType: String,
+            type: String,
+            default: null,
+            required: true,
           },
         },
       ],
@@ -77,5 +92,26 @@ const eventSchema = new Schema(
     timestamps: true,
   },
 );
+
+eventSchema.pre("save", function () {
+  if (this.price === 0) {
+    this.type = "free";
+  } else {
+    this.type = "paid";
+  }
+});
+
+eventSchema.set("toJSON", {
+  transform: (_doc, ret: Record<string, unknown>) => {
+    delete ret["__v"];
+    return ret;
+  },
+});
+
+eventSchema.index({ title: "text" });
+
+eventSchema.index({ createdAt: -1 });
+
+eventSchema.index({ title: 1, createdAt: -1 });
 
 export const Event = model("Event", eventSchema);

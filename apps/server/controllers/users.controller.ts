@@ -1,26 +1,9 @@
-import { User, type UserDocument } from "models/user.model.ts";
-import type { Request, Response, NextFunction } from "express";
+import { User } from "models/user.model.ts";
+import type { Request, Response } from "express";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
 import bcrypt from "bcryptjs";
-
-interface UserRequest extends Request {
-  targetUser?: UserDocument;
-  user?: UserDocument;
-}
-
-export const checkUserId = async (
-  req: UserRequest,
-  _res: Response,
-  next: NextFunction,
-  value: string,
-) => {
-  const user = await User.findById(value);
-  if (!user) throw new AppError("User not found", 404);
-  req.targetUser = user;
-  next();
-};
 
 // create user from admin
 // in this step we take directly the user because there will ba validation from zod
@@ -31,7 +14,6 @@ export const createUser = async (req: Request, res: Response) => {
   const createdUser = await User.create({
     ...req.body,
     isVerified: true,
-    profilePicture: req?.file?.path || null,
   });
 
   sendResponse({
@@ -44,7 +26,7 @@ export const createUser = async (req: Request, res: Response) => {
   });
 };
 
-export const getUser = async (req: UserRequest, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
   // TODO: update this when the registration is done
   const { targetUser } = req;
   sendResponse({
@@ -86,28 +68,15 @@ export const getAllUsers = async (req: Request, res: Response) => {
   });
 };
 
-export const updateUser = async (req: UserRequest, res: Response) => {
+export const updateUser = async (req: Request, res: Response) => {
   const { targetUser } = req;
 
   if (req.body.email) {
     throw new AppError("Email is not allowed to be updated", 400);
   }
 
-  if (req.body.password) {
-    req.body.password = await bcrypt.hash(req.body.password, 12);
-  }
-
-  const updatedUser = await User.findByIdAndUpdate(
-    targetUser?._id,
-    {
-      ...req.body,
-      profilePicture: req.file?.path || null,
-    },
-    {
-      returnDocument: "after",
-      runValidators: false,
-    },
-  );
+  const updatedUser = Object.assign(targetUser, req.body);
+  await updatedUser.save();
 
   sendResponse({
     res,
@@ -119,9 +88,9 @@ export const updateUser = async (req: UserRequest, res: Response) => {
   });
 };
 
-export const deleteUser = async (req: UserRequest, res: Response) => {
+export const deleteUser = async (req: Request, res: Response) => {
   const { targetUser } = req;
-  await User.findByIdAndDelete(targetUser?._id);
+  await targetUser.deleteOne(); 
   sendResponse({
     res,
     statusCode: 204,
@@ -132,7 +101,7 @@ export const deleteUser = async (req: UserRequest, res: Response) => {
 
 // user
 
-export const getMe = async (req: UserRequest, res: Response) => {
+export const getMe = async (req: Request, res: Response) => {
   const { user } = req;
   sendResponse({
     res,
@@ -144,21 +113,15 @@ export const getMe = async (req: UserRequest, res: Response) => {
   });
 };
 
-export const updateUserProfile = async (req: UserRequest, res: Response) => {
+export const updateUserProfile = async (req: Request, res: Response) => {
   const { user } = req;
   const { fullName, profilePicture } = req.body;
 
-  const updatedUser = await User.findByIdAndUpdate(
-    user?._id,
-    {
-      fullName,
-      profilePicture,
-    },
-    {
-      new: true,
-      runValidators: false,
-    },
-  );
+  const updatedUser = Object.assign(user, {
+    fullName,
+    profilePicture,
+  });
+  await updatedUser.save();
   sendResponse({
     res,
     statusCode: 200,
@@ -171,7 +134,7 @@ export const updateUserProfile = async (req: UserRequest, res: Response) => {
 
 // check on the user and user password
 
-export const updateUserPassword = async (req: UserRequest, res: Response) => {
+export const updateUserPassword = async (req: Request, res: Response) => {
   const user = await User.findById(req.user?._id).select("+password");
   const { currentPassword, newPassword } = req.body;
   const passwordIsValid = user?.comparePassword(currentPassword);

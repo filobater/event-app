@@ -34,4 +34,20 @@ export class ApiFeatures {
     this.query = this.query.skip(skip).limit(limit);
     return this;
   }
+
+  // events
+
+  filterByCategory() {
+    if (this.requestQuery.category) {
+      this.query = this.query.find({ category: this.requestQuery.category });
+    }
+    return this;
+  }
+
+  filterByStatus() {
+    if (this.requestQuery.status) {
+      this.query = this.query.find({ status: this.requestQuery.status });
+    }
+    return this;
+  }
 }

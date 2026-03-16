@@ -7,7 +7,6 @@ import {
   updateUser,
   updateUserProfile,
   updateUserPassword,
-  checkUserId,
   deleteUser,
   getMe,
 } from "../controllers/users.controller.ts";
@@ -20,18 +19,29 @@ import {
   updateUserPasswordSchema,
   updateUserSchema,
 } from "schemas/user.schema.ts";
-import { compressAndSave, upload } from "middlewares/upload.middleware.ts";
+import { compressAndSave, upload } from "middlewares/upload/index.ts";
+import { checkId } from "middlewares/checkId.middleware.ts";
+import { User } from "models/user.model.ts";
 
 const router = Router();
 
 const uploadUserProfilePicture = [
   upload.single("profilePicture"),
-  compressAndSave("profilePicture", 500, 500),
+  compressAndSave([
+    {
+      type: "single",
+      fieldName: "profilePicture",
+      bodyKey: "profilePicture",
+      prefix: "profilePicture",
+      width: 500,
+      height: 500,
+    },
+  ]),
 ];
 
 router.use(protect);
 
-router.param("id", checkUserId);
+router.param("id", checkId(User, "targetUser"));
 
 router.patch(
   API_ENDPOINTS.users.updateProfile,

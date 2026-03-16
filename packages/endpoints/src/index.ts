@@ -27,10 +27,12 @@ export const API_ENDPOINTS = {
     updatePassword: `/password`,
   },
 
-  // events: {
-  //   base: `${API_BASE}/events`,
-  //   byId: (id: string) => `${API_BASE}/events/${id}`,
-  // },
+  events: {
+    base: `${API_BASE}/events`,
+    create: "/",
+    getAll: "/",
+    byId: `/:id`,
+  },
   // registrations: {
   //   base: `${API_BASE}/registrations`,
   //   byId: (id: string) => `${API_BASE}/registrations/${id}`,
