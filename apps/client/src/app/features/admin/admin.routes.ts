@@ -11,7 +11,7 @@ export const adminRoutes: Routes = [
   },
   {
     path: SEGMENT_NAMES.events,
-    loadComponent: () => import('./events/events.component'),
+    loadComponent: () => import('./events/pages/events.component'),
     title: 'Admin - Events',
   },
 ];

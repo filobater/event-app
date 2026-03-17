@@ -15,14 +15,7 @@ import type {
   DeleteUserResponseDto,
   UserDto,
 } from '@events-app/shared-dtos';
-import { createPaginatedResource } from 'src/app/shared/utils';
-
-export interface GetAllUsersQueryParams {
-  page?: number;
-  limit?: number;
-  search?: string;
-  sort?: string;
-}
+import { createPaginatedResource, toFormData } from 'src/app/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +27,7 @@ export class UsersApiService {
   // Admin actions
 
   createUser(data: CreateUserRequestDto): Observable<UserResponseDto> {
-    const formData = this.toFormData(data);
+    const formData = toFormData(data);
     return this.http.post<UserResponseDto>(
       `${this.baseUsersUrl}${API_ENDPOINTS.users.create}`,
       formData,
@@ -59,7 +52,7 @@ export class UsersApiService {
   }
 
   updateUser(id: string, data: UpdateUserRequestDto): Observable<UpdateUserResponseDto> {
-    const formData = this.toFormData(data);
+    const formData = toFormData(data);
     return this.http.patch<UpdateUserResponseDto>(
       `${this.baseUsersUrl}${API_ENDPOINTS.users.byId.replace(':id', id)}`,
       formData,
@@ -75,7 +68,7 @@ export class UsersApiService {
   // User actions
 
   updateProfile(data: UpdateUserProfileRequestDto): Observable<UpdateUserProfileResponseDto> {
-    const formData = this.toFormData(data);
+    const formData = toFormData(data);
     return this.http.patch<UpdateUserProfileResponseDto>(
       `${this.baseUsersUrl}${API_ENDPOINTS.users.updateProfile}`,
       formData,
@@ -87,20 +80,5 @@ export class UsersApiService {
       `${this.baseUsersUrl}${API_ENDPOINTS.users.updatePassword}`,
       data,
     );
-  }
-
-  //  Helpers
-
-  private toFormData<T extends object>(data: T): FormData {
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(data)) {
-      if (!value) continue;
-      if (value instanceof File) {
-        formData.append(key, value);
-      } else {
-        formData.append(key, String(value));
-      }
-    }
-    return formData;
   }
 }

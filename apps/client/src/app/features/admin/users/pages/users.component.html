@@ -67,7 +67,7 @@
     (ok)="handleDeleteConfirm()"
   />
 
-  @if (usersResource.resource.isLoading() || usersResource.resource.status() === 'reloading') {
+  @if (usersResource.resource.isLoading()) {
     <admin-loading />
   }
   @if (usersResource.resource.error()) {

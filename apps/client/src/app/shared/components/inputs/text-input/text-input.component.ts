@@ -17,7 +17,7 @@ export default class TextInputComponent implements ControlValueAccessor {
   labelText = input<string>('');
   type = input<string>('text');
   placeholder = input<string>('Type here');
-
+  id = input<string>('');
   protected value = signal('');
   protected isDisabled = signal(false);
 

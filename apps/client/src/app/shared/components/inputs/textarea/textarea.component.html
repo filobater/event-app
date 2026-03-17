@@ -1,9 +1,9 @@
 <div class="space-y-2">
-  <label class="label" [for]="id()">
-    <span class="label-text text-white">{{ labelText() }}</span>
+  <label class="label" [attr.for]="id()">
+    <span class="text-white">{{ labelText() }}</span>
   </label>
   <textarea
-    [id]="id()"
+    [attr.id]="id()"
     [placeholder]="placeholder()"
     [value]="value()"
     [disabled]="isDisabled()"

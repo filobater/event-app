@@ -8,9 +8,9 @@ import AdminTableComponent, {
 } from '../../../ui/table/table.component';
 import { AvatarComponent, BadgeComponent } from 'src/app/shared/components';
 import SortButtonComponent from '../../../ui/sort-button/sort-button.component';
-import { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils';
 import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
-import { ModalType } from '../../pages/users.component';
+import type { ModalType } from '../../../types/modal.type';
+import type { SortParams } from '../../../types/sort-params.type';
 
 @Component({
   selector: 'app-user-table',
@@ -81,6 +81,7 @@ export default class UserTableComponent {
   sort = output<SortParams>();
 
   handleSort(params: SortParams) {
+    if (this.users().length === 0) return;
     this.sort.emit(params);
   }
 

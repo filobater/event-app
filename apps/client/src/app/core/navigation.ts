@@ -18,6 +18,7 @@ export const NAV = {
     dashboard: BASE_PATH + 'admin/dashboard',
   },
   events: BASE_PATH,
+  event: (id: string) => BASE_PATH + 'events/' + id,
 } as const;
 
 // Segments — these in route definitions (child routes only need the last segment)

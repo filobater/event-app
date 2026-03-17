@@ -1,0 +1,241 @@
+<form [formGroup]="eventForm" class="flex flex-col gap-6" (ngSubmit)="handleSubmit()">
+  <div class="space-y-2">
+    <app-image-upload formControlName="photo" label="Upload Event Image"></app-image-upload>
+    @if (formData.photo?.touched) {
+      @if (formData.photo?.errors?.['required']) {
+        <app-error-message [message]="'Photo of the event is required'"></app-error-message>
+      }
+    }
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-2">
+      <app-text-input
+        formControlName="title"
+        [id]="'event-title'"
+        labelText="Title"
+        placeholder="Enter event title"
+      ></app-text-input>
+      @if (formData.title?.touched) {
+        @if (formData.title?.errors?.['required']) {
+          <app-error-message [message]="'Title is required'"></app-error-message>
+        }
+        @if (formData.title?.errors?.['minlength']) {
+          <app-error-message [message]="'Title must be at least 3 characters'"></app-error-message>
+        }
+      }
+    </div>
+    <div class="space-y-2">
+      <app-number-input
+        formControlName="registeredSeats"
+        labelText="Registered Seats"
+        placeholder="0"
+        [min]="0"
+      ></app-number-input>
+    </div>
+
+    <div class="space-y-2">
+      <app-select-input
+        formControlName="category"
+        [id]="'event-category'"
+        [labelText]="'Category'"
+        [placeholder]="'Select category'"
+        [options]="categoryOptions"
+      ></app-select-input>
+      @if (formData.category?.touched) {
+        @if (formData.category?.errors?.['required']) {
+          <app-error-message [message]="'Category is required'"></app-error-message>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="space-y-2">
+    <app-textarea
+      formControlName="description"
+      [id]="'event-description'"
+      labelText="Description"
+      placeholder="Write a short description"
+    ></app-textarea>
+    @if (formData.description?.touched) {
+      @if (formData.description?.errors?.['required']) {
+        <app-error-message [message]="'Description is required'"></app-error-message>
+      }
+      @if (formData.description?.errors?.['minlength']) {
+        <app-error-message
+          [message]="'Description must be at least 10 characters'"
+        ></app-error-message>
+      }
+    }
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-2">
+      <app-datetime-input
+        formControlName="dateTime"
+        labelText="Date and Time"
+        placeholder="Select date and time"
+      ></app-datetime-input>
+      @if (formData.dateTime?.touched) {
+        @if (formData.dateTime?.errors?.['required']) {
+          <app-error-message [message]="'Date and time is required'"></app-error-message>
+        }
+      }
+    </div>
+
+    <div class="space-y-2">
+      <app-number-input
+        formControlName="totalSeats"
+        labelText="Total Seats"
+        placeholder="100"
+        [min]="0"
+      ></app-number-input>
+      @if (formData.totalSeats?.touched) {
+        @if (formData.totalSeats?.errors?.['required']) {
+          <app-error-message [message]="'Total seats is required'"></app-error-message>
+        }
+        @if (formData.totalSeats?.errors?.['min']) {
+          <app-error-message [message]="'Total seats must be 10 or more'"></app-error-message>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="space-y-2">
+    <app-number-input
+      formControlName="price"
+      labelText="Price (EGP)"
+      placeholder="0"
+      [min]="0"
+    ></app-number-input>
+    @if (formData.price?.touched) {
+      @if (formData.price?.errors?.['required']) {
+        <app-error-message [message]="'Price is required'"></app-error-message>
+      }
+      @if (formData.price?.errors?.['min']) {
+        <app-error-message [message]="'Price must be 0 or more'"></app-error-message>
+      }
+    }
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-2">
+      <app-text-input
+        formControlName="location"
+        [id]="'event-location'"
+        labelText="Location"
+        placeholder="Enter location"
+      ></app-text-input>
+      @if (formData.location?.touched) {
+        @if (formData.location?.errors?.['required']) {
+          <app-error-message [message]="'Location is required'"></app-error-message>
+        }
+      }
+    </div>
+
+    <div class="space-y-2">
+      <app-select-input
+        formControlName="status"
+        [id]="'event-status'"
+        [labelText]="'Status'"
+        [placeholder]="'Select status'"
+        [options]="statusOptions"
+      ></app-select-input>
+      @if (formData.status?.touched) {
+        @if (formData.status?.errors?.['required']) {
+          <app-error-message [message]="'Status is required'"></app-error-message>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="flex items-center justify-between gap-3">
+      <div class="text-white">Event Speakers</div>
+      <app-primary-button
+        [label]="'Add Speaker'"
+        (handleClick)="handleAddSpeaker()"
+        [disabled]="formData.speakers.length === 2 || formData.speakers.invalid"
+      ></app-primary-button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (speaker of formData.speakers.controls; track $index; let i = $index) {
+        <div
+          class="rounded-xl border border-white/10 bg-base-200/40 p-4 flex flex-col gap-4"
+          [formGroup]="getSpeakerGroup(i)"
+        >
+          <div class="space-y-2">
+            <app-text-input
+              formControlName="name"
+              [id]="'event-speaker-name-' + i"
+              labelText="Name"
+              placeholder="Enter speaker's name"
+            ></app-text-input>
+            @if (speaker.get('name')?.touched) {
+              @if (speaker.get('name')?.errors?.['required']) {
+                <app-error-message [message]="'Speaker name is required'"></app-error-message>
+              }
+              @if (speaker.get('name')?.errors?.['minlength']) {
+                <app-error-message
+                  [message]="'Speaker name must be at least 3 characters'"
+                ></app-error-message>
+              }
+            }
+          </div>
+          <div class="space-y-2">
+            <app-text-input
+              formControlName="title"
+              [id]="'event-speaker-title-' + i"
+              labelText="Title"
+              placeholder="Enter speaker's title"
+            ></app-text-input>
+            @if (speaker.get('title')?.touched) {
+              @if (speaker.get('title')?.errors?.['required']) {
+                <app-error-message [message]="'Speaker title is required'"></app-error-message>
+              }
+              @if (speaker.get('title')?.errors?.['minlength']) {
+                <app-error-message
+                  [message]="'Speaker title must be at least 3 characters'"
+                ></app-error-message>
+              }
+            }
+          </div>
+          <div class="space-y-2">
+            <app-image-upload
+              formControlName="image"
+              label="Upload Speaker's Image"
+            ></app-image-upload>
+            @if (speaker.get('image')?.touched) {
+              @if (speaker.get('image')?.errors?.['required']) {
+                <app-error-message [message]="'Speaker image is required'"></app-error-message>
+              }
+            }
+          </div>
+          @if (formData.speakers.length > 1) {
+            <button
+              type="button"
+              class="btn bg-(--destructive-color) rounded-xl text-white hover:bg-(--destructive-color)/90 border-0 w-full"
+              (click)="handleRemoveSpeaker(i)"
+            >
+              Remove Speaker
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (requestState()?.error()) {
+    <app-error-message [message]="requestState()?.error()"></app-error-message>
+  }
+
+  <div class="flex justify-end gap-2">
+    <app-secondary-button [label]="'Cancel'" (handleClick)="handleCancel()"></app-secondary-button>
+    <app-primary-button
+      type="submit"
+      [disabled]="eventForm.invalid"
+      [label]="requestState()?.loading() ? 'Saving...' : isEdit() ? 'Save Event' : 'Create Event'"
+    />
+  </div>
+</form>

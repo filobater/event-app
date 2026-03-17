@@ -8,6 +8,7 @@
     <div class="space-y-2">
       <app-text-input
         labelText="Full Name"
+        [id]="'signup-fullName'"
         type="text"
         formControlName="fullName"
         placeholder="Enter your full name"
@@ -26,6 +27,7 @@
     <div class="space-y-2">
       <app-text-input
         labelText="Email"
+        [id]="'signup-email'"
         type="email"
         formControlName="email"
         placeholder="Enter your email"
@@ -41,6 +43,7 @@
     </div>
     <div class="space-y-2">
       <app-password-input
+        [id]="'signup-password'"
         labelText="Password"
         type="password"
         formControlName="password"
@@ -59,6 +62,7 @@
     </div>
     <div class="space-y-2">
       <app-password-input
+        [id]="'signup-confirmPassword'"
         labelText="Confirm Password"
         type="password"
         placeholder="Confirm your password"

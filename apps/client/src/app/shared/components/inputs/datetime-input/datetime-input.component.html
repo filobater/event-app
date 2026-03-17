@@ -1,10 +1,11 @@
 <div class="space-y-2">
   <label class="label" for="event-date">
-    <span class="label-text text-white">{{ labelText() }}</span>
+    <span class="text-white">{{ labelText() }}</span>
   </label>
   <input
     type="datetime-local"
     id="event-date"
+    [min]="min()"
     [value]="value()"
     [disabled]="isDisabled()"
     (input)="handleInput($event)"

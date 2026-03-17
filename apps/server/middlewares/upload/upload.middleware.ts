@@ -2,10 +2,7 @@ import multer from "multer";
 import type { Request } from "express";
 import type { FileFilterCallback } from "multer";
 import { AppError } from "utils/AppError.ts";
-import fs from "fs";
 
-const uploadDir = "uploads";
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 const storage = multer.memoryStorage();
 
 const fileFilter = (

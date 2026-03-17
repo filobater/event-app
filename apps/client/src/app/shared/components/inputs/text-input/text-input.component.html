@@ -1,9 +1,9 @@
 <div class="space-y-2">
-  <label class="label" [attr.for]="type()">
-    <span class="label-text text-white">{{ labelText() }}</span>
+  <label class="label" [attr.for]="id()">
+    <span class="text-white">{{ labelText() }}</span>
   </label>
   <input
-    [id]="type()"
+    [id]="id()"
     [type]="type()"
     [placeholder]="placeholder()"
     [value]="value()"

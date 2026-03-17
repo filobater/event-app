@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LucideAngularModule, ArrowUpDown } from 'lucide-angular';
-import { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils';
+import type { SortParams } from '../../types/sort-params.type';
 
 @Component({
   selector: 'sort-button',

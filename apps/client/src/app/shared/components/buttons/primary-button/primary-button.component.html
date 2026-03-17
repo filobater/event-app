@@ -1,6 +1,7 @@
 <button
   [type]="type()"
   [disabled]="disabled()"
+  (click)="handleClick.emit()"
   class="btn bg-(--main-color) w-full rounded-xl cursor-pointer text-(--dark-color) hover:bg-(--main-color)/80 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
 >
   <ng-content />

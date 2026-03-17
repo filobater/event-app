@@ -14,9 +14,8 @@ import { CreateUserRequestDto, UpdateUserRequestDto, UserDto } from '@events-app
 import { RequestStateClass } from 'src/app/core/request-state';
 import UserTableComponent from '../components/user-table/user-table.component';
 import AdminLoadingComponent from '../../ui/loading/loading.component';
-import { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils';
-
-export type ModalType = 'add' | 'edit' | 'delete' | 'view';
+import type { ModalType } from '../../types/modal.type';
+import type { SortParams } from '../../types/sort-params.type';
 
 @Component({
   selector: 'app-users',
@@ -40,9 +39,8 @@ export default class UsersComponent {
   readonly PlusIcon = Plus;
   private usersApiService = inject(UsersApiService);
 
-  /** Request state for fetching the selected user (edit modal). */
   readonly getUserRequestState = new RequestStateClass();
-  /** Request state for create/update user (add & edit save). */
+
   readonly mutationRequestState = new RequestStateClass();
 
   modals = signal({
@@ -84,6 +82,7 @@ export default class UsersComponent {
   }
 
   handleSearch(search: string) {
+    if (this.usersResource.resource.value()?.data?.users?.length === 0) return;
     this.usersResource.setSearch(search);
   }
 

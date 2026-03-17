@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
+import { Component, forwardRef, input, signal, computed } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -18,6 +18,8 @@ export default class DatetimeInputComponent implements ControlValueAccessor {
 
   protected value = signal('');
   protected isDisabled = signal(false);
+
+  readonly min = computed(() => new Date().toISOString().split('T')[0] + 'T00:00');
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};

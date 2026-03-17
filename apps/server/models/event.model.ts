@@ -19,6 +19,7 @@ const eventSchema = new Schema(
     location: {
       type: String,
       required: true,
+      minlength: 10,
     },
     dateTime: {
       type: Date,
@@ -28,7 +29,7 @@ const eventSchema = new Schema(
     totalSeats: {
       type: Number,
       required: true,
-      min: 0,
+      min: 10,
     },
     registeredSeats: {
       type: Number,

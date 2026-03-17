@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-primary-button',
@@ -10,4 +10,6 @@ export default class PrimaryButtonComponent {
   disabled = input<boolean>(false);
   label = input<string>('');
   type = input<string>('button');
+  
+  handleClick = output<void>();
 }

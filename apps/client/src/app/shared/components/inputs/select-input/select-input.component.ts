@@ -22,6 +22,7 @@ export default class SelectInputComponent implements ControlValueAccessor {
   labelText = input<string>('');
   placeholder = input<string>('Select an option');
   options = input<SelectOption[]>([]);
+  id = input.required<string>();
 
   protected value = signal<string>('');
   protected isDisabled = signal(false);

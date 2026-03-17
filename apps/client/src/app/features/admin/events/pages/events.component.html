@@ -1,0 +1,85 @@
+<div class="space-y-4">
+  <div class="flex items-center justify-between flex-wrap gap-4">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-2">
+        <i-lucide [img]="EventsIcon" class="size-6 text-(--main-color)" />
+        <h1 class="text-3xl font-display font-bold text-white flex items-center gap-2">
+          Manage Events
+        </h1>
+      </div>
+      <p class="text-(--light-gray-color) text-lg">
+        {{ eventsResource.resource.value()?.data?.totalData ?? 0 }} total events
+        <br />
+        {{ eventsResource.resource.value()?.data?.count ?? 0 }} events per page
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <app-search-input
+        [placeholder]="'Search events'"
+        (onSearch)="handleSearch($event)"
+        [value]="eventsResource.searchInput()"
+      />
+      <app-primary-button [label]="'Create Event'" (handleClick)="handleOpenModal('add')">
+        <i-lucide [img]="PlusIcon" class="size-4" />
+      </app-primary-button>
+    </div>
+  </div>
+
+  <app-modal
+    [title]="modals().edit ? 'Edit Event' : 'Add Event'"
+    [isOpen]="modals().add || modals().edit"
+    [onClose]="resetEventForm"
+    (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
+  >
+    <app-event-form
+      [requestState]="mutationRequestState"
+      (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
+      (onSave)="handleSaveEvent($event)"
+    />
+  </app-modal>
+
+  <!--
+  
+  
+  
+  
+@if (getUserRequestState.loading() && modals().edit) {
+  <admin-loading />
+} @else {
+  <app-user-form
+    [requestState]="mutationRequestState"
+    (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
+    (onSave)="handleSaveUser($event)"
+    [user]="userSelected()"
+  />
+}
+
+  <app-alert-modal
+    [title]="'Delete user'"
+    [description]="'Are you sure you want to delete this user? This action cannot be undone.'"
+    [cancelLabel]="'Cancel'"
+    [okLabel]="mutationRequestState.loading() ? 'Deleting...' : 'Delete'"
+    [disabled]="mutationRequestState.loading()"
+    [isOpen]="modals().delete"
+    (cancelled)="handleCloseModal('delete')"
+    (ok)="handleDeleteConfirm()"
+  />
+  -->
+
+  @if (eventsResource.resource.isLoading()) {
+    <admin-loading />
+  }
+  @if (eventsResource.resource.error()) {
+    <app-error-message [message]="'Failed to load events'" />
+  }
+  @if (eventsResource.resource.value()) {
+    <app-events-table
+      [events]="eventsResource.resource.value()?.data?.events ?? []"
+      [paginationOptions]="{
+        currentPage: eventsResource.resource.value()?.data?.page ?? 1,
+        totalPages: eventsResource.resource.value()?.data?.totalPages ?? 1,
+        onPageChange: (page) => eventsResource.goToPage(page),
+      }"
+    />
+  }
+</div>

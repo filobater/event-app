@@ -4,6 +4,7 @@
     <div class="space-y-2">
       <app-text-input
         labelText="Email"
+        [id]="'signin-email'"
         type="email"
         placeholder="Enter your email"
         formControlName="email"
@@ -20,6 +21,7 @@
 
     <div class="space-y-2">
       <app-password-input
+        [id]="'signin-password'"
         labelText="Password"
         type="password"
         placeholder="Enter your password"

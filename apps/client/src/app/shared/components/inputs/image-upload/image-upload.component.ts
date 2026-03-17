@@ -30,13 +30,18 @@ export default class ImageUploadComponent implements ControlValueAccessor {
   private onChange: (value: File | null) => void = () => {};
   private onTouched: () => void = () => {};
 
-  writeValue(file: File | null): void {
-    let url = environment.apiUrl + '/' + file;
-    if (file) {
-      this.image.set({ previewUrl: url, file });
-    } else {
+  writeValue(file: string | File | null): void {
+    if (!file) {
       this.image.set({ previewUrl: '', file: null });
+      return;
     }
+    let url = '';
+    if (typeof file === 'string') {
+      url = environment.apiUrl + '/' + file;
+    } else {
+      url = URL.createObjectURL(file as File);
+    }
+    this.image.set({ previewUrl: url, file: file as File });
   }
 
   registerOnChange(fn: (value: File | null) => void): void {

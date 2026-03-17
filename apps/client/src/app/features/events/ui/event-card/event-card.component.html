@@ -8,10 +8,10 @@
     <p class="text-sm text-base-content/70 line-clamp-2">{{ event().description }}</p>
 
     <div class="flex items-center gap-1">
-      <app-info-label title="{{ event().date }}">
+      <app-info-label title="{{ event().dateTime | date: 'short' }}">
         <i-lucide [img]="CalendarIcon" color="var(--main-color)" class="size-4" />
       </app-info-label>
-      <app-info-label title="{{ event().time }}">
+      <app-info-label title="{{ event().dateTime | date: 'shortTime' }}">
         <i-lucide [img]="ClockIcon" color="var(--secondary-color)" class="size-4" />
       </app-info-label>
       <app-info-label title="{{ event().location }}">
