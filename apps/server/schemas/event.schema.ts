@@ -20,11 +20,12 @@ export const eventSchema = z.object({
   dateTime: z.coerce
     .date()
     .min(new Date(), "Date and time must be in the future"),
-  totalSeats: z
+  totalSeats: z.coerce
     .number({
       message: "Total seats is required",
     })
-    .min(10, "Total seats must be greater than or equal to 10"),
+    .min(10, "Total seats must be greater than or equal to 10")
+    .transform((val) => Number(val)),
   status: z.enum(["ongoing", "upcoming", "completed"], {
     message: "Status is required",
   }),
@@ -49,11 +50,12 @@ export const eventSchema = z.object({
       },
     )
     .max(2, "Maximum 2 speakers allowed"),
-  price: z
+  price: z.coerce
     .number({
       message: "Price is required",
     })
-    .min(0, "Price must be greater than or equal to 0"),
+    .min(0, "Price must be greater than or equal to 0")
+    .transform((val) => Number(val)),
   type: z
     .enum(["free", "paid"], {
       message: "Type is required",

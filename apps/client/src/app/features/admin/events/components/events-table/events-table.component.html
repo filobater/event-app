@@ -8,9 +8,9 @@
 </ng-template>
 
 <ng-template #eventTemplate let-event>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-3">
     <div class="avatar">
-      <div class="w-24 rounded-xl">
+      <div class="w-18 rounded-xl">
         <img [src]="`${baseUrl}/${event.photo}`" [alt]="event.title" />
       </div>
     </div>
@@ -25,7 +25,9 @@
 </ng-template>
 
 <ng-template #categoryTemplate let-event>
-  <div class="badge badge-neutral badge-outline">{{ event.category | titlecase }}</div>
+  <div class="badge bg-(--gray-color) rounded-full text-sm text-white">
+    {{ event.category | titlecase }}
+  </div>
 </ng-template>
 
 <ng-template #seatsTemplate let-event>
@@ -40,13 +42,13 @@
 
 <ng-template #actionsTemplate let-event>
   <div class="flex items-center gap-2">
-    <button class="btn btn-sm btn-ghost">
+    <button class="btn btn-sm btn-ghost" (click)="handleActions('edit', event._id)">
       <i-lucide [img]="EditIcon" class="size-4 text-white"></i-lucide>
     </button>
     <a [routerLink]="[nav.event(event._id)]" class="btn btn-sm btn-ghost">
       <i-lucide [img]="EyeIcon" class="size-4 text-white"></i-lucide>
     </a>
-    <button class="btn btn-sm btn-ghost">
+    <button class="btn btn-sm btn-ghost" (click)="handleActions('delete', event._id)">
       <i-lucide [img]="DeleteIcon" class="size-4 text-white"></i-lucide>
     </button>
   </div>
@@ -66,6 +68,11 @@
     >
     </app-badge>
   </div>
+</ng-template>
+<ng-template #createdAtTemplate let-event>
+  <span class="text-white text-xs">
+    {{ event.createdAt | date: 'short' }}
+  </span>
 </ng-template>
 
 <admin-table

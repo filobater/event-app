@@ -13,6 +13,8 @@ export interface PaginatedParams {
   page?: number;
   search?: string;
   sort?: SortParams;
+  status?: string;
+  category?: string;
 }
 
 export function createPaginatedParams() {
@@ -24,7 +26,8 @@ export function createPaginatedParams() {
   const page = signal<number>(Number(queryParams['page']) || 1);
   const sort = signal<string | null>(queryParams['sort'] || null);
   const searchInput = signal<string>(queryParams['search'] || '');
-
+  const status = signal<string>(queryParams['status'] || '');
+  const category = signal<string>(queryParams['category'] || '');
   const search$ = new Subject<string>();
 
   const debouncedSearch$ = toSignal(search$.pipe(debounceTime(300), distinctUntilChanged()), {
@@ -46,12 +49,16 @@ export function createPaginatedParams() {
     page: page(),
     search: debouncedSearch$() || undefined,
     sort: sort() || undefined,
+    status: status() || undefined,
+    category: category() || undefined,
   }));
 
   return {
     page,
     searchInput,
     sort,
+    status,
+    category,
     requestParams,
 
     goToPage: (target: number) => {
@@ -73,6 +80,14 @@ export function createPaginatedParams() {
       }
       page.set(1);
       syncQueryParams({ page: page(), sort: sort() });
+    },
+    setStatus: (value: string) => {
+      status.set(value);
+      syncQueryParams({ status: value });
+    },
+    setCategory: (value: string) => {
+      category.set(value);
+      syncQueryParams({ category: value });
     },
   };
 }

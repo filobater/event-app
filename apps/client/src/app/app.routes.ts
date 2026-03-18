@@ -1,8 +1,19 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard, NAV } from './core';
+import { authGuard, guestGuard, NAV, roleGuard } from './core';
 import { AuthLayoutComponent, MainLayoutComponent } from './layouts/';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./features/events/events.routes').then((m) => m.eventsRoutes),
+        canActivate: [authGuard],
+      },
+    ],
+  },
   {
     path: NAV.auth.base,
     component: AuthLayoutComponent,
@@ -21,7 +32,7 @@ export const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./features/admin/admin.routes').then((m) => m.adminRoutes),
-        canActivate: [authGuard],
+        canActivate: [roleGuard],
       },
     ],
   },

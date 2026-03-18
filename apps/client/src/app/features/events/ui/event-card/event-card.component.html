@@ -1,21 +1,28 @@
 <div
   class="card compact overflow-hidden rounded-xl border-l-4 bg-base-200"
   [class]="variant[event().status]"
+  [class.opacity-50]="event().status === 'completed'"
 >
   <app-thumbnail [event]="event()" />
-  <div class="card-body gap-2 p-4">
-    <h2 class="card-title text-lg font-bold text-base-content">{{ event().title }}</h2>
-    <p class="text-sm text-base-content/70 line-clamp-2">{{ event().description }}</p>
+  <div class="card-body gap-3 px-4 pt-4 pb-0">
+    <h2 class="card-title text-lg font-bold text-base-content line-clamp-1">{{ event().title }}</h2>
+    <p class="text-sm text-(--light-gray-color) line-clamp-2">{{ event().description }}</p>
 
-    <div class="flex items-center gap-1">
-      <app-info-label title="{{ event().dateTime | date: 'short' }}">
+    <div class="flex items-center flex-wrap gap-3">
+      <app-info-label title="{{ event().dateTime | date: 'shortDate' }}">
         <i-lucide [img]="CalendarIcon" color="var(--main-color)" class="size-4" />
       </app-info-label>
       <app-info-label title="{{ event().dateTime | date: 'shortTime' }}">
         <i-lucide [img]="ClockIcon" color="var(--secondary-color)" class="size-4" />
       </app-info-label>
-      <app-info-label title="{{ event().location }}">
+      <app-info-label title="{{ event().location | slice: 0 : 15 }}...">
         <i-lucide [img]="MapPinIcon" color="var(--accent-color)" class="size-4" />
+      </app-info-label>
+      <app-info-label
+        [textColorClass]="'text-white'"
+        [title]="event().price === 0 ? 'Free' : ((event().price | currency: 'EGP') ?? '')"
+      >
+        <i-lucide [img]="BanknoteIcon" color="var(--main-color)" class="size-4" />
       </app-info-label>
     </div>
     <div class="flex items-center gap-2 justify-between">

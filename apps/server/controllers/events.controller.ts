@@ -31,7 +31,8 @@ export const getAllEvents = async (req: Request, res: Response) => {
     .search()
     .paginate()
     .filterByCategory()
-    .filterByStatus();
+    .filterByStatus()
+    .sort();
 
   const events = await features.query;
 

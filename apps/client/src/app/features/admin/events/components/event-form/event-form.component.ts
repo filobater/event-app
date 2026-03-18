@@ -76,15 +76,8 @@ export default class EventFormComponent {
     price: [0, [Validators.required, Validators.min(0)]],
     location: ['', [Validators.required, Validators.minLength(10)]],
     status: ['' as 'ongoing' | 'upcoming' | 'completed' | '', [Validators.required]],
-    registeredSeats: [0],
     speakers: this.fb.array(
-      [
-        this.fb.group({
-          name: ['', [Validators.required, Validators.minLength(3)]],
-          title: ['', [Validators.required, Validators.minLength(3)]],
-          image: [null as any, [Validators.required]],
-        }),
-      ],
+      [this.createSpeakerGroup()],
       [Validators.required, Validators.maxLength(2)],
     ),
   });
@@ -95,8 +88,39 @@ export default class EventFormComponent {
         const event = this.event();
         if (!event) return;
 
-        this.eventForm.patchValue(event);
+        const speakers = event.speakers ?? [];
+        const formSpeakers = this.formData.speakers;
+
+        // Clear and re-populate FormArray to match event's speakers length
+        formSpeakers.clear();
+        speakers.forEach((speaker: SpeakerDto) => {
+          formSpeakers.push(this.createSpeakerGroup(speaker));
+        });
+
+        // Patch all non-array fields
+        const { speakers: _, ...eventWithoutSpeakers } = event;
+        // Offset the date by timezone to keep local time
+        const date = new Date(event.dateTime);
+        const offset = date.getTimezoneOffset() * 60000;
+        const localDateTime = new Date(date.getTime() - offset).toISOString().slice(0, 16);
+        this.eventForm.patchValue({
+          ...eventWithoutSpeakers,
+          dateTime: localDateTime,
+        });
+      } else {
+        const formSpeakers = this.formData.speakers;
+        formSpeakers.clear();
+        formSpeakers.push(this.createSpeakerGroup());
+        this.eventForm.reset();
       }
+    });
+  }
+
+  createSpeakerGroup(speaker?: SpeakerDto): FormGroup {
+    return this.fb.group({
+      name: [speaker?.name ?? '', [Validators.required, Validators.minLength(3)]],
+      title: [speaker?.title ?? '', [Validators.required, Validators.minLength(3)]],
+      image: [speaker?.image ?? null, [Validators.required]],
     });
   }
 
@@ -111,7 +135,6 @@ export default class EventFormComponent {
       status: this.eventForm.get('status'),
       price: this.eventForm.get('price'),
       location: this.eventForm.get('location'),
-      // registeredSeats: this.eventForm.get('registeredSeats'),
       speakers: this.eventForm.get('speakers') as FormArray,
     };
   }
@@ -122,13 +145,7 @@ export default class EventFormComponent {
 
   handleAddSpeaker() {
     if (this.formData.speakers?.length >= 2) return;
-    this.formData.speakers?.push(
-      this.fb.group({
-        name: [''],
-        title: [''],
-        image: [null as any],
-      }),
-    );
+    this.formData.speakers.push(this.createSpeakerGroup());
   }
 
   handleRemoveSpeaker(index: number) {
@@ -138,6 +155,9 @@ export default class EventFormComponent {
 
   handleCancel() {
     this.eventForm.reset();
+    const formSpeakers = this.formData.speakers;
+    formSpeakers.clear();
+    formSpeakers.push(this.createSpeakerGroup());
     this.closed.emit();
   }
 
@@ -154,6 +174,14 @@ export default class EventFormComponent {
   }
 
   handleSubmit() {
+    const { speakers, ...eventData } = this.eventForm.value;
+    const dataToSend = {
+      ...eventData,
+      totalSeats: Number(eventData.totalSeats),
+      price: Number(eventData.price),
+      speakers: JSON.stringify(this.handleSpeakerData().speakers),
+      speakerImages: this.handleSpeakerData().speakerImages,
+    };
     if (this.eventForm.invalid) {
       this.eventForm.markAllAsTouched();
       return;
@@ -161,12 +189,17 @@ export default class EventFormComponent {
 
     if (this.isEdit()) {
       const dirtyFields = getDirtyFields(this.eventForm);
-
       // TODO: fix this any
+      if (dirtyFields['speakers']) {
+        const filterSpeakerImages = this.handleSpeakerData().speakerImages.filter(
+          (image: File | string) => typeof image !== 'string',
+        );
+        dirtyFields['speakers'] = JSON.stringify(dirtyFields['speakers']);
+        dirtyFields['speakerImages'] = filterSpeakerImages;
+      }
       this.onSave.emit({ ...dirtyFields, _id: this.event()?._id } as any);
     } else {
-      // this.onSave.emit(this.eventForm.value as any);
-      console.log(this.handleSpeakerData());
+      this.onSave.emit(dataToSend as CreateEventRequestDto);
     }
   }
 }

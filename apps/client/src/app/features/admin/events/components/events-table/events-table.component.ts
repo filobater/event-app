@@ -13,6 +13,7 @@ import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular'
 import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { NAV } from 'src/app/core';
+import { ModalType } from '../../../types/modal.type';
 
 @Component({
   selector: 'app-events-table',
@@ -35,6 +36,7 @@ export default class EventsTableComponent {
 
   eventTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('eventTemplate');
   dateTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('dateTemplate');
+  createdAtTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('createdAtTemplate');
   categoryTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('categoryTemplate');
   statusTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('statusTemplate');
   seatsTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('seatsTemplate');
@@ -50,6 +52,8 @@ export default class EventsTableComponent {
 
   events = input.required<EventDto[]>();
   paginationOptions = input<PaginationOptions>();
+
+  openModal = output<{ modal: ModalType; eventId: string }>();
 
   readonly columns = computed<ColumnDef<EventDto & { actions?: TemplateRef<any> }>[]>(() => [
     {
@@ -91,7 +95,7 @@ export default class EventsTableComponent {
     {
       label: 'Created At',
       key: 'createdAt',
-      cellTemplate: this.dateTemplate(),
+      cellTemplate: this.createdAtTemplate(),
       headerTemplate: this.sortableHeader(),
     },
     {
@@ -108,10 +112,10 @@ export default class EventsTableComponent {
     this.sort.emit(params);
   }
 
-  // handleActions(action: ModalType, userId: string) {
-  //   this.openModal.emit({
-  //     modal: action,
-  //     userId: userId,
-  //   });
-  // }
+  handleActions(action: ModalType, eventId: string) {
+    this.openModal.emit({
+      modal: action,
+      eventId: eventId,
+    });
+  }
 }

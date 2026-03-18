@@ -19,7 +19,6 @@ export type EventDto = {
   photo: string;
   speakers: SpeakerDto[];
   price: number;
-  type: "free" | "paid";
   category: "technology" | "business" | "design" | "marketing";
   createdAt: string;
   updatedAt: string;
@@ -30,7 +29,10 @@ export type EventDto = {
 export type CreateEventRequestDto = Omit<
   EventDto,
   "_id" | "createdAt" | "updatedAt" | "registeredSeats"
->;
+> & {
+  speakers: string;
+  speakerImages: string[];
+};
 
 export type UpdateEventRequestDto = Partial<CreateEventRequestDto>;
 

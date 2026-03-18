@@ -25,14 +25,6 @@
         }
       }
     </div>
-    <div class="space-y-2">
-      <app-number-input
-        formControlName="registeredSeats"
-        labelText="Registered Seats"
-        placeholder="0"
-        [min]="0"
-      ></app-number-input>
-    </div>
 
     <div class="space-y-2">
       <app-select-input
@@ -130,6 +122,11 @@
         @if (formData.location?.errors?.['required']) {
           <app-error-message [message]="'Location is required'"></app-error-message>
         }
+        @if (formData.location?.errors?.['minlength']) {
+          <app-error-message
+            [message]="'Location must be at least 10 characters'"
+          ></app-error-message>
+        }
       }
     </div>
 
@@ -152,11 +149,13 @@
   <div class="space-y-4">
     <div class="flex items-center justify-between gap-3">
       <div class="text-white">Event Speakers</div>
-      <app-primary-button
-        [label]="'Add Speaker'"
-        (handleClick)="handleAddSpeaker()"
-        [disabled]="formData.speakers.length === 2 || formData.speakers.invalid"
-      ></app-primary-button>
+      @if (formData.speakers.length !== 2) {
+        <app-primary-button
+          [label]="'Add Speaker'"
+          (handleClick)="handleAddSpeaker()"
+          [disabled]="formData.speakers.invalid"
+        ></app-primary-button>
+      }
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -234,7 +233,7 @@
     <app-secondary-button [label]="'Cancel'" (handleClick)="handleCancel()"></app-secondary-button>
     <app-primary-button
       type="submit"
-      [disabled]="eventForm.invalid"
+      [disabled]="requestState()?.loading() || eventForm.invalid"
       [label]="requestState()?.loading() ? 'Saving...' : isEdit() ? 'Save Event' : 'Create Event'"
     />
   </div>

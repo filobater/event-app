@@ -9,7 +9,7 @@ import { Component, computed, input } from '@angular/core';
       <span class="shrink-0 [&>svg]:size-4" aria-hidden="true">
         <ng-content />
       </span>
-      <span>{{ title() }}</span>
+      <span class="line-clamp-1">{{ title() }}</span>
     </div>
   `,
 })
@@ -18,6 +18,6 @@ export default class InfoLabelComponent {
   textColorClass = input<string>('');
 
   textColor = computed(() => {
-    return this.textColorClass() ? this.textColorClass() : 'text-base-content/70';
+    return this.textColorClass() ? this.textColorClass() : 'text-(--light-gray-color)';
   });
 }

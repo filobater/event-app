@@ -50,11 +50,11 @@ export default class UsersComponent {
     view: false,
   });
 
-  selectedUserId = signal<string | null>(null);
-
+  
   readonly usersResource = this.usersApiService.getAllUsers();
-
+  
   userSelected = signal<UserDto | null>(null);
+  selectedUserId = signal<string | null>(null);
 
   private readonly userFormRef = viewChild(UserFormComponent);
   readonly resetUserForm = () => this.userFormRef()?.userForm.reset();

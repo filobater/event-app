@@ -1,5 +1,9 @@
 <div class="relative w-full overflow-hidden rounded-t-xl">
-  <img [src]="event().photo" [alt]="event().title" class="h-40 w-full object-cover" />
+  <img
+    [src]="baseUrl + '/' + event().photo"
+    [alt]="event().title"
+    class="h-40 w-full object-cover"
+  />
   <div class="absolute top-3 right-3 flex gap-2">
     <app-badge [color]="variant[event().status]" [label]="event().status" />
   </div>

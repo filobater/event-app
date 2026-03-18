@@ -33,7 +33,6 @@ const processImage = async (
   width: number,
   height: number,
 ): Promise<string> => {
-  // TODO: add user id to the filename and edit the path based on the prefix
   const filename = `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
   const filepath = path.join(uploadDir, filename);
 
@@ -66,8 +65,6 @@ export const compressAndSave =
               field.width,
               field.height,
             );
-          } else {
-            req.body[field.bodyKey] = null;
           }
         }
 
@@ -100,7 +97,9 @@ export const compressAndSave =
             );
 
             paths.forEach((filepath, i) => {
-              if (items[i]) items[i][field.imageKey] = filepath;
+              if (items[i]) {
+                items[i][field.imageKey] = filepath;
+              }
             });
 
             req.body[field.bodyKey] = items;

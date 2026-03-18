@@ -15,6 +15,13 @@ import AvatarComponent from '../avatar/avatar.component';
 import { UserService } from 'src/app/core/services/user.service';
 import { TitleCasePipe } from '@angular/common';
 
+type NavLink = {
+  label: string;
+  path: string;
+  icon: any;
+  adminOnly?: boolean;
+};
+
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, NavTabComponent, LucideAngularModule, AvatarComponent, TitleCasePipe],
@@ -32,7 +39,8 @@ export class NavbarComponent {
   protected readonly basePath = BASE_PATH;
   protected readonly userService = inject(UserService);
   protected readonly user = this.userService.currentUser;
-  navLinks = [
+
+  protected readonly NAV_LINKS: NavLink[] = [
     {
       label: 'Events',
       path: this.basePath,
@@ -42,16 +50,24 @@ export class NavbarComponent {
       label: 'Dashboard',
       path: this.nav.admin.dashboard,
       icon: this.DashboardIcon,
+      adminOnly: true,
     },
     {
       label: 'Manage Events',
       path: this.nav.admin.events,
       icon: this.ManageEventsIcon,
+      adminOnly: true,
     },
     {
       label: 'Manage Users',
       path: this.nav.admin.users,
       icon: this.ManageUsersIcon,
+      adminOnly: true,
     },
   ];
+
+  readonly navLinks = this.NAV_LINKS.filter((link) => {
+    const isAdmin = this.user()?.role === 'admin';
+    return isAdmin || !link.adminOnly;
+  });
 }
