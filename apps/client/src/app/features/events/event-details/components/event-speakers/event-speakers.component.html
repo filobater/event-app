@@ -1,0 +1,20 @@
+<div class="card bg-(--dark-gray-color) border-(--gray-color) border rounded-xl p-5 space-y-4">
+  <h2 class="text-lg font-semibold text-white">Speakers</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    @for (speaker of speakers(); track speaker.name) {
+      <div class="flex items-center gap-3 bg-(--gray-color) rounded-lg p-3">
+        <app-avatar
+          [imageUrl]="speaker.image"
+          [label]="speaker.name"
+          [class]="'w-10! ring-2! ring-(--main-color)'"
+        />
+        <div>
+          <p class="text-sm font-medium text-white truncate">{{ speaker.name }}</p>
+          <p class="text-xs text-(--light-gray-color) truncate">{{ speaker.title }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

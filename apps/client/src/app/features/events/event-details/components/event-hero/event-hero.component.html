@@ -1,0 +1,17 @@
+<div class="relative w-full overflow-hidden rounded-xl">
+  <img
+    [src]="baseUrl + '/' + event().photo"
+    [alt]="event().title"
+    class="h-64 md:h-80 w-full object-cover"
+  />
+
+  <div class="absolute inset-0 bg-linear-to-t from-black/50 via-black/20 to-transparent"></div>
+  <div class="absolute bottom-4 left-4 space-y-2">
+    <div class="flex gap-2">
+      <app-badge [label]="event().status | titlecase" [color]="statusColor[event().status]" />
+      <app-badge [label]="event().category | titlecase" [color]="'bg-base-300 text-white'" />
+    </div>
+    <h1 class="text-3xl md:text-4xl font-bold text-white drop-shadow">{{ event().title }}</h1>
+  </div>
+</div>
+

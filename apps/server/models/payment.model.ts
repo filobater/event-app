@@ -6,6 +6,7 @@ const paymentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Registration",
       required: true,
+      unique: true,
     },
     amount: {
       type: Number,

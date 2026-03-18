@@ -1,6 +1,7 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { UserService } from '../services/user.service';
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { catchError, BehaviorSubject, throwError, switchMap, filter, take } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,6 +12,12 @@ let isRefreshing = false;
 const refreshSubject = new BehaviorSubject<string | null>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const platformId = inject(PLATFORM_ID);
+
+  if (!isPlatformBrowser(platformId)) {
+    return next(req);
+  }
+
   const userService = inject(UserService);
   const authService = inject(AuthService);
   const router = inject(Router);

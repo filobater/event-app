@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
-import { AuthCardComponent } from '../../ui';
+import { AuthCardComponent } from '../../components';
 import { OtpInputComponent, PrimaryButtonComponent } from 'src/app/shared/components';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';

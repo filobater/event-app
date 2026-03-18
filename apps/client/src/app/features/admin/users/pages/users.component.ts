@@ -1,5 +1,4 @@
 import { Component, effect, inject, signal, viewChild } from '@angular/core';
-import { UsersApiService } from 'src/app/core/services/users-api.service';
 import { LucideAngularModule, Plus, Users } from 'lucide-angular';
 import {
   SecondaryButtonComponent,
@@ -10,12 +9,12 @@ import {
 } from 'src/app/shared/components';
 import UserFormComponent from '../components/user-form/user-form.component';
 import UserDetailsComponent from '../components/user-details/user-details.component';
-import { CreateUserRequestDto, UpdateUserRequestDto, UserDto } from '@events-app/shared-dtos';
-import { RequestStateClass } from 'src/app/core/request-state';
+import { CreateUserRequestDto, UpdateUserRequestDto } from '@events-app/shared-dtos';
 import UserTableComponent from '../components/user-table/user-table.component';
-import AdminLoadingComponent from '../../ui/loading/loading.component';
+import { AdminLoadingComponent } from '../../components';
 import type { ModalType } from '../../types/modal.type';
 import type { SortParams } from '../../types/sort-params.type';
+import { UsersFacade } from 'src/app/core/facades/users.facade';
 
 @Component({
   selector: 'app-users',
@@ -37,24 +36,12 @@ import type { SortParams } from '../../types/sort-params.type';
 export default class UsersComponent {
   readonly UsersIcon = Users;
   readonly PlusIcon = Plus;
-  private usersApiService = inject(UsersApiService);
 
-  readonly getUserRequestState = new RequestStateClass();
+  readonly usersFacade = inject(UsersFacade);
+  readonly usersResource = this.usersFacade.getAllUsers();
 
-  readonly mutationRequestState = new RequestStateClass();
-
-  modals = signal({
-    add: false,
-    edit: false,
-    delete: false,
-    view: false,
-  });
-
-  
-  readonly usersResource = this.usersApiService.getAllUsers();
-  
-  userSelected = signal<UserDto | null>(null);
   selectedUserId = signal<string | null>(null);
+  modals = signal({ add: false, edit: false, delete: false, view: false });
 
   private readonly userFormRef = viewChild(UserFormComponent);
   readonly resetUserForm = () => this.userFormRef()?.userForm.reset();
@@ -62,22 +49,7 @@ export default class UsersComponent {
   constructor() {
     effect(() => {
       const id = this.selectedUserId();
-
-      this.userSelected.set(null);
-
-      if (!id) return;
-      if (this.modals().delete) return;
-      this.getUserRequestState.start();
-      this.usersApiService.getUser(id).subscribe({
-        next: (response) => {
-          this.getUserRequestState.success();
-          this.userSelected.set(response.data.user);
-        },
-        error: (error) => {
-          this.getUserRequestState.fail(error);
-          this.userSelected.set(null);
-        },
-      });
+      this.usersFacade.loadUser(!id || this.modals().delete ? null : id);
     });
   }
 
@@ -104,59 +76,28 @@ export default class UsersComponent {
     this.handleOpenModal(modal);
   }
 
-  handleCreateUser(user: CreateUserRequestDto) {
-    this.usersApiService.createUser(user).subscribe({
-      next: (response) => {
-        this.mutationRequestState.success(response.message);
-        this.handleCloseModal('add');
-        this.usersResource.addItem(response.data.user);
-        this.resetUserForm();
-      },
-      error: (error) => {
-        this.mutationRequestState.fail(error);
-      },
-    });
-  }
-
-  handleUpdateUser(id: string, user: UpdateUserRequestDto) {
-    this.usersApiService.updateUser(id, user).subscribe({
-      next: (response) => {
-        this.mutationRequestState.success(response.message);
-        this.handleCloseModal('edit');
-        this.usersResource.updateItem(id, response.data.user);
-        this.resetUserForm();
-      },
-      error: (error) => {
-        this.mutationRequestState.fail(error);
-      },
-    });
-  }
-
   handleSaveUser(user: CreateUserRequestDto | UpdateUserRequestDto) {
-    this.mutationRequestState.start();
     if ('_id' in user) {
-      this.handleUpdateUser(user._id as string, user);
+      this.usersFacade.updateUser(user._id as string, user, (updated) => {
+        this.handleCloseModal('edit');
+        this.usersResource.updateItem(user._id as string, updated);
+        this.resetUserForm();
+      });
     } else {
-      this.handleCreateUser(user);
+      this.usersFacade.createUser(user as CreateUserRequestDto, (created) => {
+        this.handleCloseModal('add');
+        this.usersResource.addItem(created);
+        this.resetUserForm();
+      });
     }
-  }
-
-  handleDeleteUser(userId: string) {
-    this.mutationRequestState.start();
-    this.usersApiService.deleteUser(userId).subscribe({
-      next: () => {
-        this.mutationRequestState.success('User deleted successfully');
-        this.handleCloseModal('delete');
-        this.usersResource.removeItem(userId);
-      },
-      error: (error) => {
-        this.mutationRequestState.fail(error);
-      },
-    });
   }
 
   handleDeleteConfirm() {
     const id = this.selectedUserId();
-    if (id) this.handleDeleteUser(id);
+    if (!id) return;
+    this.usersFacade.deleteUser(id, () => {
+      this.handleCloseModal('delete');
+      this.usersResource.removeItem(id);
+    });
   }
 }

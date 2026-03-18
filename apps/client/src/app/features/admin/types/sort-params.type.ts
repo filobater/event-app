@@ -1,1 +1,4 @@
-export type { SortParams } from 'src/app/shared/utils/create-paginated-resource.utils';
+export interface SortParams {
+  label: string;
+  direction: 'asc' | 'desc' | null;
+}

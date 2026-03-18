@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { AuthCardComponent } from '../../ui';
+import { AuthCardComponent } from '../../components';
 import {
   TextInputComponent,
   PasswordInputComponent,

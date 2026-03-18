@@ -31,12 +31,12 @@
     [onClose]="resetEventForm"
     (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
   >
-    @if (getEventRequestState.loading() && modals().edit) {
+    @if (eventsFacade.loadEventState.loading() && modals().edit) {
       <admin-loading />
     } @else {
       <app-event-form
-        [requestState]="mutationRequestState"
-        [event]="eventSelected()"
+        [requestState]="eventsFacade.mutationState"
+        [event]="eventsFacade.event()"
         (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
         (onSave)="handleSaveEvent($event)"
       />
@@ -47,8 +47,8 @@
     [title]="'Delete event'"
     [description]="'Are you sure you want to delete this event? This action cannot be undone.'"
     [cancelLabel]="'Cancel'"
-    [okLabel]="mutationRequestState.loading() ? 'Deleting...' : 'Delete'"
-    [disabled]="mutationRequestState.loading()"
+    [okLabel]="eventsFacade.mutationState.loading() ? 'Deleting...' : 'Delete'"
+    [disabled]="eventsFacade.mutationState.loading()"
     [isOpen]="modals().delete"
     (cancelled)="handleCloseModal('delete')"
     (ok)="handleDeleteConfirm()"

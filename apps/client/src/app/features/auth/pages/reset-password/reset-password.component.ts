@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { LucideAngularModule, KeyRound } from 'lucide-angular';
-import { AuthCardComponent } from '../../ui';
+import { AuthCardComponent } from '../../components';
 import {
   PasswordInputComponent,
   PrimaryButtonComponent,

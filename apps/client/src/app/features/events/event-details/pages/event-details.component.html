@@ -1,0 +1,24 @@
+<div class="max-w-4xl mx-auto">
+  <app-event-details-back-button />
+
+  @if (eventsFacade.loadEventState.loading()) {
+    <app-event-details-skeleton />
+  } @else if (eventsFacade.loadEventState.error()) {
+    <app-error-message [message]="eventsFacade.loadEventState.error()" />
+  } @else if (eventsFacade.event(); as ev) {
+    <div class="flex flex-col gap-6">
+      <app-event-hero [event]="ev" />
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 flex flex-col gap-6">
+          <app-event-about [event]="ev" />
+
+          <app-event-speakers [speakers]="ev.speakers" />
+        </div>
+
+        <app-event-seats [event]="ev" />
+      </div>
+    </div>
+  }
+</div>
+

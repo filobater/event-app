@@ -2,14 +2,8 @@ import { httpResource } from '@angular/common/http';
 import { PaginatedResponseDto } from '@events-app/shared-dtos';
 
 import { toHttpParams } from './http.utils';
-import {
-  createPaginatedParams,
-  type PaginatedParams,
-  type SortParams,
-} from './paginated-params.utils';
+import { createPaginatedParams, type PaginatedParams } from './paginated-params.utils';
 import { createPaginatedMutations } from './paginated-mutations.utils';
-
-export type { SortParams, PaginatedParams };
 
 export interface PaginatedResourceConfig {
   url: string;

@@ -1,0 +1,67 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between flex-wrap gap-4">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-end gap-2">
+        <i-lucide [img]="EventsIcon" class="size-8 text-(--main-color)" />
+        <h1 class="text-3xl font-display font-bold text-white flex items-center gap-2">Events</h1>
+      </div>
+      <p class="text-(--light-gray-color) text-lg">Discover and register for upcoming events</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <app-search-input
+        [placeholder]="'Search events'"
+        (onSearch)="handleSearch($event)"
+        [value]="eventsResource.searchInput()"
+      />
+    </div>
+  </div>
+  <div class="flex items-center flex-wrap gap-1">
+    <div class="flex items-center gap-2">
+      @for (option of categoryOptions(); track option.value) {
+        <app-badge
+          [clickable]="true"
+          [label]="option.label"
+          [color]="getCategoryColor(option.value)"
+          (onClick)="handleCategoryClick(option.value)"
+        >
+        </app-badge>
+      }
+    </div>
+    <div class="divider divider-horizontal"></div>
+
+    <div class="flex items-center gap-2">
+      @for (option of statusOptions(); track option.value) {
+        <app-badge
+          [clickable]="true"
+          [label]="option.label"
+          [color]="getStatusColor(option.value)"
+          (onClick)="handleStatusClick(option.value)"
+        >
+        </app-badge>
+      }
+    </div>
+  </div>
+
+  <h2 class="text-xl font-semibold">
+    All Events ({{ eventsResource.resource.value()?.data?.count ?? 0 }})
+  </h2>
+  <div class="flex flex-col min-h-[60vh]">
+    @if (eventsResource.resource.isLoading()) {
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        @for (_ of skeletonItems; track $index) {
+          <app-event-card-skeleton />
+        }
+      </div>
+    } @else {
+      <app-event-list [events]="eventsResource.resource.value()?.data?.events ?? []" />
+    }
+  </div>
+  <div class="mt-auto">
+    <app-pagination
+      [totalPages]="eventsResource.resource.value()?.data?.totalPages ?? 0"
+      [currentPage]="eventsResource.requestParams().page"
+      (pageChange)="eventsResource.goToPage($event)"
+    />
+  </div>
+</div>
+

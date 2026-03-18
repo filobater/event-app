@@ -1,0 +1,50 @@
+<div
+  class="card compact overflow-hidden rounded-xl border-l-4 bg-base-200 transition-all duration-400 hover:shadow-[0_2px_10px_0_var(--main-color)] hover:-translate-y-2"
+  [class]="variant[event().status]"
+  [class.opacity-50]="event().status === 'completed'"
+>
+  <app-thumbnail [event]="event()" />
+  <div class="card-body gap-3 px-4 pt-4 pb-0">
+    <h2 class="card-title text-lg font-bold text-base-content line-clamp-1">{{ event().title }}</h2>
+    <p class="text-sm text-(--light-gray-color) line-clamp-2">{{ event().description }}</p>
+
+    <div class="flex items-center flex-wrap gap-3">
+      <app-info-label title="{{ event().dateTime | date: 'shortDate' }}">
+        <i-lucide [img]="CalendarIcon" color="var(--main-color)" class="size-4" />
+      </app-info-label>
+      <app-info-label title="{{ event().dateTime | date: 'shortTime' }}">
+        <i-lucide [img]="ClockIcon" color="var(--secondary-color)" class="size-4" />
+      </app-info-label>
+      <app-info-label title="{{ event().location | slice: 0 : 15 }}...">
+        <i-lucide [img]="MapPinIcon" color="var(--accent-color)" class="size-4" />
+      </app-info-label>
+      <app-info-label
+        [textColorClass]="'text-white'"
+        [title]="event().price === 0 ? 'Free' : ((event().price | currency: 'EGP') ?? '')"
+      >
+        <i-lucide [img]="BanknoteIcon" color="var(--main-color)" class="size-4" />
+      </app-info-label>
+    </div>
+    <div class="flex items-center gap-2 justify-between">
+      <app-info-label title="{{ event().registeredSeats }}/{{ event().totalSeats }} Seats">
+        <i-lucide [img]="UsersIcon" class="size-4" />
+      </app-info-label>
+      <app-info-label
+        title="{{ event().totalSeats === event().registeredSeats ? 'Full' : 'Available' }}"
+        textColorClass="{{
+          event().totalSeats === event().registeredSeats
+            ? 'text-(--destructive-color)'
+            : 'text-(--accent-color)'
+        }}"
+      >
+        {{
+          event().totalSeats === event().registeredSeats
+            ? ''
+            : event().totalSeats - event().registeredSeats
+        }}
+      </app-info-label>
+    </div>
+  </div>
+  <app-progress [value]="event().registeredSeats" [max]="event().totalSeats" />
+</div>
+

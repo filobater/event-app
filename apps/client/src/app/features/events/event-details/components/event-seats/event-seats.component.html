@@ -1,0 +1,64 @@
+<div
+  class="card bg-(--dark-gray-color) border-(--gray-color) border rounded-xl p-5 space-y-4 sticky top-6"
+>
+  <div class="flex items-center gap-2">
+    <i-lucide [img]="UsersIcon" class="size-5 text-(--main-color)" />
+    <h2 class="text-lg font-semibold text-white">Seats</h2>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <div class="flex justify-between text-sm">
+      <span class="text-(--light-gray-color)">Registered</span>
+      <span class="text-white font-medium">{{ event().registeredSeats }}</span>
+    </div>
+    <div class="flex justify-between text-sm">
+      <span class="text-(--light-gray-color)">Total</span>
+      <span class="text-white font-medium">{{ event().totalSeats }}</span>
+    </div>
+    <div class="flex justify-between text-sm">
+      <span class="text-(--light-gray-color)">Available</span>
+      <span
+        class="font-medium"
+        [class]="isFull() ? 'text-(--destructive-color)' : 'text-(--accent-color)'"
+      >
+        {{ isFull() ? 'Full' : availableSeats() }}
+      </span>
+    </div>
+    <div class="-mt-2">
+      <app-progress [value]="event().registeredSeats" [max]="event().totalSeats" />
+    </div>
+  </div>
+
+  @if (!isFull() && event().status !== 'completed') {
+    <div class="flex items-center justify-between">
+      <span class="text-sm text-(--light-gray-color)">Seats</span>
+      <div class="flex items-center gap-3">
+        <button
+          class="btn size-8 rounded-lg bg-(--dark-color) border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border-white/20 text-white"
+          [disabled]="seats() <= 1"
+          (click)="decrement()"
+        >
+          <i-lucide [img]="MinusIcon" class="size-4" />
+        </button>
+        <span class="text-white font-semibold w-4 text-center">{{ seats() }}</span>
+        <button
+          class="btn size-8 rounded-lg bg-(--dark-color) border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border-white/20 text-white"
+          [disabled]="seats() >= availableSeats()"
+          (click)="increment()"
+        >
+          <i-lucide [img]="PlusIcon" class="size-4" />
+        </button>
+      </div>
+    </div>
+    <app-primary-button
+      [label]="
+        event().price === 0
+          ? 'Register Now — Free'
+          : 'Register Now — ' + ((totalPrice() | currency: 'EGP') ?? '')
+      "
+    />
+  } @else {
+    <div class="text-center text-sm text-(--light-gray-color) font-medium py-2">Registration closed</div>
+  }
+</div>
+

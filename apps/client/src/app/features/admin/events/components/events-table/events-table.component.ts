@@ -1,13 +1,9 @@
 import { Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
 import { DatePipe, TitleCasePipe, CurrencyPipe } from '@angular/common';
 import { EventDto } from '@events-app/shared-dtos';
-import AdminTableComponent, {
-  ColumnDef,
-  HeaderContext,
-  PaginationOptions,
-} from '../../../ui/table/table.component';
+import { SortButtonComponent, TableComponent as AdminTableComponent } from '../../../components';
+import type { ColumnDef, HeaderContext, PaginationOptions } from '../../../components';
 import { BadgeComponent } from 'src/app/shared/components';
-import SortButtonComponent from '../../../ui/sort-button/sort-button.component';
 import type { SortParams } from '../../../types/sort-params.type';
 import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
 import { RouterLink } from '@angular/router';

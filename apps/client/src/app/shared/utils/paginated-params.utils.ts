@@ -4,11 +4,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-export interface SortParams {
-  label: string;
-  direction: 'asc' | 'desc' | null;
-}
-
+import type { SortParams } from '../../features/admin/types/sort-params.type';
 export interface PaginatedParams {
   page?: number;
   search?: string;
