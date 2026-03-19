@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
+import { Component, computed, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideAngularModule, Image } from 'lucide-angular';
 import { environment } from 'src/environments/environment';
@@ -19,6 +19,8 @@ import { environment } from 'src/environments/environment';
 export default class ImageUploadComponent implements ControlValueAccessor {
   readonly ImageIcon = Image;
   label = input<string>('Upload image');
+
+  h = input<string | null>(null);
 
   image = signal<{ previewUrl: string; file: File | null }>({
     previewUrl: '',

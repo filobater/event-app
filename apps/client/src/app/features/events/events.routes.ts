@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { NAV } from 'src/app/core';
+import { ROUTE_SEGMENTS } from 'src/app/core';
 
 export const eventsRoutes: Routes = [
   {
@@ -8,9 +8,8 @@ export const eventsRoutes: Routes = [
     title: 'Events',
   },
   {
-    path: NAV.event(':id').replace('/', ''),
-    loadComponent: () =>
-      import('./event-details/pages/event-details.component'),
+    path: ROUTE_SEGMENTS.events.details,
+    loadComponent: () => import('./event-details/pages/event-details.component'),
     title: 'Event Details',
   },
 ];

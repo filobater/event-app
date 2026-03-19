@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
-@plugin "daisyui" ;
+@plugin "daisyui" {
+  exclude: li;
+}
 
 :root {
   --main-color: #1f8fff;
@@ -17,4 +19,8 @@
 
 html {
   background-color: var(--dark-color);
+}
+
+li {
+  list-style: none;
 }

@@ -12,6 +12,12 @@ export const routes: Routes = [
         loadChildren: () => import('./features/events/events.routes').then((m) => m.eventsRoutes),
         canActivate: [authGuard],
       },
+      {
+        path: NAV.profile.base,
+        loadChildren: () =>
+          import('./features/profile/profile.routes').then((m) => m.profileRoutes),
+        canActivate: [authGuard],
+      },
     ],
   },
   {

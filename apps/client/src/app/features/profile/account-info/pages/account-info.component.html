@@ -1,0 +1,73 @@
+<div class="bg-(--dark-gray-color) rounded-2xl p-6 space-y-6">
+  <div class="flex items-center gap-2">
+    <i-lucide [img]="UserIcon" class="size-5 text-(--secondary-color)" />
+    <h2 class="text-xl font-bold text-white">Account Info</h2>
+  </div>
+
+  @if (getMeState.loading()) {
+    <app-account-info-skeleton />
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-6">
+      <div class="flex items-center flex-col md:flex-row gap-5">
+        <app-image-upload formControlName="profilePicture" label="Profile Picture" [h]="'h-40'" />
+        <div class="flex flex-col items-center md:items-start gap-2">
+          <p class="text-white font-semibold text-xl">{{ user()?.fullName | titlecase }}</p>
+
+          <app-badge [label]="user()?.role ?? '' | titlecase" [color]="roleBadgeColor" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <app-text-input
+            formControlName="fullName"
+            [id]="'profile-fullName'"
+            labelText="Name"
+            placeholder="Enter your name"
+          />
+          @if (formControls.fullName?.touched) {
+            @if (formControls.fullName?.errors?.['required']) {
+              <app-error-message message="Name is required" />
+            }
+            @if (formControls.fullName?.errors?.['minlength']) {
+              <app-error-message message="Name must be at least 3 characters" />
+            }
+          }
+        </div>
+
+        <div class="space-y-2">
+          <app-text-input
+            formControlName="email"
+            [id]="'profile-email'"
+            labelText="Email"
+            placeholder="Enter your email"
+            type="email"
+          />
+          @if (formControls.email?.touched) {
+            @if (formControls.email?.errors?.['required']) {
+              <app-error-message message="Email is required" />
+            }
+            @if (formControls.email?.errors?.['email']) {
+              <app-error-message message="Invalid email address" />
+            }
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 text-(--light-gray-color) text-sm">
+        <i-lucide [img]="CalendarIcon" class="size-4" />
+        <span>Joined {{ user()?.createdAt | date: 'M/d/yyyy' }}</span>
+      </div>
+
+      @if (updateProfileState.error()) {
+        <app-error-message [message]="updateProfileState.error()" />
+      }
+
+      <app-primary-button
+        type="submit"
+        [disabled]="form.invalid || updateProfileState.loading()"
+        [label]="updateProfileState.loading() ? 'Saving...' : 'Save Changes'"
+      />
+    </form>
+  }
+</div>

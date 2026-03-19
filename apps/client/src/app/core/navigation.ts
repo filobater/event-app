@@ -19,6 +19,11 @@ export const NAV = {
   },
   events: BASE_PATH,
   event: (id: string) => BASE_PATH + 'events/' + id,
+  profile: {
+    base: 'profile',
+    account: BASE_PATH + 'profile/account',
+    password: BASE_PATH + 'profile/password',
+  },
 } as const;
 
 // Segments — these in route definitions (child routes only need the last segment)
@@ -33,5 +38,12 @@ export const ROUTE_SEGMENTS = {
   admin: {
     users: 'users',
     events: 'events',
+  },
+  profile: {
+    account: 'account',
+    password: 'password',
+  },
+  events: {
+    details: 'events/:id',
   },
 } as const;

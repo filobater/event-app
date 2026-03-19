@@ -10,7 +10,7 @@ import {
   SecondaryButtonComponent,
 } from 'src/app/shared/components';
 import { CreateUserRequestDto, UpdateUserRequestDto, UserDto } from '@events-app/shared-dtos';
-import { confirmPasswordValidator } from 'src/app/shared/utils';
+import { confirmPasswordValidator, getValidationErrorMessage } from 'src/app/shared/utils';
 import { RequestStateClass } from 'src/app/core/request-state';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 
@@ -84,6 +84,8 @@ export default class UserFormComponent {
       role: this.userForm.get('role'),
     };
   }
+
+  protected getValidationErrorMessage = getValidationErrorMessage;
 
   handleCancel() {
     this.userForm.reset();

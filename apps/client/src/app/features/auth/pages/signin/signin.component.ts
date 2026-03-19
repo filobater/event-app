@@ -14,6 +14,7 @@ import { ResendOtpRequestDto, SigninRequestDto } from '@events-app/shared-dtos';
 import { AuthService } from '../../services/auth.service';
 import { BASE_PATH, RequestStateClass, UserService } from 'src/app/core';
 import { NAV } from 'src/app/core/navigation';
+import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-signin',
@@ -51,6 +52,8 @@ export default class SigninComponent {
   get password() {
     return this.signinForm.get('password');
   }
+
+  protected getValidationErrorMessage = getValidationErrorMessage;
 
   private handleUnVerifiedUser() {
     this.authService.resendOtp({ email: this.email?.value } as ResendOtpRequestDto).subscribe({

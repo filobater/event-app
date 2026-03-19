@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 import { RequestStateClass } from 'src/app/core';
 import { ForgotPasswordRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';
+import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-forgot-password',
@@ -40,6 +41,8 @@ export default class ForgotPasswordComponent {
   get email() {
     return this.forgotPasswordForm.get('email');
   }
+
+  protected getValidationErrorMessage = getValidationErrorMessage;
   handleForgotPassword() {
     if (this.forgotPasswordForm.invalid) {
       this.forgotPasswordForm.markAllAsTouched();

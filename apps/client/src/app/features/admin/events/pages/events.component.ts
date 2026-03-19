@@ -44,7 +44,7 @@ export default class EventsComponent {
   };
 
   readonly eventsFacade = inject(EventsFacade);
-  readonly eventsResource = this.eventsFacade.getAllEvents();
+  readonly eventsResource = this.eventsFacade.eventsResource;
 
   selectedEventId = signal<string | null>(null);
   modals = signal({ add: false, edit: false, delete: false, view: false });

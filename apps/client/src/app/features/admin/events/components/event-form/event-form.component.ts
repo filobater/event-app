@@ -19,6 +19,7 @@ import {
 } from '@events-app/shared-dtos';
 import { RequestStateClass } from 'src/app/core/request-state';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
+import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-event-form',
@@ -130,6 +131,8 @@ export default class EventFormComponent {
       speakers: this.eventForm.get('speakers') as FormArray,
     };
   }
+
+  protected getValidationErrorMessage = getValidationErrorMessage;
 
   getSpeakerGroup(index: number): FormGroup {
     return this.formData.speakers?.at(index) as FormGroup;

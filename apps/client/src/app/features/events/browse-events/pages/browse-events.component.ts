@@ -27,7 +27,7 @@ export default class BrowseEventsComponent {
   readonly skeletonItems = Array(6);
 
   private readonly eventsFacade = inject(EventsFacade);
-  readonly eventsResource = this.eventsFacade.getAllEvents();
+  readonly eventsResource = this.eventsFacade.eventsResource;
 
   readonly statusOptions = signal<{ label: string; value: string }[]>([
     { label: 'All', value: '' },

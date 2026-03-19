@@ -9,6 +9,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
+import { getValidationErrorMessage } from 'src/app/shared/utils';
 import { AuthService } from '../../services/auth.service';
 import { RequestStateClass, BASE_PATH, NAV, UserService } from 'src/app/core';
 import { ActivatedRoute } from '@angular/router';
@@ -60,6 +61,8 @@ export default class ResetPasswordComponent {
   get confirmPassword() {
     return this.resetPasswordForm.get('confirmPassword');
   }
+
+  protected getValidationErrorMessage = getValidationErrorMessage;
   handleResetPassword() {
     if (this.resetPasswordForm.invalid) {
       this.resetPasswordForm.markAllAsTouched();

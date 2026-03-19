@@ -1,31 +1,48 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { EventsApiService } from '../services/events-api.service';
+import { CacheService } from '../services/cache.service';
 import { RequestStateClass } from '../request-state';
-import type { CreateEventRequestDto, EventDto, UpdateEventRequestDto } from '@events-app/shared-dtos';
+import type {
+  CreateEventRequestDto,
+  EventDto,
+  UpdateEventRequestDto,
+} from '@events-app/shared-dtos';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class EventsFacade {
   private readonly api = inject(EventsApiService);
+  private readonly cache = inject(CacheService);
+  private readonly cacheNamespace = 'events';
+
+  readonly eventsResource = this.api.getAllEvents();
 
   readonly loadEventState = new RequestStateClass();
-  readonly event = signal<EventDto | null>(null);
   readonly mutationState = new RequestStateClass();
-
-  getAllEvents() {
-    return this.api.getAllEvents();
-  }
+  readonly event = signal<EventDto | null>(null);
 
   loadEvent(id: string | null): void {
-    this.event.set(null);
     this.loadEventState.reset();
-    if (!id) return;
 
+    if (!id) {
+      this.event.set(null);
+      return;
+    }
+
+    const cached = this.cache.get<EventDto>(this.cacheNamespace, id);
+    if (cached) {
+      this.event.set(cached);
+      this.loadEventState.success();
+      console.log('cached event', cached);
+      return;
+    }
+
+    this.event.set(null);
     this.loadEventState.start();
+
     this.api.getEvent(id).subscribe({
       next: (res) => {
         this.loadEventState.success();
+        this.cache.set(this.cacheNamespace, id, res.data.event);
         this.event.set(res.data.event);
       },
       error: (err) => this.loadEventState.fail(err),
@@ -37,17 +54,25 @@ export class EventsFacade {
     this.api.createEvent(data).subscribe({
       next: (res) => {
         this.mutationState.success(res.message);
+        this.cache.set(this.cacheNamespace, res.data.event._id, res.data.event);
+        this.eventsResource.addItem(res.data.event);
         onSuccess?.(res.data.event);
       },
       error: (err) => this.mutationState.fail(err),
     });
   }
 
-  updateEvent(id: string, data: UpdateEventRequestDto, onSuccess?: (event: EventDto) => void): void {
+  updateEvent(
+    id: string,
+    data: UpdateEventRequestDto,
+    onSuccess?: (event: EventDto) => void,
+  ): void {
     this.mutationState.start();
     this.api.updateEvent(id, data).subscribe({
       next: (res) => {
         this.mutationState.success(res.message);
+        this.cache.set(this.cacheNamespace, id, res.data.event);
+        this.eventsResource.updateItem(id, res.data.event);
         onSuccess?.(res.data.event);
       },
       error: (err) => this.mutationState.fail(err),
@@ -59,6 +84,8 @@ export class EventsFacade {
     this.api.deleteEvent(id).subscribe({
       next: () => {
         this.mutationState.success('Event deleted successfully');
+        this.cache.delete(this.cacheNamespace, id);
+        this.eventsResource.removeItem(id);
         onSuccess?.();
       },
       error: (err) => this.mutationState.fail(err),

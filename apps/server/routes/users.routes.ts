@@ -69,7 +69,6 @@ router.get(API_ENDPOINTS.users.getAll, getAllUsers);
 
 router.get(API_ENDPOINTS.users.byId, getUser);
 
-// router.get(API_ENDPOINTS.users.getAll, getAllUsers);
 router.patch(
   API_ENDPOINTS.users.byId,
   uploadUserProfilePicture,

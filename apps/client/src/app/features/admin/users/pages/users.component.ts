@@ -38,7 +38,7 @@ export default class UsersComponent {
   readonly PlusIcon = Plus;
 
   readonly usersFacade = inject(UsersFacade);
-  readonly usersResource = this.usersFacade.getAllUsers();
+  readonly usersResource = this.usersFacade.usersResource;
 
   selectedUserId = signal<string | null>(null);
   modals = signal({ add: false, edit: false, delete: false, view: false });

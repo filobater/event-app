@@ -10,6 +10,7 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
+import { getValidationErrorMessage } from 'src/app/shared/utils';
 import { RequestStateClass } from 'src/app/core';
 import { AuthService } from '../../services/auth.service';
 import { SignupRequestDto } from '@events-app/shared-dtos';
@@ -61,6 +62,8 @@ export default class SignupComponent {
   get confirmPassword() {
     return this.signupForm.get('confirmPassword');
   }
+
+  protected getValidationErrorMessage = getValidationErrorMessage;
   handleSignup() {
     if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched();

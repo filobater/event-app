@@ -9,14 +9,8 @@
         placeholder="Enter your email"
         formControlName="email"
       />
-      @if (email?.touched) {
-        @if (email?.errors?.['required']) {
-          <app-error-message [message]="'Email is required'"></app-error-message>
-        }
-        @if (email?.errors?.['email']) {
-          <app-error-message [message]="'Invalid email address'"></app-error-message>
-        }
-      }
+
+      <app-error-message [message]="getValidationErrorMessage(email, 'Email')"></app-error-message>
     </div>
 
     <div class="space-y-2">
@@ -27,16 +21,10 @@
         placeholder="Enter your password"
         formControlName="password"
       />
-      @if (password?.touched) {
-        @if (password?.errors?.['required']) {
-          <app-error-message [message]="'Password is required'"></app-error-message>
-        }
-        @if (password?.errors?.['minlength']) {
-          <app-error-message
-            [message]="'Password must be at least 8 characters'"
-          ></app-error-message>
-        }
-      }
+
+      <app-error-message
+        [message]="getValidationErrorMessage(password, 'Password')"
+      ></app-error-message>
     </div>
     <a
       [routerLink]="nav.auth.forgotPassword"

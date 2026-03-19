@@ -13,16 +13,9 @@
         formControlName="fullName"
         placeholder="Enter your full name"
       />
-      @if (fullName?.touched) {
-        @if (fullName?.errors?.['required']) {
-          <app-error-message [message]="'Full name is required'"></app-error-message>
-        }
-      }
-      @if (fullName?.errors?.['minlength']) {
-        <app-error-message
-          [message]="'Full name must be at least 3 characters'"
-        ></app-error-message>
-      }
+      <app-error-message
+        [message]="getValidationErrorMessage(fullName, 'Full name')"
+      ></app-error-message>
     </div>
     <div class="space-y-2">
       <app-text-input
@@ -32,14 +25,7 @@
         formControlName="email"
         placeholder="Enter your email"
       />
-      @if (email?.touched) {
-        @if (email?.errors?.['required']) {
-          <app-error-message [message]="'Email is required'"></app-error-message>
-        }
-        @if (email?.errors?.['email']) {
-          <app-error-message [message]="'Invalid email address'"></app-error-message>
-        }
-      }
+      <app-error-message [message]="getValidationErrorMessage(email, 'Email')"></app-error-message>
     </div>
     <div class="space-y-2">
       <app-password-input
@@ -49,16 +35,9 @@
         formControlName="password"
         placeholder="Enter your password"
       />
-      @if (password?.touched) {
-        @if (password?.errors?.['required']) {
-          <app-error-message [message]="'Password is required'"></app-error-message>
-        }
-        @if (password?.errors?.['minlength']) {
-          <app-error-message
-            [message]="'Password must be at least 8 characters'"
-          ></app-error-message>
-        }
-      }
+      <app-error-message
+        [message]="getValidationErrorMessage(password, 'Password')"
+      ></app-error-message>
     </div>
     <div class="space-y-2">
       <app-password-input
@@ -68,12 +47,12 @@
         placeholder="Confirm your password"
         formControlName="confirmPassword"
       />
-      @if (confirmPassword?.touched) {
-        @if (confirmPassword?.errors?.['required']) {
-          <app-error-message [message]="'Confirm password is required'"></app-error-message>
-        } @else if (signupForm.hasError('passwordMismatch')) {
-          <app-error-message [message]="'Passwords do not match'"></app-error-message>
-        }
+
+      <app-error-message
+        [message]="getValidationErrorMessage(confirmPassword, 'Confirm password')"
+      ></app-error-message>
+      @if (confirmPassword?.touched && signupForm.hasError('passwordMismatch')) {
+        <app-error-message [message]="'Passwords do not match'"></app-error-message>
       }
     </div>
     <app-primary-button

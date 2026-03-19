@@ -117,10 +117,12 @@ export const updateUserProfile = async (req: Request, res: Response) => {
   const { fullName, profilePicture } = req.body;
 
   const updatedUser = Object.assign(user, {
-    fullName,
-    profilePicture,
+    ...(fullName && { fullName }),
+    ...(profilePicture && { profilePicture }),
   });
-  await updatedUser.save();
+  await updatedUser.save({
+    validateBeforeSave: false,
+  });
   sendResponse({
     res,
     statusCode: 200,
@@ -136,7 +138,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
 export const updateUserPassword = async (req: Request, res: Response) => {
   const user = await User.findById(req.user?._id).select("+password");
   const { currentPassword, newPassword } = req.body;
-  const passwordIsValid = user?.comparePassword(currentPassword);
+  const passwordIsValid = await user?.comparePassword(currentPassword);
   if (!passwordIsValid) throw new AppError("Incorrect current Password", 400);
   user!.password = newPassword;
   await user!.save();

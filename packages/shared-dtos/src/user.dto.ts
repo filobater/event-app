@@ -1,8 +1,4 @@
-import type {
-  ResetPasswordRequestDto,
-  SignupRequestDto,
-  UserDto,
-} from "./auth.dto.js";
+import type { SignupRequestDto, UserDto } from "./auth.dto.js";
 import type { PaginatedResponseDto } from "./paginated.dto.js";
 import type { BaseResponseDto } from "./base.dto.js";
 
@@ -16,7 +12,11 @@ export type UpdateUserRequestDto = SignupRequestDto;
 
 export type UpdateUserProfileRequestDto = Partial<SignupRequestDto>;
 
-export type UpdateUserPasswordRequestDto = ResetPasswordRequestDto;
+export type UpdateUserPasswordRequestDto = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
 // ─── Responses ───────────────────────────────────────────────────────────────
 
