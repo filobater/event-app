@@ -26,6 +26,7 @@ const paymentSchema = new Schema(
       type: String,
       enum: ["simulation"],
       required: true,
+      default: "simulation",
     },
     transactionId: {
       type: String,

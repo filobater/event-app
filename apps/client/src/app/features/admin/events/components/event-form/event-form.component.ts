@@ -65,6 +65,7 @@ export default class EventFormComponent {
     category: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(10)]],
     dateTime: ['', [Validators.required]],
+    endTime: ['', [Validators.required]],
     totalSeats: [10, [Validators.required, Validators.min(10)]],
     price: [0, [Validators.required, Validators.min(0)]],
     location: ['', [Validators.required, Validators.minLength(10)]],
@@ -93,12 +94,12 @@ export default class EventFormComponent {
         // Patch all non-array fields
         const { speakers: _, ...eventWithoutSpeakers } = event;
         // Offset the date by timezone to keep local time
-        const date = new Date(event.dateTime);
-        const offset = date.getTimezoneOffset() * 60000;
-        const localDateTime = new Date(date.getTime() - offset).toISOString().slice(0, 16);
+        const localDateTime = this.getLocalDateTime(event.dateTime);
+        const localEndTime = this.getLocalDateTime(event.endTime);
         this.eventForm.patchValue({
           ...eventWithoutSpeakers,
           dateTime: localDateTime,
+          endTime: localEndTime,
         });
       } else {
         const formSpeakers = this.formData.speakers;
@@ -107,6 +108,12 @@ export default class EventFormComponent {
         this.eventForm.reset();
       }
     });
+  }
+
+  getLocalDateTime(dateTime: string) {
+    const date = new Date(dateTime);
+    const offset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - offset).toISOString().slice(0, 16);
   }
 
   createSpeakerGroup(speaker?: SpeakerDto): FormGroup {
@@ -124,6 +131,7 @@ export default class EventFormComponent {
       category: this.eventForm.get('category'),
       description: this.eventForm.get('description'),
       dateTime: this.eventForm.get('dateTime'),
+      endTime: this.eventForm.get('endTime'),
       totalSeats: this.eventForm.get('totalSeats'),
       status: this.eventForm.get('status'),
       price: this.eventForm.get('price'),

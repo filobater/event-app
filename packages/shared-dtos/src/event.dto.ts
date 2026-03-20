@@ -13,12 +13,14 @@ export type EventDto = {
   description: string;
   location: string;
   dateTime: string;
+  endTime: string;
   totalSeats: number;
   registeredSeats: number;
   status: "ongoing" | "upcoming" | "completed";
   photo: string;
   speakers: SpeakerDto[];
   price: number;
+  type: "free" | "paid";
   category: "technology" | "business" | "design" | "marketing";
   createdAt: string;
   updatedAt: string;

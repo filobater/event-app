@@ -34,6 +34,7 @@ export const signupSchema = z
     passwordResetExpiresAt: z.number().nullable().optional(),
     isVerified: z.boolean().default(false),
     profilePicture: z.string().nullable().optional(),
+    balance: z.number().default(1000),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords are not the same",

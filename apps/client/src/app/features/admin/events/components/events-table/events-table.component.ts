@@ -1,15 +1,20 @@
 import { Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
 import { DatePipe, TitleCasePipe, CurrencyPipe } from '@angular/common';
 import { EventDto } from '@events-app/shared-dtos';
-import { SortButtonComponent, TableComponent as AdminTableComponent } from '../../../components';
-import type { ColumnDef, HeaderContext, PaginationOptions } from '../../../components';
+import {
+  SortButtonComponent,
+  TableComponent as AdminTableComponent,
+  type ColumnDef,
+  type HeaderContext,
+  type PaginationOptions,
+} from '../../../components';
 import { BadgeComponent } from 'src/app/shared/components';
 import type { SortParams } from '../../../types/sort-params.type';
+import { ModalType } from '../../../types/modal.type';
 import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { NAV } from 'src/app/core';
-import { ModalType } from '../../../types/modal.type';
 
 @Component({
   selector: 'app-events-table',

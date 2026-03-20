@@ -1,5 +1,6 @@
 import { Schema, model, type HydratedDocument } from "mongoose";
-import type { EventSchema } from "schemas/event.schema.ts";
+import type { EventSchema } from "schemas/event/event.schema.ts";
+import { Registration } from "./registration.model.ts";
 
 export type EventDocument = HydratedDocument<EventSchema>;
 
@@ -24,7 +25,10 @@ const eventSchema = new Schema(
     dateTime: {
       type: Date,
       required: true,
-      default: new Date(),
+    },
+    endTime: {
+      type: Date,
+      required: true,
     },
     totalSeats: {
       type: Number,
@@ -109,6 +113,10 @@ eventSchema.set("toJSON", {
     delete ret["__v"];
     return ret;
   },
+});
+
+eventSchema.pre("deleteOne", async function () {
+  await Registration.deleteMany({ eventId: this.getQuery()._id });
 });
 
 eventSchema.index({ title: "text" });

@@ -1,1 +1,70 @@
+import {
+  createRegistrationService,
+  cancelRegistrationService,
+  payForRegistrationService,
+} from "services/registration.service.ts";
+import { sendResponse } from "utils/sendResponse.ts";
+import type { Request, Response } from "express";
+import { Registration } from "models/registration.model.ts";
+import { ApiFeatures } from "utils/ApiFeatures.ts";
 
+export const createRegistration = async (req: Request, res: Response) => {
+  const { body, user } = req;
+  const registration = await createRegistrationService(body, user);
+  sendResponse({
+    res,
+    statusCode: 201,
+    message: "Registered for the event successfully",
+    data: { registration },
+  });
+};
+
+export const payForRegistration = async (req: Request, res: Response) => {
+  const registration = await payForRegistrationService(req.registration);
+  sendResponse({
+    res,
+    statusCode: 200,
+    message: "Payment successful",
+    data: { registration },
+  });
+};
+
+export const cancelRegistration = async (req: Request, res: Response) => {
+  await cancelRegistrationService(req.registration);
+  sendResponse({
+    res,
+    statusCode: 200,
+    message: "Registration cancelled successfully",
+  });
+};
+
+export const getRegistration = async (req: Request, res: Response) => {
+  const registrationQuery = Registration.find({
+    user: req.user?._id,
+    $or: [{ status: "reserved" }, { status: "confirmed" }],
+  });
+
+  const totalFeatures = new ApiFeatures(registrationQuery, req.query).search();
+
+  const totalRegistrations = await Registration.countDocuments(
+    totalFeatures.query.getFilter(),
+  );
+
+  const features = new ApiFeatures(registrationQuery, req.query).paginate();
+
+  const registrations = await features.query.populate([
+    { path: "event", select: "title dateTime photo" },
+  ]);
+  sendResponse({
+    res,
+    statusCode: 200,
+    message: "Registration fetched successfully",
+    data: {
+      registrations,
+      count: registrations.length,
+      totalData: totalRegistrations,
+      totalPages: Math.ceil(totalRegistrations / 10) || 1,
+      page: Number(req.query.page) || 1,
+    },
+  });
+};

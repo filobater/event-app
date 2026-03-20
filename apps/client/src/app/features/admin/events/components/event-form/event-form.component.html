@@ -45,7 +45,7 @@
     ></app-error-message>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <div class="space-y-2">
       <app-datetime-input
         formControlName="dateTime"
@@ -54,6 +54,16 @@
       ></app-datetime-input>
       <app-error-message
         [message]="getValidationErrorMessage(formData.dateTime, 'Date and time')"
+      ></app-error-message>
+    </div>
+    <div class="space-y-2">
+      <app-datetime-input
+        formControlName="endTime"
+        labelText="End Time"
+        placeholder="Select end time"
+      ></app-datetime-input>
+      <app-error-message
+        [message]="getValidationErrorMessage(formData.endTime, 'End time')"
       ></app-error-message>
     </div>
 

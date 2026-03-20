@@ -5,17 +5,20 @@
 
   <div class="grid grid-cols-2 gap-3 pt-1">
     <app-info-label
-      [title]="(event().dateTime | date: 'shortDate') ?? ''"
+      [title]="
+        (event().dateTime | date: 'shortDate') +
+        ' ' +
+        (event().dateTime | date: 'shortTime') +
+        (event().endTime
+          ? ' - ' +
+            (event().endTime | date: 'shortDate') +
+            ' ' +
+            (event().endTime | date: 'shortTime')
+          : '')
+      "
       textColorClass="text-white"
     >
       <i-lucide [img]="CalendarIcon" color="var(--main-color)" class="size-4" />
-    </app-info-label>
-
-    <app-info-label
-      [title]="(event().dateTime | date: 'shortTime') ?? ''"
-      textColorClass="text-white"
-    >
-      <i-lucide [img]="ClockIcon" color="var(--secondary-color)" class="size-4" />
     </app-info-label>
 
     <app-info-label [title]="event().location" textColorClass="text-white">
@@ -30,4 +33,3 @@
     </app-info-label>
   </div>
 </div>
-

@@ -1,13 +1,16 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, type HydratedDocument } from "mongoose";
+import type { RegistrationInput } from "schemas/registration.schema.ts";
+
+export type RegistrationDocument = HydratedDocument<RegistrationInput>;
 
 const registrationSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    eventId: {
+    event: {
       type: Schema.Types.ObjectId,
       ref: "Event",
       required: true,
@@ -15,6 +18,18 @@ const registrationSchema = new Schema(
     status: {
       type: String,
       enum: ["reserved", "confirmed", "cancelled"],
+      required: true,
+    },
+    expiresAt: {
+      type: Date,
+      default: () => new Date(Date.now() + 10 * 60 * 1000),
+    },
+    seatsCount: {
+      type: Number,
+      required: true,
+    },
+    totalAmount: {
+      type: Number,
       required: true,
     },
   },

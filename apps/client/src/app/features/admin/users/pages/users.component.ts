@@ -78,15 +78,13 @@ export default class UsersComponent {
 
   handleSaveUser(user: CreateUserRequestDto | UpdateUserRequestDto) {
     if ('_id' in user) {
-      this.usersFacade.updateUser(user._id as string, user, (updated) => {
+      this.usersFacade.updateUser(user._id as string, user, () => {
         this.handleCloseModal('edit');
-        this.usersResource.updateItem(user._id as string, updated);
         this.resetUserForm();
       });
     } else {
-      this.usersFacade.createUser(user as CreateUserRequestDto, (created) => {
+      this.usersFacade.createUser(user as CreateUserRequestDto, () => {
         this.handleCloseModal('add');
-        this.usersResource.addItem(created);
         this.resetUserForm();
       });
     }
@@ -97,7 +95,6 @@ export default class UsersComponent {
     if (!id) return;
     this.usersFacade.deleteUser(id, () => {
       this.handleCloseModal('delete');
-      this.usersResource.removeItem(id);
     });
   }
 }

@@ -10,7 +10,8 @@ import {
 import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import { validate } from "middlewares/validate.middleware.ts";
 import { protect } from "middlewares/auth.middleware.ts";
-import { eventSchema } from "schemas/event.schema.ts";
+import { eventSchema } from "schemas/event/event.schema.ts";
+import { eventRefinement } from "schemas/event/event.refine.schema.ts";
 import { checkId } from "middlewares/checkId.middleware.ts";
 import { Event } from "models/event.model.ts";
 import { upload } from "middlewares/upload/upload.middleware.ts";
@@ -57,13 +58,13 @@ router.use(restrictTo("admin"));
 router.post(
   API_ENDPOINTS.events.create,
   uploadEventAndSpeakerImages,
-  validate(eventSchema),
+  validate(eventSchema.superRefine(eventRefinement)),
   createEvent,
 );
 router.patch(
   API_ENDPOINTS.events.byId,
   uploadEventAndSpeakerImages,
-  validate(eventSchema.partial()),
+  validate(eventSchema.partial().superRefine(eventRefinement)),
   updateEvent,
 );
 router.delete(API_ENDPOINTS.events.byId, deleteEvent);

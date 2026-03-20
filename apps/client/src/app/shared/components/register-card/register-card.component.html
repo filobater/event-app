@@ -1,0 +1,20 @@
+<div
+  class="flex items-center justify-between p-3 rounded-lg bg-[#2628364d] border border-(--gray-color)"
+>
+  <div class="flex items-center gap-3">
+    <div class="avatar">
+      <div class="w-18 rounded-xl">
+        <img [src]="`${baseUrl}/${event()?.photo}`" [alt]="event()?.title" />
+      </div>
+    </div>
+    <div class="flex flex-col gap-1">
+      <span class="text-white text-sm font-medium truncate">{{ event()?.title | titlecase }}</span>
+      <span class="text-(--light-gray-color) text-xs"
+        >{{ event()?.dateTime | date: 'short' }} - {{ registration().seatsCount }} seat(s)</span
+      >
+    </div>
+  </div>
+  <a [routerLink]="[nav.event(event()?._id)]" class="btn btn-sm btn-ghost">
+    <i-lucide [img]="EyeIcon" class="size-4 text-white"></i-lucide>
+  </a>
+</div>

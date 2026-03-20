@@ -14,7 +14,11 @@ type UserModel = Model<SignupInput, object, IUserMethods>;
 
 export type UserDocument = HydratedDocument<SignupInput, IUserMethods>;
 
-const userSchema = new Schema<SignupInput, UserModel, IUserMethods>(
+const userSchema = new Schema<
+  SignupInput & { balance: number },
+  UserModel,
+  IUserMethods
+>(
   {
     fullName: {
       type: String,
@@ -77,6 +81,10 @@ const userSchema = new Schema<SignupInput, UserModel, IUserMethods>(
       type: String,
       default: null,
     },
+    balance: {
+      type: Number,
+      default: 1000,
+    },
   },
   { timestamps: true },
 );
@@ -89,6 +97,7 @@ userSchema.set("toJSON", {
     delete ret["passwordResetToken"];
     delete ret["passwordResetExpiresAt"];
     delete ret["__v"];
+    delete ret["balance"];
     return ret;
   },
 });

@@ -2,7 +2,7 @@ import type { SignupRequestDto, UserDto } from "./auth.dto.js";
 import type { PaginatedResponseDto } from "./paginated.dto.js";
 import type { BaseResponseDto } from "./base.dto.js";
 
-// ─── Requests ────────────────────────────────────────────────────────────────
+// ─── Requests
 
 export type CreateUserRequestDto = SignupRequestDto & {
   role?: "admin" | "user";
@@ -18,7 +18,7 @@ export type UpdateUserPasswordRequestDto = {
   confirmPassword: string;
 };
 
-// ─── Responses ───────────────────────────────────────────────────────────────
+// ─── Responses
 
 export type UserResponseDto = BaseResponseDto & {
   data: { user: UserDto };

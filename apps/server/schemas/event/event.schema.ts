@@ -18,8 +18,11 @@ export const eventSchema = z.object({
     })
     .min(10, "Location must be at least 10 characters"),
   dateTime: z.coerce
-    .date()
+    .date({ message: "Date and time is required" })
     .min(new Date(), "Date and time must be in the future"),
+  endTime: z.coerce
+    .date({ message: "End time is required" })
+    .min(new Date(), "End time must be in the future"),
   totalSeats: z.coerce
     .number({
       message: "Total seats is required",

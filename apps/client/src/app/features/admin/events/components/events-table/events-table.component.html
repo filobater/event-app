@@ -14,7 +14,7 @@
         <img [src]="`${baseUrl}/${event.photo}`" [alt]="event.title" />
       </div>
     </div>
-    <span class="text-white text-sm font-medium">{{ event.title | titlecase }}</span>
+    <span class="text-white text-sm font-medium truncate">{{ event.title | titlecase }}</span>
   </div>
 </ng-template>
 

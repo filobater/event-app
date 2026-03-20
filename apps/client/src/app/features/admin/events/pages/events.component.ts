@@ -81,15 +81,13 @@ export default class EventsComponent {
 
   handleSaveEvent(event: CreateEventRequestDto | UpdateEventRequestDto) {
     if ('_id' in event) {
-      this.eventsFacade.updateEvent(event._id as string, event, (updated) => {
+      this.eventsFacade.updateEvent(event._id as string, event, () => {
         this.handleCloseModal('edit');
-        this.eventsResource.updateItem(event._id as string, updated);
         this.resetEventForm();
       });
     } else {
-      this.eventsFacade.createEvent(event as CreateEventRequestDto, (created) => {
+      this.eventsFacade.createEvent(event as CreateEventRequestDto, () => {
         this.handleCloseModal('add');
-        this.eventsResource.addItem(created);
         this.resetEventForm();
       });
     }
@@ -100,7 +98,6 @@ export default class EventsComponent {
     if (!id) return;
     this.eventsFacade.deleteEvent(id, () => {
       this.handleCloseModal('delete');
-      this.eventsResource.removeItem(id);
     });
   }
 }

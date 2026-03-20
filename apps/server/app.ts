@@ -14,6 +14,9 @@ import usersRoutes from "routes/users.routes.ts";
 import { rateLimit } from "express-rate-limit";
 import { fileURLToPath } from "url";
 import eventsRoutes from "routes/events.routes.ts";
+import { updateEventStatus } from "process/updateEventStatus.ts";
+import { updateRegistrationPaymentStatus } from "process/updateRegistrationPaymentStatus.ts";
+import registrationsRoutes from "routes/registrations.routes.ts";
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -21,6 +24,12 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+// process -------------
+updateEventStatus();
+updateRegistrationPaymentStatus();
+// -----------------------------
+
 const app = express();
 
 app.use(morgan("dev"));
@@ -56,6 +65,7 @@ app.use(
 app.use(API_ENDPOINTS.auth.base, authRoutes);
 app.use(API_ENDPOINTS.users.base, usersRoutes);
 app.use(API_ENDPOINTS.events.base, eventsRoutes);
+app.use(API_ENDPOINTS.registrations.base, registrationsRoutes);
 
 app.use((req: Request) => {
   throw new AppError(`the ${req.originalUrl} not found`, 404);

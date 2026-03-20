@@ -33,12 +33,11 @@ export const API_ENDPOINTS = {
     getAll: "/",
     byId: `/:id`,
   },
-  // registrations: {
-  //   base: `${API_BASE}/registrations`,
-  //   byId: (id: string) => `${API_BASE}/registrations/${id}`,
-  // },
-  // payments: {
-  //   base: `${API_BASE}/payments`,
-  //   byId: (id: string) => `${API_BASE}/payments/${id}`,
-  // },
+  registrations: {
+    base: `${API_BASE}/registrations`,
+    create: "/",
+    getAll: "/",
+    pay: "/:id/pay",
+    cancel: "/:id/cancel",
+  },
 } as const;

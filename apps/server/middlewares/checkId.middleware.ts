@@ -4,7 +4,7 @@ import { AppError } from "utils/AppError.ts";
 export const checkId =
   <TDoc>(
     Model: { findById: (id: string) => Promise<TDoc | null> },
-    key: "targetUser" | "event",
+    key: "targetUser" | "event" | "registration",
   ) =>
   async (req: Request, _res: Response, next: NextFunction, value: string) => {
     const doc = await Model.findById(value);

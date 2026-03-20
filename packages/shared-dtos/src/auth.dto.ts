@@ -10,6 +10,7 @@ export type UserDto = {
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
+  balance: number;
 };
 
 // ─── Shared base types ───────────────────────────────────────────────────────
