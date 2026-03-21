@@ -1,0 +1,12 @@
+@if (config()) {
+  <app-alert-modal
+    [title]="config()!.title"
+    [description]="config()!.description"
+    [cancelLabel]="config()!.cancelLabel"
+    [okLabel]="config()!.okLabel"
+    [isOpen]="action() !== null"
+    [disabled]="requestState()?.loading() ?? false"
+    (cancelled)="cancelled.emit()"
+    (ok)="ok.emit()"
+  />
+}

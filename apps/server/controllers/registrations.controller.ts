@@ -30,11 +30,12 @@ export const payForRegistration = async (req: Request, res: Response) => {
 };
 
 export const cancelRegistration = async (req: Request, res: Response) => {
-  await cancelRegistrationService(req.registration);
+  const registration = await cancelRegistrationService(req.registration);
   sendResponse({
     res,
     statusCode: 200,
     message: "Registration cancelled successfully",
+    data: { registration },
   });
 };
 

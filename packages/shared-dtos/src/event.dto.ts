@@ -1,5 +1,6 @@
 import type { BaseResponseDto } from "./base.dto.js";
 import type { PaginatedResponseDto } from "./paginated.dto.js";
+import { RegistrationDto } from "./registration.dto.js";
 
 export type SpeakerDto = {
   name: string;
@@ -21,6 +22,8 @@ export type EventDto = {
   speakers: SpeakerDto[];
   price: number;
   type: "free" | "paid";
+  registration: RegistrationDto["_id"];
+  isPaid: boolean;
   category: "technology" | "business" | "design" | "marketing";
   createdAt: string;
   updatedAt: string;

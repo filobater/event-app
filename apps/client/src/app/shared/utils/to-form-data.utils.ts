@@ -2,7 +2,7 @@ export function toFormData<T extends Record<string, unknown>>(data: T): FormData
   const formData = new FormData();
 
   for (const [key, value] of Object.entries(data)) {
-    if (value === undefined || value === null) continue;
+    if (!value && typeof value !== 'number') continue;
 
     if (value instanceof File) {
       formData.append(key, value);

@@ -10,11 +10,12 @@
     <div class="flex flex-col gap-1">
       <span class="text-white text-sm font-medium truncate">{{ event()?.title | titlecase }}</span>
       <span class="text-(--light-gray-color) text-xs"
-        >{{ event()?.dateTime | date: 'short' }} - {{ registration().seatsCount }} seat(s)</span
+        >{{ event()?.dateTime | date: 'shortDate' }} -
+        {{ registration()?.seatsCount ?? 0 }} seat(s)</span
       >
     </div>
   </div>
-  <a [routerLink]="[nav.event(event()?._id)]" class="btn btn-sm btn-ghost">
+  <a [routerLink]="[nav.event(event()?._id ?? '')]" class="btn btn-sm btn-ghost">
     <i-lucide [img]="EyeIcon" class="size-4 text-white"></i-lucide>
   </a>
 </div>

@@ -58,7 +58,6 @@ export default class AlertModalComponent {
 
   protected handleOk(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    this.dialogRef()?.nativeElement?.close();
     this.ok.emit();
   }
 

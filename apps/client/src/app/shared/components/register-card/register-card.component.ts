@@ -1,4 +1,4 @@
-import { Component, computed, input, Input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Eye, LucideAngularModule } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -19,7 +19,8 @@ export class RegisterCardComponent {
 
   registration = input<RegistrationDto>();
 
-  event = computed(() =>
-    isPopulated<EventDto>(this.registration()?.event) ? this.registration()?.event : null,
-  );
+  event = computed<EventDto | null>(() => {
+    const ev = this.registration()?.event;
+    return isPopulated<EventDto>(ev) ? ev : null;
+  });
 }

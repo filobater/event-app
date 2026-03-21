@@ -16,10 +16,6 @@ export const createPayment = async (
     amount: registration.totalAmount,
     registrationId: registration._id,
     paymentStatus: type === "free" ? "completed" : "pending",
-    transactionId:
-      type === "free"
-        ? null
-        : `${registration._id}-${crypto.randomBytes(32).toString("hex")}`,
   };
   await Payment.create([body], { session });
 };
@@ -30,7 +26,13 @@ export const processPayment = async (
 ) => {
   const updatedPayment = await Payment.updateOne(
     { registrationId },
-    { $set: { paymentStatus: "completed", paidAt: new Date() } },
+    {
+      $set: {
+        paymentStatus: "completed",
+        paidAt: new Date(),
+        transactionId: crypto.randomBytes(32).toString("hex"),
+      },
+    },
     { session },
   );
   if (updatedPayment.matchedCount === 0) {

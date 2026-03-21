@@ -50,8 +50,9 @@ export const createRegistrationService = async (
   const amount = existingEvent.price * seatsCount;
 
   try {
+    let createdRegistration: RegistrationDocument | null = null;
     const session = await mongoose.startSession();
-    const registration = await session.withTransaction(async () => {
+    await session.withTransaction(async () => {
       await Event.findByIdAndUpdate(
         existingEvent._id,
         { $inc: { registeredSeats: seatsCount } },
@@ -70,10 +71,13 @@ export const createRegistrationService = async (
         { session },
       );
       await createPayment(newRegistration[0], existingEvent.type, session);
-      return newRegistration[0];
+      createdRegistration = newRegistration[0];
     });
     session.endSession();
-    return registration;
+    if (!createdRegistration) {
+      throw new AppError("Failed to create registration", 500);
+    }
+    return createdRegistration;
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new AppError("Failed to create registration", 500);
@@ -93,11 +97,23 @@ export const createRegistrationService = async (
 export const payForRegistrationService = async (
   existingRegistration: RegistrationDocument,
 ) => {
+  if (!existingRegistration) {
+    console.log("existingRegistration", existingRegistration);
+    return;
+  }
   if (existingRegistration.status !== "reserved") {
     throw new AppError(`Already ${existingRegistration.status}`, 400);
   }
-  if (existingRegistration.expiresAt < new Date()) {
+  if (
+    !existingRegistration.expiresAt ||
+    existingRegistration.expiresAt < new Date()
+  ) {
     throw new AppError("Registration has expired", 400);
+  }
+
+  const { totalAmount } = existingRegistration;
+  if (totalAmount === undefined) {
+    throw new AppError("Invalid registration amount", 500);
   }
 
   try {
@@ -109,13 +125,13 @@ export const payForRegistrationService = async (
       if (!user) {
         throw new AppError("User not found", 404);
       }
-      if (user.balance < existingRegistration.totalAmount) {
+      if (user.balance < totalAmount) {
         throw new AppError("Insufficient balance", 400);
       }
 
       const updatedUser = await User.updateOne(
         { _id: existingRegistration.user },
-        { $inc: { balance: -existingRegistration.totalAmount } },
+        { $inc: { balance: -totalAmount } },
         { session },
       );
       if (updatedUser.matchedCount === 0) {
@@ -150,6 +166,7 @@ export const cancelRegistrationService = async (
   }
 
   try {
+    let cancelledRegistration: RegistrationDocument | null = null;
     const session = await mongoose.startSession();
     await session.withTransaction(async () => {
       await Event.findByIdAndUpdate(
@@ -169,26 +186,24 @@ export const cancelRegistrationService = async (
         }
       }
 
-      const updatedRegistration = await Registration.updateOne(
-        { _id: existingRegistration._id },
+      cancelledRegistration = await Registration.findByIdAndUpdate(
+        existingRegistration._id,
         { $set: { status: "cancelled", expiresAt: null } },
-        { session },
+        { session, new: true },
       );
-      if (updatedRegistration.matchedCount === 0) {
+      if (!cancelledRegistration) {
         throw new AppError("Failed to update registration status", 500);
       }
 
       await cancelPayment(
         existingRegistration._id,
-        existingRegistration.status,
+        existingRegistration.status ?? "",
         session,
       );
-
-      return { message: "Registration cancelled successfully" };
     });
 
     session.endSession();
-    return { message: "Registration cancelled successfully" };
+    return cancelledRegistration;
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new AppError("Failed to cancel registration", 500);

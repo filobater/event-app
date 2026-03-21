@@ -10,7 +10,7 @@ import { Component, input } from '@angular/core';
     @if(message() && typeof message() === 'object') {
       <ul class="text-sm text-(--destructive-color) mt-1">
         @for (error of message(); track error) {
-          <li class="list-disc list-inside">{{ error }}</li>
+          <li class="list-disc! list-inside!">{{ error }}</li>
         }
       </ul>
     }

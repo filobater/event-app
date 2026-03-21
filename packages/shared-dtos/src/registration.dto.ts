@@ -33,7 +33,9 @@ export type PayRegistrationResponseDto = BaseResponseDto & {
   data: { registration: RegistrationDto };
 };
 
-export type CancelRegistrationResponseDto = BaseResponseDto;
+export type CancelRegistrationResponseDto = BaseResponseDto & {
+  data: { registration: RegistrationDto };
+};
 
 export type GetAllRegistrationsResponseDto = BaseResponseDto & {
   data: { registrations: RegistrationDto[] };

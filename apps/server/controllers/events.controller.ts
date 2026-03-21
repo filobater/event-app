@@ -3,6 +3,7 @@ import { Event } from "models/event.model.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
+import { Registration } from "models/registration.model.ts";
 
 // here in all controllers we can directly take the req body and put it because of the validation
 
@@ -51,12 +52,27 @@ export const getAllEvents = async (req: Request, res: Response) => {
 };
 
 export const getEvent = async (req: Request, res: Response) => {
+  const registration = await Registration.findOne({
+    event: req.event?._id,
+    user: req.user?._id,
+    $or: [{ status: "reserved" }, { status: "confirmed" }],
+  });
+
   sendResponse({
     res,
     statusCode: 200,
     message: "Event fetched Successfully",
     data: {
-      event: req.event,
+      event: {
+        ...req.event.toObject(),
+        registration: registration?._id ?? undefined,
+        isPaid:
+          req.event?.type === "paid"
+            ? registration?.status === "confirmed"
+              ? true
+              : false
+            : undefined,
+      },
     },
   });
 };

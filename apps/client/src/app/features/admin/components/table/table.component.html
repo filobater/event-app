@@ -53,7 +53,7 @@
   </div>
 
   <!-- Pagination always sticks to bottom -->
-  @if (paginationOptions()) {
+  @if (paginationOptions() && tableConfiguration().rows.length > 0) {
     <div class="mt-auto py-4">
       <app-pagination
         [currentPage]="paginationOptions()?.currentPage ?? 1"
@@ -63,4 +63,3 @@
     </div>
   }
 </div>
-

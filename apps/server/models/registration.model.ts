@@ -1,7 +1,15 @@
-import { Schema, model, type HydratedDocument } from "mongoose";
-import type { RegistrationInput } from "schemas/registration.schema.ts";
+import { Schema, model, type HydratedDocument, type Types } from "mongoose";
 
-export type RegistrationDocument = HydratedDocument<RegistrationInput>;
+type RegistrationFields = {
+  user: Types.ObjectId;
+  event: Types.ObjectId;
+  status: "reserved" | "confirmed" | "cancelled";
+  seatsCount: number;
+  totalAmount: number;
+  expiresAt: Date | null;
+};
+
+export type RegistrationDocument = HydratedDocument<RegistrationFields>;
 
 const registrationSchema = new Schema(
   {

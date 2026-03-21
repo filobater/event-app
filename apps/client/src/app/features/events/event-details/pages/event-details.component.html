@@ -16,9 +16,15 @@
           <app-event-speakers [speakers]="ev.speakers" />
         </div>
 
-        <app-event-seats [event]="ev" />
+        <app-event-seats
+          #seatsRef
+          [event]="ev"
+          [requestState]="registrationsFacade.mutationState"
+          (onRegistration)="handleRegistration($event)"
+          (onPayment)="handlePayment()"
+          (onCancelRegistration)="handleCancelRegistration()"
+        />
       </div>
     </div>
   }
 </div>
-
