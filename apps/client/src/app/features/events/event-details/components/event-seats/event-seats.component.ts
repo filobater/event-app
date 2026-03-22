@@ -62,7 +62,6 @@ export default class EventSeatsComponent {
 
   handleModalOk() {
     const action = this.activeModal();
-    // Do NOT close the modal here — the parent closes it after the API call succeeds.
     const actions: Record<ModalAction, () => void> = {
       register: () => this.onRegistration.emit(this.seats()),
       pay: () => this.onPayment.emit(),

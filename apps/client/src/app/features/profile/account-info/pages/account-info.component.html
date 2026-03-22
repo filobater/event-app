@@ -14,6 +14,11 @@
           <p class="text-white font-semibold text-xl">{{ user()?.fullName | titlecase }}</p>
 
           <app-badge [label]="user()?.role ?? '' | titlecase" [color]="roleBadgeColor" />
+
+          <div class="flex items-center gap-2 text-(--light-gray-color) text-sm">
+            <i-lucide [img]="CoinsIcon" class="size-2" class="text-(--secondary-color)" />
+            <span>{{ user()?.balance | currency: 'EGP' }}</span>
+          </div>
         </div>
       </div>
 

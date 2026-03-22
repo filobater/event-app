@@ -47,10 +47,17 @@ export const createRegistrationService = async (
     throw new AppError("Not enough seats available", 400);
   }
 
+  if (seatsCount > 1 && existingEvent.type === "free") {
+    throw new AppError(
+      "Free events cannot be registered for more than 1 seat",
+      400,
+    );
+  }
+
   const amount = existingEvent.price * seatsCount;
 
   try {
-    let createdRegistration: RegistrationDocument | null = null;
+    let createdRegistration;
     const session = await mongoose.startSession();
     await session.withTransaction(async () => {
       await Event.findByIdAndUpdate(
@@ -189,7 +196,7 @@ export const cancelRegistrationService = async (
       cancelledRegistration = await Registration.findByIdAndUpdate(
         existingRegistration._id,
         { $set: { status: "cancelled", expiresAt: null } },
-        { session, new: true },
+        { session, returnDocument: "after" },
       );
       if (!cancelledRegistration) {
         throw new AppError("Failed to update registration status", 500);

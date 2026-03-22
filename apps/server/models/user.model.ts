@@ -97,7 +97,6 @@ userSchema.set("toJSON", {
     delete ret["passwordResetToken"];
     delete ret["passwordResetExpiresAt"];
     delete ret["__v"];
-    delete ret["balance"];
     return ret;
   },
 });

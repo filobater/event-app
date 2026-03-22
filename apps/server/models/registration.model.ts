@@ -1,15 +1,7 @@
 import { Schema, model, type HydratedDocument, type Types } from "mongoose";
+import type { RegistrationInput } from "schemas/registration.schema.ts";
 
-type RegistrationFields = {
-  user: Types.ObjectId;
-  event: Types.ObjectId;
-  status: "reserved" | "confirmed" | "cancelled";
-  seatsCount: number;
-  totalAmount: number;
-  expiresAt: Date | null;
-};
-
-export type RegistrationDocument = HydratedDocument<RegistrationFields>;
+export type RegistrationDocument = HydratedDocument<RegistrationInput>;
 
 const registrationSchema = new Schema(
   {
@@ -45,5 +37,13 @@ const registrationSchema = new Schema(
     timestamps: true,
   },
 );
+
+registrationSchema.index({ status: 1 });
+registrationSchema.pre("find", function () {
+  this.populate([
+    { path: "user", select: "fullName" },
+    { path: "event", select: "title dateTime photo" },
+  ]);
+});
 
 export const Registration = model("Registration", registrationSchema);

@@ -3,10 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { NAV } from 'src/app/core';
 import { EventsFacade } from 'src/app/core/facades/events.facade';
-import ErrorMessageComponent from 'src/app/shared/components/error-message/error-message.component';
+import { BackButtonComponent, ErrorMessageComponent } from 'src/app/shared/components';
 import {
   EventAboutComponent,
-  EventDetailsBackButtonComponent,
   EventDetailsSkeletonComponent,
   EventHeroComponent,
   EventSeatsComponent,
@@ -20,7 +19,7 @@ import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
   imports: [
     LucideAngularModule,
     ErrorMessageComponent,
-    EventDetailsBackButtonComponent,
+    BackButtonComponent,
     EventDetailsSkeletonComponent,
     EventHeroComponent,
     EventAboutComponent,

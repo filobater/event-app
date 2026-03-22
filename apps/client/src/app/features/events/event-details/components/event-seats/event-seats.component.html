@@ -41,7 +41,7 @@
           >
             <i-lucide [img]="MinusIcon" class="size-4" />
           </button>
-          <span class="text-white font-semibold w-4 text-center">{{ seats() }}</span>
+          <span class="text-white font-semibold w-4 text-center flex items-center justify-center w-full">{{ seats() }}</span>
           <button
             class="btn size-8 rounded-lg bg-(--dark-color) border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border-white/20 text-white"
             [disabled]="seats() >= availableSeats()"

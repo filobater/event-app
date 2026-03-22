@@ -21,6 +21,8 @@ export const API_ENDPOINTS = {
     getMe: "/me",
     // get user, update user by id "admin"
     byId: `/:id`,
+    // get registrations for a specific user (admin)
+    userRegistrations: `/:id/registrations`,
 
     // patch request for the logged in user
     updateProfile: "/profile",

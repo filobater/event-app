@@ -39,9 +39,11 @@ export const cancelRegistration = async (req: Request, res: Response) => {
   });
 };
 
-export const getRegistration = async (req: Request, res: Response) => {
+export const getUserRegistrations = async (req: Request, res: Response) => {
+  const { targetUser, user } = req;
+
   const registrationQuery = Registration.find({
-    user: req.user?._id,
+    user: targetUser?._id || user?._id,
     $or: [{ status: "reserved" }, { status: "confirmed" }],
   });
 
@@ -51,15 +53,16 @@ export const getRegistration = async (req: Request, res: Response) => {
     totalFeatures.query.getFilter(),
   );
 
-  const features = new ApiFeatures(registrationQuery, req.query).paginate();
+  const features = new ApiFeatures(registrationQuery, req.query)
+    .paginate()
+    .search();
 
-  const registrations = await features.query.populate([
-    { path: "event", select: "title dateTime photo" },
-  ]);
+  const registrations = await features.query;
+
   sendResponse({
     res,
     statusCode: 200,
-    message: "Registration fetched successfully",
+    message: "User registrations fetched successfully",
     data: {
       registrations,
       count: registrations.length,

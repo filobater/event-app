@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DatePipe, TitleCasePipe } from '@angular/common';
-import { CalendarDays, LucideAngularModule, User } from 'lucide-angular';
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
+import { CalendarDays, LucideAngularModule, User, Coins } from 'lucide-angular';
 import {
   BadgeComponent,
   ErrorMessageComponent,
@@ -30,12 +30,14 @@ import { UserService } from 'src/app/core/services/user.service';
     DatePipe,
     LucideAngularModule,
     AccountInfoSkeletonComponent,
+    CurrencyPipe,
   ],
   templateUrl: './account-info.component.html',
 })
 export default class AccountInfoComponent {
   readonly UserIcon = User;
   readonly CalendarIcon = CalendarDays;
+  readonly CoinsIcon = Coins;
 
   private readonly fb = inject(FormBuilder);
 

@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto">
-  <app-event-details-back-button />
+  <app-back-button [label]="'Back to events'" [path]="eventsPath" />
 
   @if (eventsFacade.loadEventState.loading()) {
     <app-event-details-skeleton />

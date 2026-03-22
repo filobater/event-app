@@ -18,6 +18,12 @@ export const profileRoutes: Routes = [
           import('./change-password/change-password.component').then((m) => m.default),
         title: 'Profile - Password',
       },
+      {
+        path: ROUTE_SEGMENTS.profile.registrations,
+        loadComponent: () =>
+          import('./my-registrations/pages/my-registrations.component').then((m) => m.default),
+        title: 'Profile - My Registrations',
+      },
     ],
   },
 ];

@@ -16,6 +16,7 @@ export const NAV = {
     users: BASE_PATH + 'admin/users',
     events: BASE_PATH + 'admin/events',
     dashboard: BASE_PATH + 'admin/dashboard',
+    userRegistrations: (id: string) => BASE_PATH + 'admin/users/' + id + '/registrations',
   },
   events: BASE_PATH,
   event: (id: string) => BASE_PATH + 'events/' + id,
@@ -23,6 +24,7 @@ export const NAV = {
     base: 'profile',
     account: BASE_PATH + 'profile/account',
     password: BASE_PATH + 'profile/password',
+    registrations: BASE_PATH + 'profile/registrations',
   },
 } as const;
 
@@ -38,10 +40,12 @@ export const ROUTE_SEGMENTS = {
   admin: {
     users: 'users',
     events: 'events',
+    userRegistrations: 'registrations',
   },
   profile: {
     account: 'account',
     password: 'password',
+    registrations: 'registrations',
   },
   events: {
     details: 'events/:id',

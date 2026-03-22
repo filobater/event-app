@@ -4,6 +4,8 @@ import { ApiFeatures } from "utils/ApiFeatures.ts";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
 import { Registration } from "models/registration.model.ts";
+import { replaceFile } from "utils/replaceFile.ts";
+import type { SpeakerDto } from "@events-app/shared-dtos";
 
 // here in all controllers we can directly take the req body and put it because of the validation
 
@@ -81,6 +83,10 @@ export const updateEvent = async (req: Request, res: Response) => {
   if ("registeredSeats" in req.body && req.body.registeredSeats !== undefined) {
     throw new AppError("Registered seats cannot be updated", 400);
   }
+  replaceFile(req.event.photo, req, "photo");
+  req.event.speakers.forEach((speaker: SpeakerDto) => {
+    replaceFile(speaker.image, req, "image");
+  });
   const updatedEvent = Object.assign(req.event, req.body);
   await updatedEvent.save();
   sendResponse({
@@ -95,6 +101,10 @@ export const updateEvent = async (req: Request, res: Response) => {
 
 export const deleteEvent = async (req: Request, res: Response) => {
   const { event } = req;
+  replaceFile(event.photo);
+  event.speakers.forEach((speaker: SpeakerDto) => {
+    replaceFile(speaker.image);
+  });
   await event.deleteOne();
 
   sendResponse({

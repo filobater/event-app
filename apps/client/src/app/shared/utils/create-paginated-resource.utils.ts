@@ -16,11 +16,11 @@ export function createPaginatedResource<Item extends { _id: string }, Key extend
 ) {
   const params = createPaginatedParams();
 
-  const resource = httpResource<PaginatedResponseDto<Record<Key, Item[]>>>(() => ({
-    url: url(),
-    method: 'GET',
-    params: toHttpParams(params.requestParams()),
-  }));
+  const resource = httpResource<PaginatedResponseDto<Record<Key, Item[]>>>(() => {
+    const u = url();
+    if (!u) return undefined;
+    return { url: u, method: 'GET', params: toHttpParams(params.requestParams()) };
+  });
 
   const mutations = createPaginatedMutations<Item, Key>(resource, dataKey);
 

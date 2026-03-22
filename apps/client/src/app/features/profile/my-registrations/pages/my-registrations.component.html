@@ -1,0 +1,35 @@
+<div class="flex flex-col gap-6">
+  <div class="flex items-center justify-between flex-wrap gap-4">
+    <div class="flex items-center gap-2">
+      <i-lucide [img]="TicketIcon" class="size-6 text-(--secondary-color)" />
+      <div>
+        <h2 class="text-xl font-bold text-white">
+          My Registrations
+          <span class="text-(--light-gray-color) font-normal text-base ml-1">
+            ({{ registrationsResource.resource.value()?.data?.totalData ?? 0 }})
+          </span>
+        </h2>
+        <p class="text-(--light-gray-color) text-sm">
+          Your confirmed and reserved event registrations
+        </p>
+      </div>
+    </div>
+    <app-search-input
+      [placeholder]="'Search registrations'"
+      [value]="registrationsResource.searchInput()"
+      (onSearch)="handleSearch($event)"
+    />
+  </div>
+
+  <app-registration-list
+    [registrations]="registrationsResource.resource.value()?.data?.registrations ?? []"
+    [isLoading]="registrationsResource.resource.isLoading()"
+  />
+  <div class="mt-auto">
+    <app-pagination
+      [totalPages]="registrationsResource.resource.value()?.data?.totalPages ?? 0"
+      [currentPage]="registrationsResource.requestParams().page"
+      (pageChange)="registrationsResource.goToPage($event)"
+    />
+  </div>
+</div>

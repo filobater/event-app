@@ -3,7 +3,7 @@ import { Eye, LucideAngularModule } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { EventDto, RegistrationDto } from '@events-app/shared-dtos';
-import { isPopulated } from '../../utils';
+import { isPopulated } from '../../../utils';
 import { NAV } from 'src/app/core';
 import { TitleCasePipe, DatePipe } from '@angular/common';
 @Component({
@@ -12,7 +12,7 @@ import { TitleCasePipe, DatePipe } from '@angular/common';
   standalone: true,
   imports: [LucideAngularModule, RouterLink, TitleCasePipe, DatePipe],
 })
-export class RegisterCardComponent {
+export default class RegisterCardComponent {
   readonly nav = NAV;
   readonly baseUrl = environment.apiUrl;
   readonly EyeIcon = Eye;

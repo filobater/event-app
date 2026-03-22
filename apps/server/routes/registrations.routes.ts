@@ -1,4 +1,3 @@
-
 import { Router } from "express";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 import { validate } from "middlewares/validate.middleware.ts";
@@ -9,7 +8,7 @@ import { Registration } from "models/registration.model.ts";
 import {
   cancelRegistration,
   createRegistration,
-  getRegistration,
+  getUserRegistrations,
   payForRegistration,
 } from "../controllers/registrations.controller.ts";
 
@@ -37,6 +36,7 @@ router.patch(
   cancelRegistration,
 );
 
-router.get(API_ENDPOINTS.registrations.getAll, getRegistration);
+router.get(API_ENDPOINTS.users.userRegistrations, getUserRegistrations);
+router.get(API_ENDPOINTS.registrations.getAll, getUserRegistrations);
 
 export default router;

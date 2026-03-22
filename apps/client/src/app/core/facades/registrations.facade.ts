@@ -2,7 +2,11 @@ import { inject, Injectable, signal } from '@angular/core';
 import { RegistrationService } from '../services/registration.service';
 import { CacheService } from '../services/cache.service';
 import { RequestStateClass } from '../request-state';
-import type { CreateRegistrationRequestDto, RegistrationDto } from '@events-app/shared-dtos';
+import type {
+  CreateRegistrationRequestDto,
+  RegistrationDto,
+  UserDto,
+} from '@events-app/shared-dtos';
 
 @Injectable({ providedIn: 'root' })
 export class RegistrationsFacade {
@@ -10,11 +14,13 @@ export class RegistrationsFacade {
   private readonly cache = inject(CacheService);
   private readonly cacheNamespace = 'registrations';
 
-  //   readonly registrationsResource = this.api.getAllRegistrations;
+  readonly registrationsResource = () => this.api.getAllRegistrations();
 
   readonly loadRegistrationState = new RequestStateClass();
   readonly mutationState = new RequestStateClass();
   readonly registration = signal<RegistrationDto | null>(null);
+
+  readonly userRegistrationsResource = (userId: string) => this.api.getUserRegistrations(userId);
 
   createRegistration(
     data: CreateRegistrationRequestDto,

@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
+import { replaceFile } from "utils/replaceFile.ts";
 
 // create user from admin
 // in this step we take directly the user because there will ba validation from zod
@@ -26,7 +27,6 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: Request, res: Response) => {
-  // TODO: update this when the registration is done
   const { targetUser } = req;
   sendResponse({
     res,
@@ -73,6 +73,7 @@ export const updateUser = async (req: Request, res: Response) => {
   if (req.body.email) {
     throw new AppError("Email is not allowed to be updated", 400);
   }
+  replaceFile(targetUser.profilePicture, req, "profilePicture");
 
   const updatedUser = Object.assign(targetUser, req.body);
   await updatedUser.save();
@@ -89,6 +90,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   const { targetUser } = req;
+  replaceFile(targetUser.profilePicture);
   await targetUser.deleteOne();
   sendResponse({
     res,
@@ -114,7 +116,12 @@ export const getMe = async (req: Request, res: Response) => {
 
 export const updateUserProfile = async (req: Request, res: Response) => {
   const { user } = req;
-  const { fullName, profilePicture } = req.body;
+  const { fullName } = req.body;
+  const profilePicture = replaceFile(
+    user.profilePicture,
+    req,
+    "profilePicture",
+  );
 
   const updatedUser = Object.assign(user, {
     ...(fullName && { fullName }),

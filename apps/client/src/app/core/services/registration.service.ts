@@ -18,6 +18,7 @@ import { createPaginatedResource } from 'src/app/shared/utils';
 export class RegistrationService {
   private readonly http = inject(HttpClient);
   private readonly baseRegistrationsUrl = `${environment.apiUrl}${API_ENDPOINTS.registrations.base}`;
+  private readonly baseUsersUrl = `${environment.apiUrl}${API_ENDPOINTS.users.base}`;
 
   createRegistration(
     data: CreateRegistrationRequestDto,
@@ -28,12 +29,24 @@ export class RegistrationService {
     );
   }
 
-  // getAllRegistrations() {
-  //   return createPaginatedResource<RegistrationDto, 'registrations'>(
-  //     () => `${this.baseRegistrationsUrl}${API_ENDPOINTS.registrations.getAll}`,
-  //     'registrations',
-  //   );
-  // }
+  getAllRegistrations() {
+    return createPaginatedResource<RegistrationDto, 'registrations'>(
+      () => `${this.baseRegistrationsUrl}${API_ENDPOINTS.registrations.getAll}`,
+      'registrations',
+    );
+  }
+
+  getUserRegistrations(userId: string | (() => string)) {
+    const getId = typeof userId === 'function' ? userId : () => userId;
+    return createPaginatedResource<RegistrationDto, 'registrations'>(
+      () => {
+        const id = getId();
+        if (!id) return '';
+        return `${this.baseUsersUrl}${API_ENDPOINTS.users.userRegistrations.replace(':id', id)}`;
+      },
+      'registrations',
+    );
+  }
 
   payRegistration(id: string): Observable<PayRegistrationResponseDto> {
     return this.http.patch<PayRegistrationResponseDto>(

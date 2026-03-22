@@ -1,0 +1,39 @@
+<div class="space-y-6">
+  <app-back-button [label]="'Back to Users'" [path]="nav.admin.users" />
+
+  <div class="flex items-center justify-between flex-wrap gap-4">
+    <div class="flex flex-col gap-1">
+      <div class="flex items-end gap-2">
+        <i-lucide [img]="TicketIcon" class="size-7 text-(--secondary-color)" />
+        <h1 class="text-2xl font-display font-bold text-white">
+          @if (registrationsResource.resource.isLoading()) {
+            <span class="inline-block w-40 h-6 rounded bg-(--gray-color) animate-pulse"></span>
+          } @else {
+            {{ user()?.fullName ?? 'User' }}'s Registrations
+          }
+        </h1>
+      </div>
+      <p class="text-(--light-gray-color)">
+        {{ registrationsResource.resource.value()?.data?.totalData ?? 0 }} total registrations
+        &nbsp;·&nbsp; {{ registrationsResource.resource.value()?.data?.count ?? 0 }} per page
+      </p>
+    </div>
+    <app-search-input
+      [placeholder]="'Search registrations'"
+      [value]="registrationsResource.searchInput()"
+      (onSearch)="handleSearch($event)"
+    />
+  </div>
+
+  <app-registration-list
+    [registrations]="registrationsResource.resource.value()?.data?.registrations ?? []"
+    [isLoading]="registrationsResource.resource.isLoading()"
+  />
+  <div class="mt-auto">
+    <app-pagination
+      [totalPages]="registrationsResource.resource.value()?.data?.totalPages ?? 0"
+      [currentPage]="registrationsResource.requestParams().page"
+      (pageChange)="registrationsResource.goToPage($event)"
+    />
+  </div>
+</div>

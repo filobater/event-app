@@ -10,6 +10,7 @@ import {
   deleteUser,
   getMe,
 } from "../controllers/users.controller.ts";
+import { getUserRegistrations } from "../controllers/registrations.controller.ts";
 import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import { validate } from "middlewares/validate.middleware.ts";
 import { protect } from "middlewares/auth.middleware.ts";
@@ -68,6 +69,7 @@ router.post(
 router.get(API_ENDPOINTS.users.getAll, getAllUsers);
 
 router.get(API_ENDPOINTS.users.byId, getUser);
+router.get(API_ENDPOINTS.users.userRegistrations, getUserRegistrations);
 
 router.patch(
   API_ENDPOINTS.users.byId,

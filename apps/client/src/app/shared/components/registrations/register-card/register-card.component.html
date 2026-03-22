@@ -9,7 +9,7 @@
     </div>
     <div class="flex flex-col gap-1">
       <span class="text-white text-sm font-medium truncate">{{ event()?.title | titlecase }}</span>
-      <span class="text-(--light-gray-color) text-xs"
+      <span class="text-(--light-gray-color) text-sm"
         >{{ event()?.dateTime | date: 'shortDate' }} -
         {{ registration()?.seatsCount ?? 0 }} seat(s)</span
       >

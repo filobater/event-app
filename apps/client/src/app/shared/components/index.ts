@@ -7,5 +7,7 @@ export { default as BadgeComponent } from './badge/badge.component';
 export { default as PaginationComponent } from './pagination/pagination.component';
 export { default as AvatarComponent } from './avatar/avatar.component';
 export { default as NavTabComponent } from './nav-tab/nav-tab.component';
+export { default as BackButtonComponent } from './back-button/back-button.component';
 export * from './inputs';
 export * from './buttons';
+export * from './registrations';
