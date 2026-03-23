@@ -1,13 +1,13 @@
 <li class="">
-<a
-  [routerLink]="link().path"
-  [routerLinkActive]="['!bg-(--main-color)', '!text-(--dark-color)', '']"
-  [routerLinkActiveOptions]="{ exact: true }"
-  class="flex items-center gap-2 px-3 py-2 m-1 bg-transparent rounded-xl transition-colors hover:text-white text-(--light-gray-color) hover:bg-(--gray-color) cursor-pointer"
->
-  @if (link().icon) {
-    <i-lucide [img]="link().icon" class="size-4 shrink-0" />
-  }
-  <span class="font-medium">{{ link().label }}</span>
-</a>
+  <a
+    [routerLink]="link().path"
+    [routerLinkActive]="['!bg-(--main-color)', '!text-(--dark-color)', '']"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="flex items-center whitespace-nowrap gap-2 px-3 py-2 m-1 bg-transparent rounded-xl transition-colors hover:text-white text-(--light-gray-color) hover:bg-(--gray-color) cursor-pointer"
+  >
+    @if (link().icon) {
+      <i-lucide [img]="link().icon" class="size-4 shrink-0" />
+    }
+    <span class="font-medium">{{ link().label }}</span>
+  </a>
 </li>

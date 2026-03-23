@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
 import { EventsApiService } from '../services/events-api.service';
 import { CacheService } from '../services/cache.service';
 import { RequestStateClass } from '../request-state';
@@ -12,9 +12,15 @@ import type {
 export class EventsFacade {
   private readonly api = inject(EventsApiService);
   private readonly cache = inject(CacheService);
+  private readonly injector = inject(Injector);
   private readonly cacheNamespace = 'events';
 
-  readonly eventsResource = this.api.getAllEvents();
+  private _eventsResource?: ReturnType<EventsApiService['getAllEvents']>;
+
+  get eventsResource() {
+    this._eventsResource ??= runInInjectionContext(this.injector, () => this.api.getAllEvents());
+    return this._eventsResource;
+  }
 
   readonly loadEventState = new RequestStateClass();
   readonly mutationState = new RequestStateClass();

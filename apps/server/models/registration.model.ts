@@ -1,9 +1,30 @@
-import { Schema, model, type HydratedDocument, type Types } from "mongoose";
+import { Model, Schema, Types, model, type HydratedDocument } from "mongoose";
 import type { RegistrationInput } from "schemas/registration.schema.ts";
 
-export type RegistrationDocument = HydratedDocument<RegistrationInput>;
+interface IRegistration extends Omit<RegistrationInput, "user" | "event"> {
+  user: Types.ObjectId;
+  event: Types.ObjectId;
+}
 
-const registrationSchema = new Schema(
+interface IRegistrationMethods {
+  searchByEventTitle(
+    userId: string,
+    search: string,
+    page: number,
+  ): Promise<{ registrations: IRegistration[]; total: number }>;
+}
+
+export type RegistrationDocument = HydratedDocument<
+  IRegistration,
+  IRegistrationMethods
+>;
+type RegistrationModel = Model<IRegistration, object, IRegistrationMethods>;
+
+const registrationSchema = new Schema<
+  IRegistration,
+  RegistrationModel,
+  IRegistrationMethods
+>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -45,5 +66,45 @@ registrationSchema.pre("find", function () {
     { path: "event", select: "title dateTime photo" },
   ]);
 });
+registrationSchema.statics.searchByEventTitle = async function (
+  userId: string,
+  search: string,
+  page: number,
+) {
+  const limit = 10;
+  const skip = (page - 1) * limit;
+  const pipeline = [
+    {
+      $match: {
+        user: userId,
+        $or: [{ status: "reserved" }, { status: "confirmed" }],
+      },
+    },
+    {
+      $lookup: {
+        from: "events",
+        localField: "event",
+        foreignField: "_id",
+        as: "event",
+      },
+    },
+    {
+      $unwind: "$event",
+    },
+    {
+      $match: {
+        // the options are i for case insensitive
+        "event.title": { $regex: search, $options: "i" },
+      },
+    },
+  ];
+
+  const [registrations, total] = await Promise.all([
+    this.aggregate([...pipeline, { $skip: skip }, { $limit: limit }]),
+    this.aggregate([...pipeline, { $count: "totalRegistrations" }]),
+  ]);
+
+  return { registrations, total: total[0]?.totalRegistrations ?? 0 };
+};
 
 export const Registration = model("Registration", registrationSchema);

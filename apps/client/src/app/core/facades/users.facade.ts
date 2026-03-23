@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
 import { UsersApiService } from '../services/users-api.service';
 import { CacheService } from '../services/cache.service';
 import { RequestStateClass } from '../request-state';
@@ -10,9 +10,15 @@ import type { CreateUserRequestDto, UserDto, UpdateUserRequestDto } from '@event
 export class UsersFacade {
   private readonly api = inject(UsersApiService);
   private readonly cache = inject(CacheService);
+  private readonly injector = inject(Injector);
   private readonly cacheNamespace = 'users';
 
-  readonly usersResource = this.api.getAllUsers();
+  private _usersResource?: ReturnType<UsersApiService['getAllUsers']>;
+
+  get usersResource() {
+    this._usersResource ??= runInInjectionContext(this.injector, () => this.api.getAllUsers());
+    return this._usersResource;
+  }
 
   readonly loadUserState = new RequestStateClass();
   readonly mutationState = new RequestStateClass();

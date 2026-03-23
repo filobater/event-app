@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
 import { RegistrationService } from '../services/registration.service';
 import { CacheService } from '../services/cache.service';
 import { RequestStateClass } from '../request-state';
@@ -12,9 +12,17 @@ import type {
 export class RegistrationsFacade {
   private readonly api = inject(RegistrationService);
   private readonly cache = inject(CacheService);
+  private readonly injector = inject(Injector);
   private readonly cacheNamespace = 'registrations';
 
-  readonly registrationsResource = () => this.api.getAllRegistrations();
+  private _registrationsResource?: ReturnType<RegistrationService['getAllRegistrations']>;
+
+  get registrationsResource() {
+    this._registrationsResource ??= runInInjectionContext(this.injector, () =>
+      this.api.getAllRegistrations(),
+    );
+    return this._registrationsResource;
+  }
 
   readonly loadRegistrationState = new RequestStateClass();
   readonly mutationState = new RequestStateClass();
@@ -31,6 +39,7 @@ export class RegistrationsFacade {
       next: (res) => {
         this.mutationState.success(res.message);
         this.cache.set(this.cacheNamespace, res.data.registration._id, res.data.registration);
+        this.registrationsResource.addItem(res.data.registration);
         onSuccess?.(res.data.registration);
       },
       error: (err) => this.mutationState.fail(err),
@@ -42,6 +51,7 @@ export class RegistrationsFacade {
     this.api.payRegistration(id).subscribe({
       next: (res) => {
         this.mutationState.success(res.message);
+        this.registrationsResource.updateItem(id, res.data.registration);
         onSuccess?.();
       },
       error: (err) => this.mutationState.fail(err),
@@ -53,6 +63,7 @@ export class RegistrationsFacade {
     this.api.cancelRegistration(id).subscribe({
       next: (res) => {
         this.mutationState.success(res.message);
+        this.registrationsResource.updateItem(id, res.data.registration);
         onSuccess?.(res.data.registration);
       },
       error: (err) => this.mutationState.fail(err),

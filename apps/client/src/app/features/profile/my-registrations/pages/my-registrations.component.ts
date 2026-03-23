@@ -22,7 +22,7 @@ export default class MyRegistrationsComponent {
   readonly TicketIcon = Ticket;
 
   private readonly registrationsFacade = inject(RegistrationsFacade);
-  readonly registrationsResource = this.registrationsFacade.registrationsResource();
+  readonly registrationsResource = this.registrationsFacade.registrationsResource;
 
   handleSearch(search: string) {
     this.registrationsResource.setSearch(search);
