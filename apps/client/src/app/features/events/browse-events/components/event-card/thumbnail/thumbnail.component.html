@@ -7,8 +7,14 @@
   <div class="absolute top-3 right-3 flex gap-2">
     <app-badge [color]="statusColors[event().status]" [label]="event().status" />
   </div>
+  <div class="absolute top-3 right-28 flex gap-2">
+    <app-badge
+      [color]="priceColors[event().price === 0 ? 'free' : 'paid']"
+      [label]="event().price === 0 ? 'Free' : 'Paid'"
+    >
+    </app-badge>
+  </div>
   <div
     class="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-black/60 to-transparent"
   ></div>
 </div>
-

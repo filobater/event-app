@@ -61,10 +61,7 @@ const registrationSchema = new Schema<
 
 registrationSchema.index({ status: 1 });
 registrationSchema.pre("find", function () {
-  this.populate([
-    { path: "user", select: "fullName" },
-    { path: "event", select: "title dateTime photo" },
-  ]);
+  this.populate([{ path: "user", select: "fullName" }, { path: "event" }]);
 });
 registrationSchema.statics.searchByEventTitle = async function (
   userId: string,

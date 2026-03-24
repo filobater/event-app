@@ -17,6 +17,7 @@ import eventsRoutes from "routes/events.routes.ts";
 import { updateEventStatus } from "process/updateEventStatus.ts";
 import { updateRegistrationPaymentStatus } from "process/updateRegistrationPaymentStatus.ts";
 import registrationsRoutes from "routes/registrations.routes.ts";
+import dashboardRoutes from "routes/dashboard.routes.ts";
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -66,6 +67,7 @@ app.use(API_ENDPOINTS.auth.base, authRoutes);
 app.use(API_ENDPOINTS.users.base, usersRoutes);
 app.use(API_ENDPOINTS.events.base, eventsRoutes);
 app.use(API_ENDPOINTS.registrations.base, registrationsRoutes);
+app.use(API_ENDPOINTS.admin.dashboard.base, dashboardRoutes);
 
 app.use((req: Request) => {
   throw new AppError(`the ${req.originalUrl} not found`, 404);

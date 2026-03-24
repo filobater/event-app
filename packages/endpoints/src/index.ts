@@ -42,4 +42,14 @@ export const API_ENDPOINTS = {
     pay: "/:id/pay",
     cancel: "/:id/cancel",
   },
+  admin: {
+    dashboard: {
+      base: `${API_BASE}/admin/dashboard`,
+      stats: "/stats",
+      topEventsByRegistration: "/top-events/registrations",
+      eventsByCategory: "/events-by-category",
+      topEventsByRevenue: "/top-events/revenue",
+      eventsStatus: "/events-status",
+    },
+  },
 } as const;

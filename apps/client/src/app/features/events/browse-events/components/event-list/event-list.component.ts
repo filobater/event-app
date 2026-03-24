@@ -10,7 +10,7 @@ import EventCardComponent from '../event-card/event-card.component';
   standalone: true,
   imports: [CommonModule, EventCardComponent, RouterModule],
   template: `
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       @for (event of events(); track event._id) {
         <div (click)="goToDetails(event._id)" class="cursor-pointer">
           <app-event-card [event]="event"></app-event-card>

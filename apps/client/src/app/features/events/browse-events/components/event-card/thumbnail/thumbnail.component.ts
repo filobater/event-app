@@ -12,7 +12,11 @@ import { environment } from 'src/environments/environment';
 })
 export default class ThumbnailComponent {
   readonly baseUrl = environment.apiUrl;
-  event = input.required<Pick<EventDto, 'photo' | 'title' | 'status'>>();
+  event = input.required<Pick<EventDto, 'photo' | 'title' | 'status' | 'price'>>();
   readonly statusColors = STATUS_BADGE_COLORS;
+  readonly priceColors = {
+    free: 'bg-(--warning-color) text-(--dark-color)!',
+    paid: 'bg-(--secondary-color) text-(--dark-color)!',
+  };
 }
 

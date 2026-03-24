@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-error-message',
@@ -7,7 +7,7 @@ import { Component, input } from '@angular/core';
     @if (message() && typeof message() === 'string') {
       <p class="text-sm text-(--destructive-color) mt-1">{{ message() }}</p>
     }
-    @if(message() && typeof message() === 'object') {
+    @if (message() && arrayMessage()) {
       <ul class="text-sm text-(--destructive-color) mt-1">
         @for (error of message(); track error) {
           <li class="list-disc! list-inside!">{{ error }}</li>
@@ -18,4 +18,5 @@ import { Component, input } from '@angular/core';
 })
 export default class ErrorMessageComponent {
   message = input<string | string[] | null | undefined>('');
+  arrayMessage = computed(() => Array.isArray(this.message));
 }

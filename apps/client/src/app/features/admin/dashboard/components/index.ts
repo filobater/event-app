@@ -6,3 +6,4 @@ export { default as TopRevenueEventCardComponent } from './top-revenue-event-car
 export { default as TopRevenueEventsListComponent } from './top-revenue-events-list/top-revenue-events-list.component';
 export { default as EventStatusCardComponent } from './event-status-card/event-status-card.component';
 export { default as EventStatusListComponent } from './event-status-list/event-status-list.component';
+export { default as DashboardSkeletonComponent } from './dashboard-skeleton/dashboard-skeleton.component';

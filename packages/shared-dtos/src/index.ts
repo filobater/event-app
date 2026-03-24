@@ -4,3 +4,4 @@ export * from "./paginated.dto.js";
 export * from "./user.dto.js";
 export * from "./event.dto.js";
 export * from "./registration.dto.js";
+export * from "./dashboard.dto.js";
