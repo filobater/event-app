@@ -57,13 +57,7 @@
 <ng-template #statusTemplate let-event>
   <div class="flex items-center gap-2">
     <app-badge
-      [color]="
-        event.status === 'ongoing'
-          ? 'bg-(--accent-color) text-white'
-          : event.status === 'upcoming'
-            ? 'bg-(--main-color) text-white'
-            : 'bg-(--gray-color) text-white'
-      "
+      [color]="statusColors[event.status]"
       [label]="event.status | titlecase"
     >
     </app-badge>

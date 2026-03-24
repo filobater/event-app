@@ -9,6 +9,7 @@ import {
   type PaginationOptions,
 } from '../../../components';
 import { BadgeComponent } from 'src/app/shared/components';
+import { STATUS_BADGE_COLORS } from 'src/app/shared/constants';
 import type { SortParams } from '../../../types/sort-params.type';
 import { ModalType } from '../../../types/modal.type';
 import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
@@ -50,6 +51,7 @@ export default class EventsTableComponent {
   readonly DeleteIcon = Trash;
   readonly EyeIcon = Eye;
   readonly ShieldIcon = Shield;
+  readonly statusColors = STATUS_BADGE_COLORS;
 
   events = input.required<EventDto[]>();
   paginationOptions = input<PaginationOptions>();

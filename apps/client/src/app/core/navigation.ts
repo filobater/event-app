@@ -38,6 +38,7 @@ export const ROUTE_SEGMENTS = {
     verifyOtp: 'verify-otp',
   },
   admin: {
+    dashboard: 'dashboard',
     users: 'users',
     events: 'events',
     userRegistrations: 'registrations',

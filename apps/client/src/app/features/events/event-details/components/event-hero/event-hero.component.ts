@@ -2,6 +2,7 @@ import { Component, input } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { EventDto } from '@events-app/shared-dtos';
 import { BadgeComponent } from 'src/app/shared/components';
+import { STATUS_BADGE_COLORS } from 'src/app/shared/constants';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,11 +14,6 @@ import { environment } from 'src/environments/environment';
 export default class EventHeroComponent {
   readonly baseUrl = environment.apiUrl;
   event = input.required<EventDto>();
-
-  readonly statusColor: Record<EventDto['status'], string> = {
-    upcoming: 'bg-(--main-color) text-(--dark-color)! font-medium',
-    ongoing: 'bg-(--accent-color) text-(--dark-color)! font-medium',
-    completed: 'bg-(--gray-color) font-medium',
-  };
+  readonly statusColor = STATUS_BADGE_COLORS;
 }
 

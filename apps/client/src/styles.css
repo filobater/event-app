@@ -15,6 +15,7 @@
   --dark-gray-color: #181a25;
   --dark-color: #0f111a;
   --light-gray-color: #7b879d;
+  --border-color:#2e3142;
 }
 
 html {
@@ -23,4 +24,8 @@ html {
 
 li {
   list-style: none;
+}
+
+.canvasjs-chart-credit{
+  display: none !important;
 }

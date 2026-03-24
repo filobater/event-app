@@ -6,7 +6,12 @@ const SEGMENT_NAMES = ROUTE_SEGMENTS.admin;
 export const adminRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./dashboard/dashboard.component').then((m) => m.default),
+    redirectTo: SEGMENT_NAMES.dashboard,
+    pathMatch: 'full',
+  },
+  {
+    path: SEGMENT_NAMES.dashboard,
+    loadComponent: () => import('./dashboard/pages/dashboard.component').then((m) => m.default),
     title: 'Admin - Dashboard',
   },
   {

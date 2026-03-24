@@ -6,6 +6,7 @@ import {
   PaginationComponent,
   SearchInputComponent,
 } from 'src/app/shared/components';
+import { STATUS_BADGE_COLORS } from 'src/app/shared/constants';
 import { EventCardSkeletonComponent, EventListComponent } from '../components';
 
 @Component({
@@ -45,23 +46,13 @@ export default class BrowseEventsComponent {
   ]);
 
   getStatusColor(status: string): string {
-    let defaultStatus = '';
-    if (!status) {
-      defaultStatus = 'all';
-    }
-    const activeColors: Record<string, string> = {
-      [defaultStatus]: 'bg-(--secondary-color) text-(--dark-color)!',
-      upcoming: 'bg-(--main-color) text-(--dark-color)!',
-      ongoing: 'bg-(--accent-color) text-(--dark-color)!',
-      completed: 'bg-(--gray-color) brightness-75',
-    };
-
+    const allColor = 'bg-(--secondary-color) text-(--dark-color)!';
     const activeStatus = this.eventsResource.requestParams().status ?? '';
     const isActive = activeStatus === status;
 
-    return isActive
-      ? (activeColors[status] ?? activeColors[defaultStatus])
-      : 'bg-(--gray-color) text-white/50';
+    if (!isActive) return 'bg-(--gray-color) text-white/50';
+    if (!status) return allColor;
+    return STATUS_BADGE_COLORS[status] ?? allColor;
   }
 
   getCategoryColor(category: string): string {
