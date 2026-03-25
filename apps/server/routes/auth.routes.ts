@@ -38,7 +38,7 @@ router.post(
   resetPassword,
 );
 
+router.post(API_ENDPOINTS.auth.refreshToken, refreshToken);
 router.use(protect);
 router.post(API_ENDPOINTS.auth.signout, signout);
-router.post(API_ENDPOINTS.auth.refreshToken, refreshToken);
 export default router;

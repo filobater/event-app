@@ -1,0 +1,43 @@
+<div class="flex flex-col gap-4 md:hidden">
+  <app-select-input
+    [formControl]="categoryControl"
+    [id]="'browse-events-category'"
+    [labelText]="'Category'"
+    [placeholder]="'Select category'"
+    [options]="categorySelectOptions"
+  />
+  <app-select-input
+    [formControl]="statusControl"
+    [id]="'browse-events-status'"
+    [labelText]="'Status'"
+    [placeholder]="'Select status'"
+    [options]="statusSelectOptions"
+  />
+</div>
+
+<div class="hidden overflow-x-auto py-2 items-center gap-1 md:flex">
+  <div class="flex items-center gap-2">
+    @for (option of categoryOptions; track option.value) {
+      <app-badge
+        [clickable]="true"
+        [label]="option.label"
+        [color]="getCategoryColor(option.value)"
+        (onClick)="handleCategoryClick(option.value)"
+      >
+      </app-badge>
+    }
+  </div>
+  <div class="divider divider-horizontal"></div>
+
+  <div class="flex items-center gap-2">
+    @for (option of statusOptions; track option.value) {
+      <app-badge
+        [clickable]="true"
+        [label]="option.label"
+        [color]="getStatusColor(option.value)"
+        (onClick)="handleStatusClick(option.value)"
+      >
+      </app-badge>
+    }
+  </div>
+</div>

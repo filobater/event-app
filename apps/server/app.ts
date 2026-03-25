@@ -2,14 +2,13 @@ import express, { type Request } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middlewares/error.middleware.ts";
 import { AppError } from "utils/AppError.ts";
 import authRoutes from "routes/auth.routes.ts";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 import path from "path";
 
-import { protect } from "middlewares/auth.middleware.ts";
-import { restrictTo } from "middlewares/restrictTo.middleware.ts";
 import usersRoutes from "routes/users.routes.ts";
 import { rateLimit } from "express-rate-limit";
 import { fileURLToPath } from "url";
@@ -18,6 +17,7 @@ import { updateEventStatus } from "process/updateEventStatus.ts";
 import { updateRegistrationPaymentStatus } from "process/updateRegistrationPaymentStatus.ts";
 import registrationsRoutes from "routes/registrations.routes.ts";
 import dashboardRoutes from "routes/dashboard.routes.ts";
+import { protectUploads } from "middlewares/protectUploads.middleware.ts";
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -51,15 +51,14 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(
   "/uploads",
-  // TODO: solve this later
-  // protect,
-  // restrictTo("admin"),
+  protectUploads,
   express.static(path.join(__dirname, "uploads")),
 );
 

@@ -2,7 +2,7 @@ import cron from "node-cron";
 import { Event } from "models/event.model.ts";
 
 export const updateEventStatus = () => {
-  cron.schedule("*/5 * * * *", async () => {
+  cron.schedule("*/60 * * * *", async () => {
     try {
       const now = new Date();
       // check on the events thats not completed and the endTime< Date to update all with status complete

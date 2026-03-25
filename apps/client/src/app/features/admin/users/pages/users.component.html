@@ -13,13 +13,18 @@
         {{ usersResource.resource.value()?.data?.count ?? 0 }} users per page
       </p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center flex-wrap w-full md:w-auto gap-4">
       <app-search-input
+        class="w-full md:w-auto"
         [placeholder]="'Search users'"
         [value]="usersResource.searchInput()"
         (onSearch)="handleSearch($event)"
       />
-      <app-secondary-button [label]="'Add User'" (handleClick)="handleOpenModal('add')">
+      <app-secondary-button
+        class="w-full md:w-auto"
+        [label]="'Add User'"
+        (handleClick)="handleOpenModal('add')"
+      >
         <i-lucide [img]="PlusIcon" class="size-4" />
       </app-secondary-button>
     </div>

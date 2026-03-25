@@ -13,13 +13,18 @@
         {{ eventsResource.resource.value()?.data?.count ?? 0 }} events per page
       </p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex flex-wrap items-center w-full md:w-auto gap-4">
       <app-search-input
+        class="w-full md:w-auto"
         [placeholder]="'Search events'"
         (onSearch)="handleSearch($event)"
         [value]="eventsResource.searchInput()"
       />
-      <app-primary-button [label]="'Create Event'" (handleClick)="handleOpenModal('add')">
+      <app-primary-button
+        class="w-full md:w-auto"
+        [label]="'Create Event'"
+        (handleClick)="handleOpenModal('add')"
+      >
         <i-lucide [img]="PlusIcon" class="size-4" />
       </app-primary-button>
     </div>

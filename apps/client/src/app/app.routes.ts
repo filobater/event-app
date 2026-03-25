@@ -42,4 +42,10 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/not-found/pages/not-found.component').then((m) => m.default),
+    title: 'Page not found',
+  },
 ];

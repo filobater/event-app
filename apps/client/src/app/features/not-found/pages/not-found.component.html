@@ -1,0 +1,18 @@
+<div class="flex min-h-[50vh] flex-col items-center justify-center gap-6 py-12 text-center">
+  <div class="flex flex-col items-center gap-3">
+    <p class="font-mono text-5xl font-bold text-(--main-color)/90">404</p>
+    <i-lucide [img]="MapPinOffIcon" class="size-14 text-(--light-gray-color)" />
+  </div>
+  <div class="space-y-2">
+    <h1 class="font-display text-2xl font-bold text-white">Page not found</h1>
+    <p class="text-(--light-gray-color) max-w-md text-balance">
+      The page you are looking for does not exist or may have been moved.
+    </p>
+  </div>
+  <a
+    [routerLink]="NAV.events"
+    class="btn rounded-xl bg-(--main-color) px-6 text-(--dark-color) hover:bg-(--main-color)/80"
+  >
+    Go home
+  </a>
+</div>

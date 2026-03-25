@@ -66,16 +66,14 @@ export const getUserRegistrations = async (req: Request, res: Response) => {
   const { targetUser, user } = req;
 
   if (req.query.search) {
-    const { registrations, total } = await (
-      Registration as any
-    ).searchByEventTitle(
+    const { registrations, total } = await Registration.searchByEventTitle(
       targetUser?._id || user?._id,
-      req.query.search,
+      req.query.search as string,
       Number(req.query.page) || 1,
     );
     registrationsResponse(
       res,
-      registrations,
+      registrations as RegistrationDocument[],
       total,
       Number(req.query.page) || 1,
     );

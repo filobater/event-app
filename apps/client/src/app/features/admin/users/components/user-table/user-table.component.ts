@@ -27,7 +27,7 @@ export default class UserTableComponent {
   roleTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('roleTemplate');
   dateTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('dateTemplate');
   statusTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('statusTemplate');
-  actionsTemplate = viewChild<TemplateRef<any>>('actionsTemplate');
+  actionsTemplate = viewChild<TemplateRef<{ $implicit: UserDto }>>('actionsTemplate');
   sortableHeader = viewChild<TemplateRef<HeaderContext<UserDto>>>('sortableHeader');
 
   // icons
@@ -41,7 +41,7 @@ export default class UserTableComponent {
 
   openModal = output<{ modal: ModalType; userId: string }>();
 
-  readonly columns = computed<ColumnDef<UserDto & { actions?: TemplateRef<any> }>[]>(() => [
+  readonly columns = computed<ColumnDef<UserDto & { actions?: TemplateRef<{ $implicit: UserDto }> }>[]>(() => [
     {
       label: 'User',
       key: 'fullName',

@@ -1,6 +1,6 @@
-import type { NextFunction, Request, Response } from "express";
+import type { Request, Response } from "express";
 import crypto from "crypto";
-import { User, type UserDocument } from "../models/user.model.ts";
+import { User } from "../models/user.model.ts";
 import { AppError } from "../utils/AppError.ts";
 import { sendOTPEmail } from "../utils/sendOTPEmail.ts";
 import sendEmail from "utils/sendEmail.ts";
@@ -17,6 +17,17 @@ const sendRefreshToken = (res: Response, token: string) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     maxAge: Number(process.env.JWT_REFRESH_EXPIRES_IN) * 24 * 60 * 60 * 1000,
+  });
+};
+
+/** HttpOnly access token so /uploads and other cookie-only requests can be authenticated */
+const sendAccessTokenCookie = (res: Response, token: string) => {
+  res.cookie("accessToken", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    maxAge: 15 * 60 * 1000,
   });
 };
 
@@ -64,6 +75,7 @@ export const verifyOTP = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user._id.toString());
   const refreshToken = generateRefreshToken(user._id.toString());
   sendRefreshToken(res, refreshToken);
+  sendAccessTokenCookie(res, accessToken);
   sendResponse({
     res,
     statusCode: 200,
@@ -107,6 +119,7 @@ export const signin = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user._id.toString());
   const refreshToken = generateRefreshToken(user._id.toString());
   sendRefreshToken(res, refreshToken);
+  sendAccessTokenCookie(res, accessToken);
   sendResponse({
     res,
     message: "Signed in successfully",
@@ -177,6 +190,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user._id.toString());
   const refreshToken = generateRefreshToken(user._id.toString());
   sendRefreshToken(res, refreshToken);
+  sendAccessTokenCookie(res, accessToken);
   sendResponse({
     res,
     statusCode: 200,
@@ -190,27 +204,39 @@ export const refreshToken = async (req: Request, res: Response) => {
   if (!refreshToken) {
     throw new AppError("Refresh token not found", 404);
   }
+
   try {
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!);
+    const userId = (payload as JwtPayload).id;
+    const user = await User.findById(userId);
+    if (!user) {
+      res.clearCookie("refreshToken");
+      res.clearCookie("accessToken", { path: "/" });
+      throw new AppError("User not found", 404);
+    }
 
-    const newAccessToken = generateAccessToken((payload as JwtPayload).id);
-    const newRefreshToken = generateRefreshToken((payload as JwtPayload).id);
+    const newAccessToken = generateAccessToken(userId);
+    const newRefreshToken = generateRefreshToken(userId);
 
     sendRefreshToken(res, newRefreshToken);
+    sendAccessTokenCookie(res, newAccessToken);
 
     sendResponse({
       res,
       statusCode: 200,
-      data: { token: newAccessToken },
+      data: { user, token: newAccessToken },
     });
-  } catch {
+  } catch (err) {
     res.clearCookie("refreshToken");
+    res.clearCookie("accessToken", { path: "/" });
+    if (err instanceof AppError) throw err;
     throw new AppError("Refresh token invalid or expired", 401);
   }
 };
 
 export const signout = (_req: Request, res: Response) => {
   res.clearCookie("refreshToken");
+  res.clearCookie("accessToken", { path: "/" });
   sendResponse({
     res,
     statusCode: 200,

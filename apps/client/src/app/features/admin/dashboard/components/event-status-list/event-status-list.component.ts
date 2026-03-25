@@ -9,7 +9,7 @@ import { CountDto } from '@events-app/shared-dtos';
   template: `
     <div class="flex flex-wrap items-center justify-between gap-4">
       @for (data of eventsStatus(); track data._id) {
-        <app-event-status-card [data]="data"  class="flex-1"/>
+        <app-event-status-card [data]="data" class="md:flex-1 w-full" />
       }
     </div>
   `,

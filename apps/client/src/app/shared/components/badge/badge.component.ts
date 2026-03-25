@@ -4,7 +4,7 @@ import { Component, input, output } from '@angular/core';
   selector: 'app-badge',
   standalone: true,
   template: `<span
-    class="badge badge-md border-(--border-color) border text-sm rounded-full text-(--light-gray-color) capitalize transition-colors duration-300"
+    class="badge badge-md border-white/10 border text-sm rounded-full text-(--light-gray-color) capitalize transition-colors duration-300"
     [class.cursor-pointer]="clickable()"
     [class]="color()"
     tabindex="0"

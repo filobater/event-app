@@ -1,6 +1,6 @@
-import { Component, computed, input } from '@angular/core';
-import { Eye, LucideAngularModule } from 'lucide-angular';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject, input } from '@angular/core';
+import { LucideAngularModule } from 'lucide-angular';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { EventDto, RegistrationDto } from '@events-app/shared-dtos';
 import { isPopulated } from '../../../utils';
@@ -15,7 +15,7 @@ import { TitleCasePipe, DatePipe } from '@angular/common';
 export default class RegisterCardComponent {
   readonly nav = NAV;
   readonly baseUrl = environment.apiUrl;
-  readonly EyeIcon = Eye;
+  readonly router = inject(Router);
 
   registration = input<RegistrationDto>();
 

@@ -12,6 +12,7 @@ import {
   EventSpeakersComponent,
 } from '../components';
 import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
+import { CacheService } from 'src/app/core/services/cache.service';
 
 @Component({
   selector: 'app-event-details-page',
@@ -33,6 +34,8 @@ export default class EventDetailsComponent {
   private readonly router = inject(Router);
   readonly eventsFacade = inject(EventsFacade);
   readonly registrationsFacade = inject(RegistrationsFacade);
+  readonly cacheService = inject(CacheService);
+  readonly cacheNamespace = 'events';
 
   readonly eventsPath = NAV.events;
   readonly eventId = this.route.snapshot.paramMap.get('id');
@@ -51,22 +54,9 @@ export default class EventDetailsComponent {
 
   handleRegistration(seatsCount: number) {
     if (this.eventId) {
-      this.registrationsFacade.createRegistration(
-        { event: this.eventId, seatsCount },
-        (registration) => {
-          this.seatsRef()?.closeModal();
-          this.eventsFacade.event.update((event) =>
-            event
-              ? {
-                  ...event,
-                  registeredSeats: event.registeredSeats + seatsCount,
-                  registration: registration._id,
-                  isPaid: event.type === 'paid' ? false : true,
-                }
-              : null,
-          );
-        },
-      );
+      this.registrationsFacade.createRegistration({ event: this.eventId, seatsCount }, () => {
+        this.seatsRef()?.closeModal();
+      });
     }
   }
 
@@ -75,7 +65,6 @@ export default class EventDetailsComponent {
     if (registrationId) {
       this.registrationsFacade.payRegistration(registrationId, () => {
         this.seatsRef()?.closeModal();
-        this.eventsFacade.event.update((event) => (event ? { ...event, isPaid: true } : null));
       });
     }
   }
@@ -83,18 +72,8 @@ export default class EventDetailsComponent {
   handleCancelRegistration() {
     const registrationId = this.eventsFacade.event()?.registration;
     if (registrationId) {
-      this.registrationsFacade.cancelRegistration(registrationId, (registration) => {
+      this.registrationsFacade.cancelRegistration(registrationId, () => {
         this.seatsRef()?.closeModal();
-        this.eventsFacade.event.update((event) =>
-          event
-            ? {
-                ...event,
-                registration: '',
-                isPaid: false,
-                registeredSeats: event.registeredSeats - registration.seatsCount,
-              }
-            : null,
-        );
       });
     }
   }

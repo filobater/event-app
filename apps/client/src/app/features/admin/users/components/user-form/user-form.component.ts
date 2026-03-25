@@ -62,8 +62,8 @@ export default class UserFormComponent {
         emailControl?.disable();
         passwordControl?.clearValidators();
         confirmPasswordControl?.clearValidators();
-        // TODO: fix this any
-        this.userForm.patchValue(this.user() as any);
+
+        this.userForm.patchValue(this.user() as unknown as UpdateUserRequestDto);
       } else {
         emailControl?.enable();
         passwordControl?.setValidators([Validators.required, Validators.minLength(8)]);
@@ -100,8 +100,7 @@ export default class UserFormComponent {
 
     if (this.isEdit()) {
       const dirtyFields = getDirtyFields(this.userForm);
-      //TODO: fix this any
-      this.onSave.emit({ ...dirtyFields, _id: this.user()?._id } as any);
+      this.onSave.emit({ ...dirtyFields, _id: this.user()?._id } as UpdateUserRequestDto);
     } else {
       this.onSave.emit(this.userForm.value as CreateUserRequestDto);
     }

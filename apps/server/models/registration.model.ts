@@ -6,7 +6,7 @@ interface IRegistration extends Omit<RegistrationInput, "user" | "event"> {
   event: Types.ObjectId;
 }
 
-interface IRegistrationMethods {
+interface IRegistrationStatics {
   searchByEventTitle(
     userId: string,
     search: string,
@@ -16,15 +16,12 @@ interface IRegistrationMethods {
 
 export type RegistrationDocument = HydratedDocument<
   IRegistration,
-  IRegistrationMethods
+  IRegistrationStatics
 >;
-type RegistrationModel = Model<IRegistration, object, IRegistrationMethods>;
+type RegistrationModel = Model<IRegistration, object, object> &
+  IRegistrationStatics;
 
-const registrationSchema = new Schema<
-  IRegistration,
-  RegistrationModel,
-  IRegistrationMethods
->(
+const registrationSchema = new Schema<IRegistration, RegistrationModel>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -104,4 +101,7 @@ registrationSchema.statics.searchByEventTitle = async function (
   return { registrations, total: total[0]?.totalRegistrations ?? 0 };
 };
 
-export const Registration = model("Registration", registrationSchema);
+export const Registration = model<IRegistration, RegistrationModel>(
+  "Registration",
+  registrationSchema,
+);

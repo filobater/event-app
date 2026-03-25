@@ -60,7 +60,7 @@ export default class EventFormComponent {
   ];
 
   eventForm = this.fb.nonNullable.group({
-    photo: [null as any, [Validators.required]],
+    photo: [null as string | null, [Validators.required]],
     title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     category: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(10)]],
@@ -192,7 +192,6 @@ export default class EventFormComponent {
 
     if (this.isEdit()) {
       const dirtyFields = getDirtyFields(this.eventForm);
-      // TODO: fix this any
       if (dirtyFields['speakers']) {
         const filterSpeakerImages = this.handleSpeakerData().speakerImages.filter(
           (image: File | string) => typeof image !== 'string',
@@ -200,7 +199,7 @@ export default class EventFormComponent {
         dirtyFields['speakers'] = JSON.stringify(dirtyFields['speakers']);
         dirtyFields['speakerImages'] = filterSpeakerImages;
       }
-      this.onSave.emit({ ...dirtyFields, _id: this.event()?._id } as any);
+      this.onSave.emit({ ...dirtyFields, _id: this.event()?._id } as UpdateEventRequestDto);
     } else {
       this.onSave.emit(dataToSend as CreateEventRequestDto);
     }

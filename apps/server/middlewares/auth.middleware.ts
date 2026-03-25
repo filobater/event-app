@@ -8,7 +8,7 @@ import { User, type UserDocument } from "models/user.model.ts";
 import type { NextFunction, Request, Response } from "express";
 
 export const protect = async (
-  req: Request & { user?: UserDocument },
+  req: Request,
   res: Response,
   next: NextFunction,
 ) => {

@@ -43,7 +43,7 @@ export default class EventsTableComponent {
   statusTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('statusTemplate');
   seatsTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('seatsTemplate');
   priceTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('priceTemplate');
-  actionsTemplate = viewChild<TemplateRef<any>>('actionsTemplate');
+  actionsTemplate = viewChild<TemplateRef<{ $implicit: EventDto }>>('actionsTemplate');
   sortableHeader = viewChild<TemplateRef<HeaderContext<EventDto>>>('sortableHeader');
 
   // icons
@@ -58,7 +58,7 @@ export default class EventsTableComponent {
 
   openModal = output<{ modal: ModalType; eventId: string }>();
 
-  readonly columns = computed<ColumnDef<EventDto & { actions?: TemplateRef<any> }>[]>(() => [
+  readonly columns = computed<ColumnDef<EventDto & { actions?: TemplateRef<{ $implicit: EventDto }> }>[]>(() => [
     {
       label: 'Event',
       key: 'title',

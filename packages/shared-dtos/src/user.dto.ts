@@ -8,7 +8,9 @@ export type CreateUserRequestDto = SignupRequestDto & {
   role?: "admin" | "user";
 };
 
-export type UpdateUserRequestDto = SignupRequestDto;
+export type UpdateUserRequestDto = SignupRequestDto & {
+  _id: string;
+};
 
 export type UpdateUserProfileRequestDto = Partial<SignupRequestDto>;
 

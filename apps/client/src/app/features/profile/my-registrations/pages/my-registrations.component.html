@@ -15,6 +15,7 @@
       </div>
     </div>
     <app-search-input
+      class="w-full md:w-auto"
       [placeholder]="'Search registrations'"
       [value]="registrationsResource.searchInput()"
       (onSearch)="handleSearch($event)"

@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="flex flex-col gap-6">
   <div class="flex items-center justify-between flex-wrap gap-4">
     <div class="flex flex-col gap-2">
       <div class="flex items-end gap-2">
@@ -7,40 +7,14 @@
       </div>
       <p class="text-(--light-gray-color) text-lg">Discover and register for upcoming events</p>
     </div>
-    <div class="flex items-center gap-2">
-      <app-search-input
-        [placeholder]="'Search events'"
-        (onSearch)="handleSearch($event)"
-        [value]="eventsResource.searchInput()"
-      />
-    </div>
+    <app-search-input
+      class="w-full md:w-auto"
+      [placeholder]="'Search events'"
+      (onSearch)="handleSearch($event)"
+      [value]="eventsResource.searchInput()"
+    />
   </div>
-  <div class="flex items-center flex-wrap gap-1">
-    <div class="flex items-center gap-2">
-      @for (option of categoryOptions(); track option.value) {
-        <app-badge
-          [clickable]="true"
-          [label]="option.label"
-          [color]="getCategoryColor(option.value)"
-          (onClick)="handleCategoryClick(option.value)"
-        >
-        </app-badge>
-      }
-    </div>
-    <div class="divider divider-horizontal"></div>
-
-    <div class="flex items-center gap-2">
-      @for (option of statusOptions(); track option.value) {
-        <app-badge
-          [clickable]="true"
-          [label]="option.label"
-          [color]="getStatusColor(option.value)"
-          (onClick)="handleStatusClick(option.value)"
-        >
-        </app-badge>
-      }
-    </div>
-  </div>
+  <app-browse-events-filters />
 
   <h2 class="text-xl font-semibold">
     All Events ({{ eventsResource.resource.value()?.data?.count ?? 0 }})
@@ -64,4 +38,3 @@
     />
   </div>
 </div>
-

@@ -70,7 +70,7 @@ export default class CategoryDonutChartComponent {
           type: 'doughnut',
           innerRadius: '60%',
           indexLabel: '{name} {y}%',
-          indexLabelFontSize: 16,
+          indexLabelFontSize: 15,
           indexLabelPlacement: 'outside',
           indexLabelLineThickness: 1,
           dataPoints,

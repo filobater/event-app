@@ -4,8 +4,7 @@ import fs from "fs";
 import type { Request, Response, NextFunction } from "express";
 import { AppError } from "utils/AppError.ts";
 
-const uploadDir = "uploads";
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+const uploadDir = (prefix: string) => `uploads/${prefix}`;
 
 export type CommonFieldConfig = {
   fieldName: string;
@@ -33,8 +32,9 @@ const processImage = async (
   width: number,
   height: number,
 ): Promise<string> => {
+  if (!fs.existsSync(uploadDir(prefix))) fs.mkdirSync(uploadDir(prefix));
   const filename = `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
-  const filepath = path.join(uploadDir, filename);
+  const filepath = path.join(uploadDir(prefix), filename);
 
   await sharp(buffer)
     .resize(width, height, { fit: "cover", position: "center" })
@@ -59,12 +59,13 @@ export const compressAndSave =
             (req.file?.fieldname === field.fieldName ? req.file : undefined);
 
           if (file) {
-            req.body[field.bodyKey] = await processImage(
+            const filepath = await processImage(
               file.buffer,
               field.prefix,
               field.width,
               field.height,
             );
+            return filepath;
           }
         }
 
