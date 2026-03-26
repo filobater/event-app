@@ -1,4 +1,4 @@
-import { Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
 import { DatePipe, TitleCasePipe, CurrencyPipe } from '@angular/common';
 import { EventDto } from '@events-app/shared-dtos';
 import {
@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { NAV } from 'src/app/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-events-table',
   standalone: true,
   templateUrl: './events-table.component.html',

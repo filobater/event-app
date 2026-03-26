@@ -1,4 +1,4 @@
-import { Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { UserDto } from '@events-app/shared-dtos';
 import { SortButtonComponent, TableComponent as AdminTableComponent } from '../../../components';
@@ -9,6 +9,7 @@ import type { ModalType } from '../../../types/modal.type';
 import type { SortParams } from '../../../types/sort-params.type';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-user-table',
   standalone: true,
   templateUrl: './user-table.component.html',
@@ -41,7 +42,10 @@ export default class UserTableComponent {
 
   openModal = output<{ modal: ModalType; userId: string }>();
 
-  readonly columns = computed<ColumnDef<UserDto & { actions?: TemplateRef<{ $implicit: UserDto }> }>[]>(() => [
+  sort = output<SortParams>();
+  readonly columns = computed<
+    ColumnDef<UserDto & { actions?: TemplateRef<{ $implicit: UserDto }> }>[]
+  >(() => [
     {
       label: 'User',
       key: 'fullName',
@@ -73,8 +77,6 @@ export default class UserTableComponent {
       cellTemplate: this.actionsTemplate(),
     },
   ]);
-
-  sort = output<SortParams>();
 
   handleSort(params: SortParams) {
     if (this.users().length === 0) return;

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, TicketIcon } from 'lucide-angular';
 import { EventsFacade } from 'src/app/core/facades/events.facade';
 import { PaginationComponent, SearchInputComponent } from 'src/app/shared/components';
@@ -9,6 +9,7 @@ import {
 } from '../components';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-browse-events',
   standalone: true,
   templateUrl: './browse-events.component.html',

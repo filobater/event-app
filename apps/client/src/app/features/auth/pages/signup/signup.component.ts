@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { AuthCardComponent } from '../../components';
 import {
@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 import { SignupRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-signup',
   standalone: true,
   imports: [

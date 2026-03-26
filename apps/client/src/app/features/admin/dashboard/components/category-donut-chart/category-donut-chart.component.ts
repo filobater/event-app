@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { CountDto } from '@events-app/shared-dtos';
 import { LucideAngularModule, CalendarDays } from 'lucide-angular';
@@ -11,6 +11,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-category-donut-chart',
   standalone: true,
   imports: [CanvasJSAngularChartsModule, LucideAngularModule],

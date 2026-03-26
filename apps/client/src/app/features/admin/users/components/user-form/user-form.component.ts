@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   TextInputComponent,
@@ -15,6 +15,7 @@ import { RequestStateClass } from 'src/app/core/request-state';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-user-form',
   standalone: true,
   imports: [

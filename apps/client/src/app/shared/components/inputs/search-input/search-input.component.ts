@@ -1,8 +1,9 @@
-import { Component, forwardRef, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, input, output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideAngularModule, Search } from 'lucide-angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-search-input',
   standalone: true,
   providers: [

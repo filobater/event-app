@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LucideAngularModule, Ticket } from 'lucide-angular';
 import { NAV } from 'src/app/core';
@@ -13,6 +13,7 @@ import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
 import { isPopulated } from 'src/app/shared/utils';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-user-registrations',
   standalone: true,
   templateUrl: './user-registrations.component.html',

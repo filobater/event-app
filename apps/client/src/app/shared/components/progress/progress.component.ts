@@ -1,6 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-progress',
   template: `
     <progress class="progress w-full" [class]="color()" [value]="value()" [max]="max()"></progress>

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LucideAngularModule, Mail, Shield, Calendar, Ticket } from 'lucide-angular';
 import { UserDto } from '@events-app/shared-dtos';
@@ -15,6 +15,7 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 const PREVIEW_LIMIT = 3;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-user-details',
   standalone: true,
   imports: [

@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { LucideAngularModule, LayoutDashboard } from 'lucide-angular';
 import {
   StatCardsListComponent,
@@ -12,6 +12,7 @@ import { DashboardFacade } from '../facades';
 import { ErrorMessageComponent } from 'src/app/shared/components';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [

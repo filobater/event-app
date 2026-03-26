@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, LogIn } from 'lucide-angular';
 import { AuthCardComponent } from '../../components';
 import {
@@ -17,6 +17,7 @@ import { NAV } from 'src/app/core/navigation';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-signin',
   standalone: true,
   imports: [

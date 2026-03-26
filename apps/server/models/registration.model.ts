@@ -1,5 +1,6 @@
 import { Model, Schema, Types, model, type HydratedDocument } from "mongoose";
 import type { RegistrationInput } from "schemas/registration.schema.ts";
+import { Payment } from "./payment.model.ts";
 
 interface IRegistration extends Omit<RegistrationInput, "user" | "event"> {
   user: Types.ObjectId;
@@ -100,6 +101,14 @@ registrationSchema.statics.searchByEventTitle = async function (
 
   return { registrations, total: total[0]?.totalRegistrations ?? 0 };
 };
+
+registrationSchema.pre("deleteMany", async function () {
+  // get the filter because we use deleteMany in deleting the user and the event so base on it, will delete the registrations
+  const filter: Record<string, Types.ObjectId> = this.getFilter();
+  const registrations = await Registration.find(filter).select("_id");
+  const ids = registrations.map((r) => r._id);
+  await Payment.deleteMany({ registrationId: { $in: ids } });
+});
 
 export const Registration = model<IRegistration, RegistrationModel>(
   "Registration",

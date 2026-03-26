@@ -1,16 +1,8 @@
-import {
-  Component,
-  effect,
-  ElementRef,
-  inject,
-  input,
-  output,
-  PLATFORM_ID,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, output, PLATFORM_ID, viewChild } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-alert-modal',
   standalone: true,
   templateUrl: './alert-modal.component.html',

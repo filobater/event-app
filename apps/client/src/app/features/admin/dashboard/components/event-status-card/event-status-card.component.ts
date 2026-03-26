@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CountDto } from '@events-app/shared-dtos';
 import BadgeComponent from 'src/app/shared/components/badge/badge.component';
 import { STATUS_BADGE_COLORS } from 'src/app/shared/constants';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-status-card',
   standalone: true,
   imports: [BadgeComponent],

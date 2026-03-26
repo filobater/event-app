@@ -1,7 +1,8 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { LucideAngularModule, Ticket } from 'lucide-angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-registrations-empty',
   standalone: true,
   imports: [LucideAngularModule],

@@ -1,4 +1,4 @@
-import { Component, input, output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginationComponent } from 'src/app/shared/components/';
 
@@ -28,6 +28,7 @@ export interface TableComponentInterface<T extends { _id: string }> {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'admin-table',
   templateUrl: './table.component.html',
   imports: [CommonModule, PaginationComponent],

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, MapPinOffIcon } from 'lucide-angular';
 import { NAV } from 'src/app/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-not-found',
   standalone: true,
   imports: [RouterLink, LucideAngularModule],

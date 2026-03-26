@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 
@@ -9,6 +9,7 @@ interface NavTab {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-nav-tab',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, LucideAngularModule],

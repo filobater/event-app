@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ArrowLeftIcon } from 'lucide-angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-back-button',
   standalone: true,
   imports: [RouterLink, LucideAngularModule],

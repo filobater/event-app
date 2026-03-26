@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { LucideAngularModule, KeyRound } from 'lucide-angular';
 import { AuthCardComponent } from '../../components';
 import {
@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ResetPasswordRequestDto } from '@events-app/shared-dtos';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-reset-password',
   standalone: true,
   imports: [

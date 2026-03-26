@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 type SelectOption = {
@@ -7,6 +7,7 @@ type SelectOption = {
 };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-select-input',
   standalone: true,
   providers: [

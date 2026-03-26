@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { EventDto } from '@events-app/shared-dtos';
@@ -6,6 +6,7 @@ import { NAV } from 'src/app/core/navigation';
 import EventCardComponent from '../event-card/event-card.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-list',
   standalone: true,
   imports: [CommonModule, EventCardComponent, RouterModule],

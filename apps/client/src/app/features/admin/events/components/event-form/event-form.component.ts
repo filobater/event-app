@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   ImageUploadComponent,
@@ -22,6 +22,7 @@ import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-form',
   standalone: true,
   imports: [

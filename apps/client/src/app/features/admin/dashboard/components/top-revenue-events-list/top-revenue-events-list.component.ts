@@ -1,10 +1,11 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import TopRevenueEventCardComponent from '../top-revenue-event-card/top-revenue-event-card.component';
 import { Coins, LucideAngularModule } from 'lucide-angular';
 import { TopEventByRevenueDto } from '@events-app/shared-dtos';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-top-revenue-events-list',
   standalone: true,
   imports: [TopRevenueEventCardComponent, LucideAngularModule],

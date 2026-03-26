@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -7,6 +7,7 @@ import { isPopulated } from '../../../utils';
 import { NAV } from 'src/app/core';
 import { TitleCasePipe, DatePipe } from '@angular/common';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-register-card',
   templateUrl: './register-card.component.html',
   standalone: true,

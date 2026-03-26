@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal, viewChild } from '@angular/core';
 import { LucideAngularModule, Plus, Users } from 'lucide-angular';
 import {
   SecondaryButtonComponent,
@@ -17,6 +17,7 @@ import type { SortParams } from '../../types/sort-params.type';
 import { UsersFacade } from 'src/app/core/facades/users.facade';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-users',
   standalone: true,
   imports: [

@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { EventDto } from '@events-app/shared-dtos';
 import AlertModalComponent from 'src/app/shared/components/alert-modal/alert-modal.component';
 import { RequestStateClass } from 'src/app/core/request-state';
@@ -13,6 +13,7 @@ interface ModalConfig {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-seats-confirm-modal',
   standalone: true,
   imports: [AlertModalComponent],

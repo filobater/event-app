@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, Ticket } from 'lucide-angular';
 import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
 import {
@@ -8,6 +8,7 @@ import {
 } from 'src/app/shared/components';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-my-registrations',
   standalone: true,
   templateUrl: './my-registrations.component.html',

@@ -115,9 +115,13 @@ eventSchema.set("toJSON", {
   },
 });
 
-eventSchema.pre("deleteOne", async function () {
-  await Registration.deleteMany({ eventId: this.getQuery()._id });
-});
+eventSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function () {
+    await Registration.deleteMany({ event: this._id });
+  },
+);
 
 eventSchema.index({ title: "text" });
 

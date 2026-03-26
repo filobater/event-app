@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { LucideAngularModule, type LucideIconData } from 'lucide-angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-stat-card',
   standalone: true,
   imports: [LucideAngularModule],

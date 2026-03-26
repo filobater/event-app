@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import EventStatusCardComponent from '../event-status-card/event-status-card.component';
 import { CountDto } from '@events-app/shared-dtos';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-status-list',
   standalone: true,
   imports: [EventStatusCardComponent],

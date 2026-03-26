@@ -1,4 +1,4 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { NAV } from 'src/app/core';
@@ -15,6 +15,7 @@ import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
 import { CacheService } from 'src/app/core/services/cache.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-details-page',
   standalone: true,
   imports: [

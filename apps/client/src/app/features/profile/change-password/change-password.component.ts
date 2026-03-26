@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Lock, LucideAngularModule } from 'lucide-angular';
 import {
@@ -12,6 +12,7 @@ import { RequestStateClass } from 'src/app/core/request-state';
 import { UpdateUserPasswordRequestDto } from '@events-app/shared-dtos';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-change-password',
   standalone: true,
   imports: [

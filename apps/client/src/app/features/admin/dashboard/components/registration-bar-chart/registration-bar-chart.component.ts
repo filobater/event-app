@@ -1,9 +1,10 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { TopEventByRegistrationDto } from '@events-app/shared-dtos';
 import { LucideAngularModule, TrendingUp } from 'lucide-angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-registration-bar-chart',
   standalone: true,
   imports: [CanvasJSAngularChartsModule, LucideAngularModule],

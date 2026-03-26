@@ -1,9 +1,10 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LucideAngularModule, ArrowUpDown } from 'lucide-angular';
 import type { SortParams } from '../../types/sort-params.type';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'sort-button',
   template: `
     <button class="btn btn-sm btn-ghost" (click)="onSort()">

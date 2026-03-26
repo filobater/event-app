@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DatePipe, SlicePipe } from '@angular/common';
 import { LucideAngularModule, Calendar, Clock, MapPin, Users } from 'lucide-angular';
 import { EventDto } from '@events-app/shared-dtos';
@@ -6,6 +6,7 @@ import { InfoLabelComponent, ProgressComponent } from 'src/app/shared/components
 import ThumbnailComponent from './thumbnail/thumbnail.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-card',
   standalone: true,
   imports: [

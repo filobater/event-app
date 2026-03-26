@@ -1,9 +1,10 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { LucideAngularModule, CalendarDays, Users, Coins, TicketIcon } from 'lucide-angular';
 import StatCardComponent from '../stat-card/stat-card.component';
 import { DashboardStatsResponseDto } from '@events-app/shared-dtos';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-stat-cards-list',
   standalone: true,
   imports: [StatCardComponent, LucideAngularModule],

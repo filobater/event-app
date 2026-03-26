@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
 import { AuthCardComponent } from '../../components';
 import { OtpInputComponent, PrimaryButtonComponent } from 'src/app/shared/components';
@@ -9,6 +9,7 @@ import { RequestStateClass, UserService } from 'src/app/core';
 import { VerifyOtpRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/core/navigation';
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-otp',
   standalone: true,
   imports: [

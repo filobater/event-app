@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { SlicePipe, UpperCasePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-avatar',
   standalone: true,
   imports: [SlicePipe, UpperCasePipe],

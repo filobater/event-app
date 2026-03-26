@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, Mail } from 'lucide-angular';
 import { AuthCardComponent } from '../../components';
 import {
@@ -15,6 +15,7 @@ import { NAV } from 'src/app/core/navigation';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-forgot-password',
   standalone: true,
   imports: [

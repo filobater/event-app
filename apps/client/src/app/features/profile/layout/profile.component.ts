@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Lock, LucideIconData, Ticket, User } from 'lucide-angular';
 import NavTabComponent from 'src/app/shared/components/nav-tab/nav-tab.component';
@@ -11,6 +11,7 @@ interface ProfileTab {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-profile',
   standalone: true,
   imports: [RouterOutlet, NavTabComponent],

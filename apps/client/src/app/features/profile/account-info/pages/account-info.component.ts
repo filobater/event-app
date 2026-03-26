@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { CalendarDays, LucideAngularModule, User, Coins } from 'lucide-angular';
@@ -17,6 +17,7 @@ import { RequestStateClass } from 'src/app/core/request-state';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-account-info',
   standalone: true,
   imports: [

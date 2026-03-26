@@ -1,9 +1,10 @@
-import { Component, computed, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideAngularModule, Image } from 'lucide-angular';
 import { environment } from 'src/environments/environment';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-image-upload',
   standalone: true,
   providers: [

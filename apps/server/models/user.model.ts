@@ -3,6 +3,7 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 import type { SignupInput } from "schemas/user.schema.ts";
 import crypto from "crypto";
+import { Registration } from "./registration.model.ts";
 interface IUserMethods {
   comparePassword(enteredPassword: string): Promise<boolean>;
   generateOTP(): { otp: string; otpExpiresAt: Date };
@@ -105,6 +106,14 @@ userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 12);
 });
+
+userSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function () {
+    await Registration.deleteMany({ user: this._id });
+  },
+);
 
 userSchema.methods.comparePassword = async function (enteredPassword: string) {
   return bcrypt.compare(enteredPassword, this.password);

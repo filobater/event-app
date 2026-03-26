@@ -1,16 +1,8 @@
-import {
-  Component,
-  ElementRef,
-  viewChild,
-  signal,
-  computed,
-  output,
-  input,
-  forwardRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, viewChild, signal, computed, output, input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-otp-input',
   standalone: true,
   providers: [

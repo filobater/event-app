@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NAV, BASE_PATH } from 'src/app/core/navigation';
 import NavTabComponent from '../nav-tab/nav-tab.component';
@@ -24,6 +24,7 @@ type NavLink = {
 };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-navbar',
   imports: [RouterLink, NavTabComponent, LucideAngularModule, AvatarComponent, TitleCasePipe],
   templateUrl: './navbar.component.html',

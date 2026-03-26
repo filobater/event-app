@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal, viewChild } from '@angular/core';
 import { LucideAngularModule, LayoutDashboard, Plus } from 'lucide-angular';
 import {
   ErrorMessageComponent,
@@ -16,6 +16,7 @@ import { CreateEventRequestDto, UpdateEventRequestDto } from '@events-app/shared
 import { EventsFacade } from 'src/app/core/facades/events.facade';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-events',
   standalone: true,
   imports: [

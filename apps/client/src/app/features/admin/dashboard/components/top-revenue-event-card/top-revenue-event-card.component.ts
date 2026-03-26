@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TopEventByRevenueDto } from '@events-app/shared-dtos';
 import { LucideAngularModule, MapPin, Calendar, Clock } from 'lucide-angular';
@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-top-revenue-event-card',
   standalone: true,
   imports: [LucideAngularModule, BadgeComponent, TitleCasePipe, DatePipe],

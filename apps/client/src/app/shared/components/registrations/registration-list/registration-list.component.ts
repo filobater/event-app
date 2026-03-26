@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RegistrationDto } from '@events-app/shared-dtos';
@@ -7,6 +7,7 @@ import RegistrationsEmptyComponent from '../registrations-empty/registrations-em
 import RegistrationsSkeletonLoadingComponent from '../registrations-skeleton-loading/registrations-skeleton-loading.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-registration-list',
   standalone: true,
   imports: [

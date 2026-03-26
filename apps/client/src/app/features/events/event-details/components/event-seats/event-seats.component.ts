@@ -1,4 +1,4 @@
-import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, output, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { LucideAngularModule, MinusIcon, PlusIcon, UsersIcon } from 'lucide-angular';
 import { EventDto } from '@events-app/shared-dtos';
@@ -11,6 +11,7 @@ import {
 import { RequestStateClass } from 'src/app/core/request-state';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-event-seats',
   standalone: true,
   imports: [

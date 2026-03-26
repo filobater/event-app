@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EventsFacade } from 'src/app/core/facades/events.facade';
@@ -8,6 +8,7 @@ import { STATUS_BADGE_COLORS } from 'src/app/shared/constants';
 const ALL_SENTINEL = '__all__';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-browse-events-filters',
   standalone: true,
   templateUrl: './browse-events-filters.component.html',

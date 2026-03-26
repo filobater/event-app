@@ -1,7 +1,8 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-textarea',
   standalone: true,
   providers: [
