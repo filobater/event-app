@@ -1,6 +1,5 @@
 import type { BaseResponseDto } from "./base.dto.js";
 import type { EventDto } from "./event.dto.js";
-import { RegistrationDto } from "./registration.dto.js";
 
 export type CountDto = {
   _id: string;
@@ -16,8 +15,11 @@ export type DashboardStatsResponseDto = BaseResponseDto & {
   };
 };
 
-export type TopEventByRegistrationDto = RegistrationDto & {
-  event: Pick<EventDto, "_id" | "title" | "registeredSeats" | "totalSeats">;
+export type TopEventByRegistrationDto = {
+  _id: string;
+  totalAmount: number;
+  seatsCount: number;
+  event: Pick<EventDto, "title" | "registeredSeats" | "totalSeats">;
 };
 
 export type GetTopEventsByRegistrationResponseDto = BaseResponseDto & {
@@ -28,11 +30,11 @@ export type EventsByCategoryResponseDto = BaseResponseDto & {
   data: { events: CountDto[] };
 };
 
-export type TopEventByRevenueDto = RegistrationDto & {
-  event: Pick<
-    EventDto,
-    "_id" | "title" | "location" | "dateTime" | "status" | "photo"
-  >;
+export type TopEventByRevenueDto = {
+  _id: string;
+  totalRevenue: number;
+  totalSeats: number;
+  event: Pick<EventDto, "title" | "location" | "dateTime" | "status" | "photo">;
 };
 
 export type GetTopEventsByRevenueResponseDto = BaseResponseDto & {

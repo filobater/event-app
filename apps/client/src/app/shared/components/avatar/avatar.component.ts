@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export default class AvatarComponent {
   readonly baseUrl = environment.apiUrl;
   private imageFailed = false;
-  imageUrl = input<string | null | undefined>(null);
+  imageUrl = input<string | null | undefined | File>(null);
   label = input<string>('');
   class = input<string>('');
 

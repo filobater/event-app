@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { catchError, BehaviorSubject, throwError, switchMap, filter, take } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { NAV } from '../navigation';
+import { NAV } from 'src/app/shared/constants';
 
 let isRefreshing = false;
 const refreshSubject = new BehaviorSubject<string | null>(null);

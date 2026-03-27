@@ -13,7 +13,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ResendOtpRequestDto, SigninRequestDto } from '@events-app/shared-dtos';
 import { AuthService } from '../../services/auth.service';
 import { BASE_PATH, RequestStateClass, UserService } from 'src/app/core';
-import { NAV } from 'src/app/core/navigation';
+import { NAV } from 'src/app/shared/constants';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({

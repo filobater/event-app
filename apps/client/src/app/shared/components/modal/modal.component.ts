@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, output, PLATFORM_ID, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  output,
+  PLATFORM_ID,
+  viewChild,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -29,7 +39,7 @@ export default class ModalComponent {
       if (!dialog) return;
 
       if (open) {
-        dialog.showModal();
+        dialog.show();
       } else {
         dialog.close();
       }
@@ -41,11 +51,5 @@ export default class ModalComponent {
     this.dialogRef()?.nativeElement?.close();
     this.onClose()?.();
     this.closed.emit();
-  }
-
-  protected handleBackdropClick(event: MouseEvent): void {
-    if (event.target === this.dialogRef()?.nativeElement) {
-      this.handleClose();
-    }
   }
 }

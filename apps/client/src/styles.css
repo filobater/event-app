@@ -29,3 +29,7 @@ li {
 .canvasjs-chart-credit{
   display: none !important;
 }
+
+[data-sonner-toaster] {
+  z-index: 10000;
+}

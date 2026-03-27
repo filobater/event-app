@@ -70,8 +70,10 @@
 
       <app-primary-button
         type="submit"
-        [disabled]="form.invalid || updateProfileState.loading()"
-        [label]="updateProfileState.loading() ? 'Saving...' : 'Save Changes'"
+        [disabled]="form.invalid || updateProfileState.loading() || uploadState.loading()"
+        [label]="
+          updateProfileState.loading() || uploadState.loading() ? 'Saving...' : 'Save Changes'
+        "
       />
     </form>
   }

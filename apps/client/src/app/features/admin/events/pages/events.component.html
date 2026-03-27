@@ -40,7 +40,6 @@
       <admin-loading />
     } @else {
       <app-event-form
-        [requestState]="eventsFacade.mutationState"
         [event]="eventsFacade.event()"
         (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
         (onSave)="handleSaveEvent($event)"

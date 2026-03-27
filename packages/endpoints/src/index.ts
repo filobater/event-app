@@ -35,6 +35,12 @@ export const API_ENDPOINTS = {
     getAll: "/",
     byId: `/:id`,
   },
+  upload: {
+    base: `${API_BASE}/upload`,
+    single: "/single",
+    multiple: "/multiple",
+    typeParam: "?type=:type",
+  },
   registrations: {
     base: `${API_BASE}/registrations`,
     create: "/",

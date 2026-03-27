@@ -117,11 +117,10 @@ export const getMe = async (req: Request, res: Response) => {
 export const updateUserProfile = async (req: Request, res: Response) => {
   const { user } = req;
   const { fullName } = req.body;
-  const profilePicture = replaceFile(
-    user.profilePicture,
-    req,
-    "profilePicture",
-  );
+  let profilePicture: string | undefined;
+  if (req.body.profilePicture) {
+    profilePicture = replaceFile(user.profilePicture, req, "profilePicture");
+  }
 
   const updatedUser = Object.assign(user, {
     ...(fullName && { fullName }),

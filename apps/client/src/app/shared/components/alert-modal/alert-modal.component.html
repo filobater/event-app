@@ -1,11 +1,16 @@
 <dialog
   #dialog
-  class="modal bg-(--dark-color)/85"
+  class="modal z-1000 bg-transparent p-0 border-0 shadow-none outline-none"
   (close)="handleClose()"
-  (click)="handleBackdropClick($event)"
 >
   <div
-    class="modal-box max-h-[90vh] overflow-y-auto w-11/12 max-w-md relative bg-(--dark-gray-color)"
+    class="absolute inset-0 bg-(--dark-color)/85"
+    aria-hidden="true"
+    (click)="handleClose()"
+  ></div>
+  <div
+    class="modal-box max-h-[90vh] overflow-y-auto w-11/12 max-w-md relative z-10 bg-(--dark-gray-color)"
+    (click)="$event.stopPropagation()"
   >
     <button
       type="button"

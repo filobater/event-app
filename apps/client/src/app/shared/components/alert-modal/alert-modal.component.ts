@@ -31,7 +31,7 @@ export default class AlertModalComponent {
       if (!dialog) return;
 
       if (open) {
-        dialog.showModal();
+        dialog.show();
       } else {
         dialog.close();
       }
@@ -53,9 +53,4 @@ export default class AlertModalComponent {
     this.ok.emit();
   }
 
-  protected handleBackdropClick(event: MouseEvent): void {
-    if (event.target === this.dialogRef()?.nativeElement) {
-      this.handleClose();
-    }
-  }
 }

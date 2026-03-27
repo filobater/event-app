@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
   imports: [LucideAngularModule, BadgeComponent, TitleCasePipe, DatePipe],
   template: `
     <div
-      (click)="router.navigate([nav.event(event().event._id)])"
+      (click)="router.navigate([nav.event(itemData()._id)])"
       class="flex items-center md:gap-4 gap-2 p-3 rounded-xl bg-(--gray-color)/50 hover:bg-(--gray-color)/90 transition-colors cursor-pointer"
     >
       <span
@@ -26,35 +26,35 @@ import { environment } from 'src/environments/environment';
 
       <div class="avatar">
         <div class="md:w-12 w-10 rounded-xl">
-          <img [src]="baseUrl + '/' + event().event.photo" [alt]="event().event.title" />
+          <img [src]="baseUrl + '/' + itemData().event.photo" [alt]="itemData().event.title" />
         </div>
       </div>
 
       <div class="flex-1">
         <p class="text-white font-medium truncate md:text-base text-sm line-clamp-1">
-          {{ event().event.title }}
+          {{ itemData().event.title }}
         </p>
         <div class="flex items-center gap-3 text-xs" [style.color]="'var(--light-gray-color)'">
           <span class="flex items-center gap-1">
             <i-lucide [img]="MapPinIcon" class="size-3" />
-            <span class="line-clamp-1">{{ event().event.location }}</span>
+            <span class="line-clamp-1">{{ itemData().event.location }}</span>
           </span>
           <span class="flex items-center gap-1">
             <i-lucide [img]="ClockIcon" class="size-3" />
-            {{ event().event.dateTime | date: 'shortDate' }}
+            {{ itemData().event.dateTime | date: 'shortDate' }}
           </span>
         </div>
       </div>
       <div class="items-center gap-2 md:flex hidden">
         <div class="text-right">
-          <p class="text-(--main-color) font-bold">\${{ event().totalAmount }}</p>
+          <p class="text-(--main-color) font-bold">\${{ itemData().totalRevenue }}</p>
           <p class="text-xs" [style.color]="'var(--light-gray-color)'">
-            {{ event().seatsCount }} seat(s)
+            {{ itemData().totalSeats }} seat(s)
           </p>
         </div>
         <app-badge
-          [label]="event().event.status | titlecase"
-          [color]="getStatusColor(event().event.status)"
+          [label]="itemData().event.status | titlecase"
+          [color]="getStatusColor(itemData().event.status)"
         />
       </div>
     </div>
@@ -66,7 +66,7 @@ export default class TopRevenueEventCardComponent {
   readonly nav = NAV;
   readonly baseUrl = environment.apiUrl;
   readonly router = inject(Router);
-  event = input.required<TopEventByRevenueDto>();
+  itemData = input.required<TopEventByRevenueDto>();
   rank = input.required<number>();
 
   getStatusColor(status: string): string {

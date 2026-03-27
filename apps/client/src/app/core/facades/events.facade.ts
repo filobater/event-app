@@ -1,17 +1,29 @@
 import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { defer, firstValueFrom, forkJoin, from, map, of, switchMap, type Observable } from 'rxjs';
 import { EventsApiService } from '../services/events-api.service';
 import { CacheService } from '../services/cache.service';
 import { RequestStateClass } from '../request-state';
+import { UploadService } from '../services/upload.service';
+import { ToastService } from '../toast.service';
 import type {
   CreateEventRequestDto,
   EventDto,
+  SpeakerDto,
   UpdateEventRequestDto,
 } from '@events-app/shared-dtos';
+
+export type SaveEventOptions = {
+  onSuccess?: (event: EventDto) => void;
+  onMediaUrlsApplied?: (patch: { photo?: string; speakers?: SpeakerDto[] }) => void;
+};
 
 @Injectable({ providedIn: 'root' })
 export class EventsFacade {
   private readonly api = inject(EventsApiService);
   private readonly cache = inject(CacheService);
+  private readonly uploadService = inject(UploadService);
+  private readonly toastService = inject(ToastService);
   private readonly injector = inject(Injector);
   private readonly cacheNamespace = 'events';
 
@@ -24,6 +36,7 @@ export class EventsFacade {
 
   readonly loadEventState = new RequestStateClass();
   readonly mutationState = new RequestStateClass();
+  readonly uploadState = new RequestStateClass();
   readonly event = signal<EventDto | null>(null);
 
   loadEvent(id: string | null): void {
@@ -38,7 +51,6 @@ export class EventsFacade {
     if (cached) {
       this.event.set(cached);
       this.loadEventState.success();
-      console.log('cached event', cached);
       return;
     }
 
@@ -55,34 +67,146 @@ export class EventsFacade {
     });
   }
 
-  createEvent(data: CreateEventRequestDto, onSuccess?: (event: EventDto) => void): void {
-    this.mutationState.start();
-    this.api.createEvent(data).subscribe({
+  saveEvent(
+    event: CreateEventRequestDto | UpdateEventRequestDto,
+    options?: SaveEventOptions,
+  ): void {
+    const id = (event as UpdateEventRequestDto)?._id;
+    if (id) {
+      this.updateEvent(id, event, options);
+    } else {
+      this.createEvent(event as CreateEventRequestDto, options);
+    }
+  }
+
+  createEvent(data: CreateEventRequestDto, options?: SaveEventOptions): void {
+    this.buildEventMutation$(
+      data,
+      (payload) => this.api.createEvent(payload as CreateEventRequestDto),
+      options,
+    ).subscribe({
       next: (res) => {
         this.mutationState.success(res.message);
         this.cache.set(this.cacheNamespace, res.data.event._id, res.data.event);
         this.eventsResource.addItem(res.data.event);
-        onSuccess?.(res.data.event);
+        options?.onSuccess?.(res.data.event);
       },
-      error: (err) => this.mutationState.fail(err),
+      error: (err) => this.handleEventSaveError(err),
     });
   }
 
-  updateEvent(
-    id: string,
-    data: UpdateEventRequestDto,
-    onSuccess?: (event: EventDto) => void,
-  ): void {
-    this.mutationState.start();
-    this.api.updateEvent(id, data).subscribe({
+  updateEvent(id: string, data: UpdateEventRequestDto, options?: SaveEventOptions): void {
+    this.buildEventMutation$(
+      data,
+      (payload) => this.api.updateEvent(id, payload as UpdateEventRequestDto),
+      options,
+    ).subscribe({
       next: (res) => {
         this.mutationState.success(res.message);
         this.cache.set(this.cacheNamespace, id, res.data.event);
         this.eventsResource.updateItem(id, res.data.event);
-        onSuccess?.(res.data.event);
+        options?.onSuccess?.(res.data.event);
       },
-      error: (err) => this.mutationState.fail(err),
+      error: (err) => this.handleEventSaveError(err),
     });
+  }
+
+  private resolveEventMediaUploadStreams(data: CreateEventRequestDto | UpdateEventRequestDto): {
+    rawSpeakers: CreateEventRequestDto['speakers'] | undefined;
+    speakersList: SpeakerDto[];
+    needsUpload: boolean;
+    photo$: Observable<string | undefined>;
+    speakerUrls$: Observable<string[]>;
+  } {
+    const eventPhoto = data.photo as unknown;
+    const rawSpeakers = data.speakers;
+    const speakersList = (rawSpeakers ?? []) as SpeakerDto[];
+    const imageSlots = speakersList.map((s) => s.image);
+    const needsUpload =
+      eventPhoto instanceof File ||
+      (rawSpeakers !== undefined && imageSlots.some((img) => img instanceof File));
+
+    const photo$ =
+      eventPhoto instanceof File
+        ? this.uploadService.uploadSingle(eventPhoto, 'eventPhoto').pipe(map((r) => r.data.url))
+        : of(eventPhoto as string | undefined);
+
+    const speakerFiles = imageSlots.filter((img): img is File => img instanceof File);
+    const speakerUrls$ =
+      speakerFiles.length === 0
+        ? of(imageSlots.map((img) => img as string))
+        : this.uploadService.uploadMultiple(speakerFiles, 'speakerImage').pipe(
+            map((res) => {
+              let urlIdx = 0;
+              return imageSlots.map((img) =>
+                img instanceof File ? res.data.urls[urlIdx++]! : (img as string),
+              );
+            }),
+          );
+
+    return { rawSpeakers, speakersList, needsUpload, photo$, speakerUrls$ };
+  }
+
+  private buildEventMutation$(
+    data: CreateEventRequestDto | UpdateEventRequestDto,
+    apiCall: (
+      payload: CreateEventRequestDto | UpdateEventRequestDto,
+    ) => ReturnType<EventsApiService['createEvent']> | ReturnType<EventsApiService['updateEvent']>,
+    options?: SaveEventOptions,
+  ) {
+    return defer(() => {
+      const { rawSpeakers, speakersList, needsUpload, photo$, speakerUrls$ } =
+        this.resolveEventMediaUploadStreams(data);
+
+      if (!needsUpload) {
+        this.mutationState.start();
+        return apiCall(data);
+      }
+
+      this.uploadState.start();
+      const upload$ = forkJoin({ photo: photo$, speakerImageUrls: speakerUrls$ });
+      const uploadPromise = firstValueFrom(upload$);
+      this.toastService.promise(uploadPromise, {
+        loading: 'Uploading images...',
+        success: 'Images uploaded successfully',
+      });
+
+      return from(uploadPromise).pipe(
+        switchMap(({ photo, speakerImageUrls: urls }) => {
+          const speakersMerged: SpeakerDto[] = speakersList.map((s, i) => ({
+            name: s.name,
+            title: s.title,
+            image: urls[i] ?? (typeof s.image === 'string' ? s.image : ''),
+          }));
+
+          options?.onMediaUrlsApplied?.({
+            ...(photo !== undefined && { photo }),
+            ...(rawSpeakers !== undefined && { speakers: speakersMerged }),
+          });
+          this.uploadState.success();
+          this.mutationState.start();
+
+          const payload = {
+            ...data,
+            photo,
+          };
+
+          if (rawSpeakers !== undefined) {
+            payload.speakers = speakersMerged;
+          }
+
+          return apiCall(payload);
+        }),
+      );
+    });
+  }
+
+  private handleEventSaveError(err: HttpErrorResponse): void {
+    if (this.uploadState.loading()) {
+      this.uploadState.fail(err, { differentToast: true });
+    } else {
+      this.mutationState.fail(err);
+    }
   }
 
   deleteEvent(id: string, onSuccess?: () => void): void {

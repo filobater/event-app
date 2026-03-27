@@ -14,7 +14,7 @@ import { getValidationErrorMessage } from 'src/app/shared/utils';
 import { RequestStateClass } from 'src/app/core';
 import { AuthService } from '../../services/auth.service';
 import { SignupRequestDto } from '@events-app/shared-dtos';
-import { NAV } from 'src/app/core/navigation';
+import { NAV } from 'src/app/shared/constants';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-signup',

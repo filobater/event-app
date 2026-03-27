@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RequestStateClass, UserService } from 'src/app/core';
 import { VerifyOtpRequestDto } from '@events-app/shared-dtos';
-import { NAV } from 'src/app/core/navigation';
+import { NAV } from 'src/app/shared/constants';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-otp',

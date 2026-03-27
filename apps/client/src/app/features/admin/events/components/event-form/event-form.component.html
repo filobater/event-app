@@ -183,16 +183,25 @@
     </div>
   </div>
 
-  @if (requestState()?.error()) {
-    <app-error-message [message]="requestState()?.error()"></app-error-message>
+  @if (mutationState.error()) {
+    <app-error-message [message]="mutationState.error()"></app-error-message>
+  }
+  @if (uploadState.error()) {
+    <app-error-message [message]="uploadState.error()"></app-error-message>
   }
 
   <div class="flex justify-end gap-2">
     <app-secondary-button [label]="'Cancel'" (handleClick)="handleCancel()"></app-secondary-button>
     <app-primary-button
       type="submit"
-      [disabled]="requestState()?.loading() || eventForm.invalid"
-      [label]="requestState()?.loading() ? 'Saving...' : isEdit() ? 'Save Event' : 'Create Event'"
+      [disabled]="eventForm.invalid || mutationState.loading() || uploadState.loading()"
+      [label]="
+        mutationState.loading() || uploadState.loading()
+          ? 'Saving...'
+          : isEdit()
+            ? 'Save Event'
+            : 'Create Event'
+      "
     />
   </div>
 </form>

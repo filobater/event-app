@@ -14,37 +14,8 @@ import { eventSchema } from "schemas/event/event.schema.ts";
 import { eventRefinement } from "schemas/event/event.refine.schema.ts";
 import { checkId } from "middlewares/checkId.middleware.ts";
 import { Event } from "models/event.model.ts";
-import { upload } from "middlewares/upload/upload.middleware.ts";
-import { compressAndSave } from "middlewares/upload/compressAndSave.middleware.ts";
 
 const router = Router();
-
-const uploadEventAndSpeakerImages = [
-  upload.fields([
-    { name: "photo", maxCount: 1 },
-    { name: "speakerImages", maxCount: 2 },
-  ]),
-  compressAndSave([
-    {
-      type: "single",
-      fieldName: "photo",
-      bodyKey: "photo",
-      prefix: "event",
-      width: 1280,
-      height: 720,
-    },
-    {
-      type: "array",
-      fieldName: "speakerImages",
-      bodyKey: "speakers",
-      imageKey: "image",
-      prefix: "speaker",
-      width: 400,
-      height: 400,
-      maxCount: 2,
-    },
-  ]),
-];
 
 router.use(protect);
 
@@ -57,13 +28,11 @@ router.use(restrictTo("admin"));
 
 router.post(
   API_ENDPOINTS.events.create,
-  uploadEventAndSpeakerImages,
   validate(eventSchema.superRefine(eventRefinement)),
   createEvent,
 );
 router.patch(
   API_ENDPOINTS.events.byId,
-  uploadEventAndSpeakerImages,
   validate(eventSchema.partial().superRefine(eventRefinement)),
   updateEvent,
 );

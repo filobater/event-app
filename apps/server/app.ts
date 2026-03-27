@@ -8,7 +8,7 @@ import { AppError } from "utils/AppError.ts";
 import authRoutes from "routes/auth.routes.ts";
 import { API_ENDPOINTS } from "@events-app/endpoints";
 import path from "path";
-
+import { xss } from "express-xss-sanitizer";
 import usersRoutes from "routes/users.routes.ts";
 import { rateLimit } from "express-rate-limit";
 import { fileURLToPath } from "url";
@@ -17,8 +17,8 @@ import { updateEventStatus } from "process/updateEventStatus.ts";
 import { updateRegistrationPaymentStatus } from "process/updateRegistrationPaymentStatus.ts";
 import registrationsRoutes from "routes/registrations.routes.ts";
 import dashboardRoutes from "routes/dashboard.routes.ts";
+import uploadRoutes from "routes/upload.routes.ts";
 import { protectUploads } from "middlewares/protectUploads.middleware.ts";
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 100,
@@ -35,8 +35,7 @@ const app = express();
 
 app.use(morgan("dev"));
 
-// app.use(limiter);
-
+app.use(limiter);
 // Enable security headers while still allowing cross-origin images (uploads)
 app.use(
   helmet({
@@ -51,6 +50,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const __filename = fileURLToPath(import.meta.url);
@@ -62,6 +62,9 @@ app.use(
   express.static(path.join(__dirname, "uploads")),
 );
 
+app.use(API_ENDPOINTS.upload.base, uploadRoutes);
+
+app.use(xss());
 app.use(API_ENDPOINTS.auth.base, authRoutes);
 app.use(API_ENDPOINTS.users.base, usersRoutes);
 app.use(API_ENDPOINTS.events.base, eventsRoutes);

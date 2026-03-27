@@ -6,9 +6,11 @@ import type { BaseResponseDto } from "./base.dto.js";
 
 export type CreateUserRequestDto = SignupRequestDto & {
   role?: "admin" | "user";
+  profilePicture?: string | null;
 };
 
 export type UpdateUserRequestDto = SignupRequestDto & {
+  profilePicture?: string | null;
   _id: string;
 };
 

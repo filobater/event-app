@@ -28,7 +28,7 @@ export class RequestStateClass {
     }
   }
 
-  fail(err: HttpErrorResponse) {
+  fail(err: HttpErrorResponse, options?: { differentToast?: boolean }) {
     this.reset();
     // this to handle the errors from zod validation
     if (err.error?.errors) {
@@ -37,6 +37,8 @@ export class RequestStateClass {
       return;
     }
     this.error.set(err?.error?.message);
-    this.toastService.error(err?.error?.message);
+    if (!options?.differentToast) {
+      this.toastService.error(err?.error?.message);
+    }
   }
 }

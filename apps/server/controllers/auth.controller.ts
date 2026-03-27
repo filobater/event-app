@@ -20,17 +20,6 @@ const sendRefreshToken = (res: Response, token: string) => {
   });
 };
 
-/** HttpOnly access token so /uploads and other cookie-only requests can be authenticated */
-const sendAccessTokenCookie = (res: Response, token: string) => {
-  res.cookie("accessToken", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-    maxAge: 15 * 60 * 1000,
-  });
-};
-
 const generateOTP = () => {
   const otp = crypto.randomInt(100000, 999999).toString();
   const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
@@ -75,7 +64,6 @@ export const verifyOTP = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user._id.toString());
   const refreshToken = generateRefreshToken(user._id.toString());
   sendRefreshToken(res, refreshToken);
-  sendAccessTokenCookie(res, accessToken);
   sendResponse({
     res,
     statusCode: 200,
@@ -119,7 +107,6 @@ export const signin = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user._id.toString());
   const refreshToken = generateRefreshToken(user._id.toString());
   sendRefreshToken(res, refreshToken);
-  sendAccessTokenCookie(res, accessToken);
   sendResponse({
     res,
     message: "Signed in successfully",
@@ -190,7 +177,6 @@ export const resetPassword = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user._id.toString());
   const refreshToken = generateRefreshToken(user._id.toString());
   sendRefreshToken(res, refreshToken);
-  sendAccessTokenCookie(res, accessToken);
   sendResponse({
     res,
     statusCode: 200,
@@ -211,7 +197,6 @@ export const refreshToken = async (req: Request, res: Response) => {
     const user = await User.findById(userId);
     if (!user) {
       res.clearCookie("refreshToken");
-      res.clearCookie("accessToken", { path: "/" });
       throw new AppError("User not found", 404);
     }
 
@@ -219,7 +204,6 @@ export const refreshToken = async (req: Request, res: Response) => {
     const newRefreshToken = generateRefreshToken(userId);
 
     sendRefreshToken(res, newRefreshToken);
-    sendAccessTokenCookie(res, newAccessToken);
 
     sendResponse({
       res,
@@ -228,7 +212,6 @@ export const refreshToken = async (req: Request, res: Response) => {
     });
   } catch (err) {
     res.clearCookie("refreshToken");
-    res.clearCookie("accessToken", { path: "/" });
     if (err instanceof AppError) throw err;
     throw new AppError("Refresh token invalid or expired", 401);
   }
@@ -236,7 +219,6 @@ export const refreshToken = async (req: Request, res: Response) => {
 
 export const signout = (_req: Request, res: Response) => {
   res.clearCookie("refreshToken");
-  res.clearCookie("accessToken", { path: "/" });
   sendResponse({
     res,
     statusCode: 200,

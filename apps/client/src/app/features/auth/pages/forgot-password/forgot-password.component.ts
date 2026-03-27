@@ -11,7 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { RequestStateClass } from 'src/app/core';
 import { ForgotPasswordRequestDto } from '@events-app/shared-dtos';
-import { NAV } from 'src/app/core/navigation';
+import { NAV } from 'src/app/shared/constants';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
 
 @Component({

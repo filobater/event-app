@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
     class="badge badge-md border-white/10 border text-sm rounded-full text-(--light-gray-color) capitalize transition-colors duration-300"
     [class.cursor-pointer]="clickable()"
     [class]="color()"
-    tabindex="0"
+    [tabindex]="clickable() ? 0 : -1"
     (click)="onClick.emit()"
   >
     <ng-content></ng-content> {{ label() }}

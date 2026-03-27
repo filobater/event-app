@@ -8,14 +8,10 @@ import type {
   UserResponseDto,
   UpdateUserRequestDto,
   UpdateUserResponseDto,
-  UpdateUserProfileRequestDto,
-  UpdateUserProfileResponseDto,
-  UpdateUserPasswordRequestDto,
-  UpdateUserPasswordResponseDto,
   DeleteUserResponseDto,
   UserDto,
 } from '@events-app/shared-dtos';
-import { createPaginatedResource, toFormData } from 'src/app/shared/utils';
+import { createPaginatedResource } from 'src/app/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +20,15 @@ export class UsersApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUsersUrl = `${environment.apiUrl}${API_ENDPOINTS.users.base}`;
 
+  private removeEmptyFields(data: Record<string, any>): Record<string, any> {
+    return Object.fromEntries(Object.entries(data).filter(([_, value]) => !!value));
+  }
+
   createUser(data: CreateUserRequestDto): Observable<UserResponseDto> {
-    const formData = toFormData(data);
+    const dataToSend = this.removeEmptyFields(data);
     return this.http.post<UserResponseDto>(
       `${this.baseUsersUrl}${API_ENDPOINTS.users.create}`,
-      formData,
+      dataToSend,
     );
   }
 
@@ -46,10 +46,9 @@ export class UsersApiService {
   }
 
   updateUser(id: string, data: UpdateUserRequestDto): Observable<UpdateUserResponseDto> {
-    const formData = toFormData(data);
     return this.http.patch<UpdateUserResponseDto>(
       `${this.baseUsersUrl}${API_ENDPOINTS.users.byId.replace(':id', id)}`,
-      formData,
+      this.removeEmptyFields(data),
     );
   }
 

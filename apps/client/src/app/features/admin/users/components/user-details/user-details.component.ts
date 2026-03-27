@@ -1,11 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LucideAngularModule, Mail, Shield, Calendar, Ticket } from 'lucide-angular';
 import { UserDto } from '@events-app/shared-dtos';
 import {
   AvatarComponent,
   BadgeComponent,
-  RegisterCardComponent,
   RegistrationListComponent,
 } from 'src/app/shared/components';
 import { RouterLink } from '@angular/router';
@@ -30,6 +37,7 @@ const PREVIEW_LIMIT = 3;
 })
 export default class UserDetailsComponent {
   user = input<UserDto | null>();
+  isUserDetailsModal = input<boolean>(false);
 
   readonly MailIcon = Mail;
   readonly ShieldIcon = Shield;
@@ -63,7 +71,9 @@ export default class UserDetailsComponent {
 
   constructor() {
     effect(() => {
-      this.userIdSignal.set(this.user()?._id ?? '');
+      if (this.isUserDetailsModal()) {
+        this.userIdSignal.set(this.user()?._id ?? '');
+      }
     });
   }
 }

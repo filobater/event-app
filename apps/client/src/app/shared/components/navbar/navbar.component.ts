@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NAV, BASE_PATH } from 'src/app/core/navigation';
+import { NAV, BASE_PATH } from 'src/app/shared/constants';
 import NavTabComponent from '../nav-tab/nav-tab.component';
 import {
   CalendarDays,

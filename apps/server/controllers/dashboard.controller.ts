@@ -37,11 +37,38 @@ export const getTopEventsByRegistration = async (
   req: Request,
   res: Response,
 ) => {
-  const topEvents = await Registration.find({
-    $or: [{ status: "confirmed" }, { status: "reserved" }],
-  })
-    .sort({ totalAmount: -1 })
-    .limit(5);
+  const pipeline = [
+    { $match: { $or: [{ status: "confirmed" }, { status: "reserved" }] } },
+    {
+      $group: {
+        _id: "$event",
+        totalAmount: { $sum: "$totalAmount" },
+        seatsCount: { $sum: "$seatsCount" },
+      },
+    },
+    { $sort: { totalAmount: -1, seatsCount: -1 } },
+    { $limit: 5 },
+    {
+      $lookup: {
+        from: "events",
+        localField: "_id",
+        foreignField: "_id",
+        as: "event",
+      },
+    },
+    { $unwind: "$event" },
+    {
+      $project: {
+        _id: 1,
+        totalAmount: 1,
+        seatsCount: 1,
+        "event.title": 1,
+        "event.registeredSeats": 1,
+        "event.totalSeats": 1,
+      },
+    },
+  ];
+  const topEvents = await Registration.aggregate(pipeline as PipelineStage[]);
 
   sendResponse({
     res,
@@ -58,9 +85,7 @@ export const eventsByCategory = async (req: Request, res: Response) => {
     { $unwind: "$category" },
     { $group: { _id: "$category", count: { $sum: 1 } } },
   ];
-  const events = await Event.aggregate<{ _id: string; count: number }>(
-    pipeline as PipelineStage[],
-  );
+  const events = await Event.aggregate(pipeline as PipelineStage[]);
   sendResponse({
     res,
     statusCode: 200,
@@ -72,12 +97,41 @@ export const eventsByCategory = async (req: Request, res: Response) => {
 };
 
 export const getTopEventsByRevenue = async (req: Request, res: Response) => {
-  const topEvents = await Registration.find({
-    status: "confirmed",
-    totalAmount: { $gt: 0 },
-  })
-    .sort({ totalAmount: -1 })
-    .limit(5);
+  const pipeline: PipelineStage[] = [
+    { $match: { status: "confirmed", totalAmount: { $gt: 0 } } },
+    {
+      $group: {
+        _id: "$event",
+        totalRevenue: { $sum: "$totalAmount" },
+        totalSeats: { $sum: "$seatsCount" },
+      },
+    },
+    { $sort: { totalRevenue: -1, totalSeats: -1 } },
+    { $limit: 5 },
+    {
+      $lookup: {
+        from: "events",
+        localField: "_id",
+        foreignField: "_id",
+        as: "event",
+      },
+    },
+    { $unwind: "$event" },
+    {
+      $project: {
+        _id: 1,
+        totalRevenue: 1,
+        totalSeats: 1,
+        "event.title": 1,
+        "event.location": 1,
+        "event.dateTime": 1,
+        "event.status": 1,
+        "event.photo": 1,
+      },
+    },
+  ];
+
+  const topEvents = await Registration.aggregate(pipeline);
 
   sendResponse({
     res,
@@ -94,9 +148,7 @@ export const eventsStatus = async (req: Request, res: Response) => {
     { $unwind: "$status" },
     { $group: { _id: "$status", count: { $sum: 1 } } },
   ];
-  const events = await Event.aggregate<{ _id: string; count: number }>(
-    pipeline as PipelineStage[],
-  );
+  const events = await Event.aggregate(pipeline as PipelineStage[]);
   sendResponse({
     res,
     statusCode: 200,

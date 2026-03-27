@@ -39,7 +39,7 @@
     @if (usersFacade.loadUserState.loading() && modals().view) {
       <admin-loading />
     } @else {
-      <app-user-details [user]="usersFacade.user()" />
+      <app-user-details [user]="usersFacade.user()" [isUserDetailsModal]="modals().view" />
     }
   </app-modal>
 
@@ -53,7 +53,6 @@
       <admin-loading />
     } @else {
       <app-user-form
-        [requestState]="usersFacade.mutationState"
         (closed)="handleCloseModal(modals().edit ? 'edit' : 'add')"
         (onSave)="handleSaveUser($event)"
         [user]="usersFacade.user()"

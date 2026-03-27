@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { LucideAngularModule, Plus, Users } from 'lucide-angular';
 import {
   SecondaryButtonComponent,
@@ -12,9 +19,9 @@ import UserDetailsComponent from '../components/user-details/user-details.compon
 import { CreateUserRequestDto, UpdateUserRequestDto } from '@events-app/shared-dtos';
 import UserTableComponent from '../components/user-table/user-table.component';
 import { AdminLoadingComponent } from '../../components';
-import type { ModalType } from '../../types/modal.type';
-import type { SortParams } from '../../types/sort-params.type';
-import { UsersFacade } from 'src/app/core/facades/users.facade';
+import type { ModalType } from 'src/app/features/admin/types/modal.type';
+import type { SortParams } from 'src/app/features/admin/types/sort-params.type';
+import { UsersFacade } from 'src/app/features/admin/users/facades/users.facade';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -78,17 +85,15 @@ export default class UsersComponent {
   }
 
   handleSaveUser(user: CreateUserRequestDto | UpdateUserRequestDto) {
-    if ('_id' in user) {
-      this.usersFacade.updateUser(user._id as string, user, () => {
-        this.handleCloseModal('edit');
+    const isEdit = '_id' in user && !!user._id;
+    this.usersFacade.saveUser(user, {
+      onProfilePictureUrlApplied: (url) =>
+        this.userFormRef()?.userForm.patchValue({ profilePicture: url }),
+      onSuccess: () => {
+        this.handleCloseModal(isEdit ? 'edit' : 'add');
         this.resetUserForm();
-      });
-    } else {
-      this.usersFacade.createUser(user as CreateUserRequestDto, () => {
-        this.handleCloseModal('add');
-        this.resetUserForm();
-      });
-    }
+      },
+    });
   }
 
   handleDeleteConfirm() {

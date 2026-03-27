@@ -15,8 +15,8 @@ import { TopEventByRevenueDto } from '@events-app/shared-dtos';
         <i-lucide [img]="CoinsIcon" class="size-5 text-(--main-color)" /> Top Events by Revenue
       </h3>
       <div class="flex flex-col gap-4">
-        @for (event of topEventsByRevenue(); track event._id; let i = $index) {
-          <app-top-revenue-event-card [event]="event" [rank]="i + 1" />
+        @for (itemData of topEventsByRevenue(); track itemData._id; let i = $index) {
+          <app-top-revenue-event-card [itemData]="itemData" [rank]="i + 1" />
         }
       </div>
     </div>

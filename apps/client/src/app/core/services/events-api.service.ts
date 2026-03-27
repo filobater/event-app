@@ -11,7 +11,7 @@ import type {
   DeleteEventResponseDto,
   EventDto,
 } from '@events-app/shared-dtos';
-import { createPaginatedResource, toFormData } from 'src/app/shared/utils';
+import { createPaginatedResource } from 'src/app/shared/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -23,18 +23,16 @@ export class EventsApiService {
   // Admin actions
 
   createEvent(data: CreateEventRequestDto): Observable<EventResponseDto> {
-    const formData = toFormData(data);
     return this.http.post<EventResponseDto>(
       `${this.baseEventsUrl}${API_ENDPOINTS.events.create}`,
-      formData,
+      data,
     );
   }
 
   updateEvent(id: string, data: UpdateEventRequestDto): Observable<UpdateEventResponseDto> {
-    const formData = toFormData(data);
     return this.http.patch<UpdateEventResponseDto>(
       `${this.baseEventsUrl}${API_ENDPOINTS.events.byId.replace(':id', id)}`,
-      formData,
+      data,
     );
   }
 

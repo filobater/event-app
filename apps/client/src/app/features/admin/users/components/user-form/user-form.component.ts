@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   TextInputComponent,
@@ -11,8 +19,8 @@ import {
 } from 'src/app/shared/components';
 import { CreateUserRequestDto, UpdateUserRequestDto, UserDto } from '@events-app/shared-dtos';
 import { confirmPasswordValidator, getValidationErrorMessage } from 'src/app/shared/utils';
-import { RequestStateClass } from 'src/app/core/request-state';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
+import { UsersFacade } from 'src/app/features/admin/users/facades/users.facade';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +40,10 @@ import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 })
 export default class UserFormComponent {
   private fb = inject(FormBuilder);
-  requestState = input<RequestStateClass>();
+  readonly usersFacade = inject(UsersFacade);
+  readonly mutationState = this.usersFacade.mutationState;
+  readonly uploadState = this.usersFacade.uploadState;
+
   user = input<UserDto | null>(null);
   isEdit = computed(() => !!this.user());
   closed = output<void>();
@@ -44,8 +55,8 @@ export default class UserFormComponent {
 
   userForm = this.fb.nonNullable.group(
     {
-      profilePicture: [null],
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      profilePicture: this.fb.control<File | string | null>(null),
+      fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
@@ -64,7 +75,7 @@ export default class UserFormComponent {
         passwordControl?.clearValidators();
         confirmPasswordControl?.clearValidators();
 
-        this.userForm.patchValue(this.user() as unknown as UpdateUserRequestDto);
+        this.userForm.patchValue(this.user() as UserDto);
       } else {
         emailControl?.enable();
         passwordControl?.setValidators([Validators.required, Validators.minLength(8)]);

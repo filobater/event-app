@@ -14,7 +14,7 @@ import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 import { ProfileService } from '../../services/profile.service';
 import { UserDto } from '@events-app/shared-dtos';
 import { RequestStateClass } from 'src/app/core/request-state';
-import { UserService } from 'src/app/core/services/user.service';
+import { AccountInfoFacade } from '../facades/account-info.facade';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,15 +43,17 @@ export default class AccountInfoComponent {
   private readonly fb = inject(FormBuilder);
 
   readonly profileService = inject(ProfileService);
-  readonly userService = inject(UserService);
+  readonly accountInfoFacade = inject(AccountInfoFacade);
 
   user = signal<UserDto | null>(null);
   getMeState = new RequestStateClass();
-  updateProfileState = new RequestStateClass();
+
+  readonly updateProfileState = this.accountInfoFacade.updateProfileState;
+  readonly uploadState = this.accountInfoFacade.uploadState;
 
   form = this.fb.nonNullable.group({
     profilePicture: this.fb.control<File | string | null>(null),
-    fullName: ['', [Validators.required, Validators.minLength(3)]],
+    fullName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
   });
 
@@ -90,18 +92,15 @@ export default class AccountInfoComponent {
       this.form.markAllAsTouched();
       return;
     }
+
     const dirty = getDirtyFields(this.form);
     if (Object.keys(dirty).length === 0) return;
-    this.updateProfileState.start();
-    this.profileService.updateProfile(dirty).subscribe({
-      next: (res) => {
-        this.updateProfileState.success(res.message);
-        this.user.set(res.data.user);
-        this.userService.setUser(res.data.user);
-      },
-      error: (err) => {
-        this.updateProfileState.fail(err);
-      },
+
+    const profilePicture = this.formControls?.profilePicture?.value;
+
+    this.accountInfoFacade.submitProfile(dirty, profilePicture, {
+      onProfilePictureUrlApplied: (url) => this.form.patchValue({ profilePicture: url }),
+      onSuccess: (res) => this.user.set(res.data.user),
     });
   }
 }

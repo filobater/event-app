@@ -20,25 +20,10 @@ import {
   updateUserPasswordSchema,
   updateUserSchema,
 } from "schemas/user.schema.ts";
-import { compressAndSave, upload } from "middlewares/upload/index.ts";
 import { checkId } from "middlewares/checkId.middleware.ts";
 import { User } from "models/user.model.ts";
 
 const router = Router();
-
-const uploadUserProfilePicture = [
-  upload.single("profilePicture"),
-  compressAndSave([
-    {
-      type: "single",
-      fieldName: "profilePicture",
-      bodyKey: "profilePicture",
-      prefix: "profilePicture",
-      width: 500,
-      height: 500,
-    },
-  ]),
-];
 
 router.use(protect);
 
@@ -46,7 +31,6 @@ router.param("id", checkId(User, "targetUser"));
 
 router.patch(
   API_ENDPOINTS.users.updateProfile,
-  uploadUserProfilePicture,
   validate(updateUserProfileSchema),
   updateUserProfile,
 );
@@ -61,7 +45,6 @@ router.use(restrictTo("admin"));
 
 router.post(
   API_ENDPOINTS.users.create,
-  uploadUserProfilePicture,
   validate(signupSchema),
   createUser,
 );
@@ -73,7 +56,6 @@ router.get(API_ENDPOINTS.users.userRegistrations, getUserRegistrations);
 
 router.patch(
   API_ENDPOINTS.users.byId,
-  uploadUserProfilePicture,
   validate(updateUserSchema),
   updateUser,
 );

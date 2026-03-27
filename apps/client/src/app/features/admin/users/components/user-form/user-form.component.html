@@ -61,16 +61,16 @@
     [placeholder]="'Select role'"
     [options]="roleOptions"
   ></app-select-input>
-  @if (requestState()?.error()) {
-    <app-error-message [message]="requestState()?.error()"></app-error-message>
+  @if (mutationState.error()) {
+    <app-error-message [message]="mutationState.error()"></app-error-message>
   }
 
   <div class="flex justify-end gap-2">
     <app-secondary-button [label]="'Cancel'" (handleClick)="handleCancel()"></app-secondary-button>
     <app-primary-button
       type="submit"
-      [disabled]="userForm.invalid || (requestState()?.loading() ?? false)"
-      [label]="requestState()?.loading() ? 'Saving...' : 'Save User'"
+      [disabled]="userForm.invalid || mutationState.loading() || uploadState.loading()"
+      [label]="mutationState.loading() || uploadState.loading() ? 'Saving...' : 'Save User'"
     />
   </div>
 </form>

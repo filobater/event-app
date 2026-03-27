@@ -5,7 +5,7 @@ import { RegistrationDto } from "./registration.dto.js";
 export type SpeakerDto = {
   name: string;
   title: string;
-  image: string;
+  image: string | File;
 };
 
 export type EventDto = {
@@ -34,12 +34,11 @@ export type EventDto = {
 export type CreateEventRequestDto = Omit<
   EventDto,
   "_id" | "createdAt" | "updatedAt" | "registeredSeats"
-> & {
-  speakers: string;
-  speakerImages: string[];
-};
+>;
 
-export type UpdateEventRequestDto = Partial<CreateEventRequestDto>;
+export type UpdateEventRequestDto = Partial<CreateEventRequestDto> & {
+  _id?: string;
+};
 
 // Responses
 

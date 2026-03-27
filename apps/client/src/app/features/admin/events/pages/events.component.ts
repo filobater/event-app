@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { LucideAngularModule, LayoutDashboard, Plus } from 'lucide-angular';
 import {
   ErrorMessageComponent,
@@ -81,17 +88,23 @@ export default class EventsComponent {
   }
 
   handleSaveEvent(event: CreateEventRequestDto | UpdateEventRequestDto) {
-    if ('_id' in event) {
-      this.eventsFacade.updateEvent(event._id as string, event, () => {
-        this.handleCloseModal('edit');
+    const isEdit = '_id' in event && !!event._id;
+    this.eventsFacade.saveEvent(event, {
+      onMediaUrlsApplied: (patch) => {
+        const ref = this.eventFormRef();
+        if (!ref?.eventForm) return;
+        if (patch.photo !== undefined) {
+          ref.eventForm.patchValue({ photo: patch.photo });
+        }
+        patch.speakers?.forEach((speaker, index) => {
+          ref.getSpeakerGroup(index)?.patchValue({ image: speaker.image });
+        });
+      },
+      onSuccess: () => {
+        this.handleCloseModal(isEdit ? 'edit' : 'add');
         this.resetEventForm();
-      });
-    } else {
-      this.eventsFacade.createEvent(event as CreateEventRequestDto, () => {
-        this.handleCloseModal('add');
-        this.resetEventForm();
-      });
-    }
+      },
+    });
   }
 
   handleDeleteConfirm() {

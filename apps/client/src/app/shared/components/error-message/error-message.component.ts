@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,5 +19,5 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 })
 export default class ErrorMessageComponent {
   message = input<string | string[] | null | undefined>('');
-  arrayMessage = computed(() => Array.isArray(this.message));
+  arrayMessage = computed(() => (Array.isArray(this.message()) ? this.message() : null));
 }

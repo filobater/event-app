@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { UserDto } from '@events-app/shared-dtos';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { Router } from '@angular/router';
-import { NAV } from '../navigation';
+import { NAV } from 'src/app/shared/constants';
 import { RequestStateClass } from '../request-state';
 
 @Injectable({ providedIn: 'root' })

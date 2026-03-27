@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   ImageUploadComponent,
@@ -20,6 +28,7 @@ import {
 import { RequestStateClass } from 'src/app/core/request-state';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
+import { EventsFacade } from 'src/app/core/facades/events.facade';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,7 +50,9 @@ import { getValidationErrorMessage } from 'src/app/shared/utils';
 })
 export default class EventFormComponent {
   private fb = inject(FormBuilder);
-  requestState = input<RequestStateClass>();
+  readonly eventsFacade = inject(EventsFacade);
+  readonly mutationState = this.eventsFacade.mutationState;
+  readonly uploadState = this.eventsFacade.uploadState;
   event = input<EventDto | null>(null);
   isEdit = computed(() => !!this.event());
   closed = output<void>();
@@ -61,7 +72,7 @@ export default class EventFormComponent {
   ];
 
   eventForm = this.fb.nonNullable.group({
-    photo: [null as string | null, [Validators.required]],
+    photo: this.fb.control<File | string | null>(null, [Validators.required]),
     title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     category: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(10)]],
@@ -94,7 +105,7 @@ export default class EventFormComponent {
 
         // Patch all non-array fields
         const { speakers: _, ...eventWithoutSpeakers } = event;
-        // Offset the date by timezone to keep local time
+
         const localDateTime = this.getLocalDateTime(event.dateTime);
         const localEndTime = this.getLocalDateTime(event.endTime);
         this.eventForm.patchValue({
@@ -121,7 +132,7 @@ export default class EventFormComponent {
     return this.fb.group({
       name: [speaker?.name ?? '', [Validators.required, Validators.minLength(3)]],
       title: [speaker?.title ?? '', [Validators.required, Validators.minLength(3)]],
-      image: [speaker?.image ?? null, [Validators.required]],
+      image: this.fb.control<File | string | null>(speaker?.image ?? null, [Validators.required]),
     });
   }
 
@@ -165,44 +176,36 @@ export default class EventFormComponent {
     this.closed.emit();
   }
 
-  handleSpeakerData() {
-    return {
-      speakerImages: this.formData.speakers
-        ?.getRawValue()
-        .map((speaker: SpeakerDto) => speaker.image),
-      speakers: this.formData.speakers?.getRawValue().map((speaker: SpeakerDto) => ({
-        name: speaker.name,
-        title: speaker.title,
-      })),
-    };
+  private buildSpeakersPayload() {
+    return (this.formData.speakers?.getRawValue() ?? []).map((speaker) => ({
+      name: speaker.name,
+      title: speaker.title,
+      image: speaker.image as string | File,
+    }));
   }
 
   handleSubmit() {
-    const { speakers, ...eventData } = this.eventForm.value;
-    const dataToSend = {
-      ...eventData,
-      totalSeats: Number(eventData.totalSeats),
-      price: Number(eventData.price),
-      speakers: JSON.stringify(this.handleSpeakerData().speakers),
-      speakerImages: this.handleSpeakerData().speakerImages,
-    };
     if (this.eventForm.invalid) {
       this.eventForm.markAllAsTouched();
       return;
     }
 
+    const { speakers, ...rest } = this.eventForm.getRawValue();
+    const dataToSend = {
+      ...rest,
+      totalSeats: Number(rest.totalSeats),
+      price: Number(rest.price),
+      speakers: this.buildSpeakersPayload(),
+    } as CreateEventRequestDto;
+
     if (this.isEdit()) {
       const dirtyFields = getDirtyFields(this.eventForm);
       if (dirtyFields['speakers']) {
-        const filterSpeakerImages = this.handleSpeakerData().speakerImages.filter(
-          (image: File | string) => typeof image !== 'string',
-        );
-        dirtyFields['speakers'] = JSON.stringify(dirtyFields['speakers']);
-        dirtyFields['speakerImages'] = filterSpeakerImages;
+        dirtyFields['speakers'] = this.buildSpeakersPayload();
       }
       this.onSave.emit({ ...dirtyFields, _id: this.event()?._id } as UpdateEventRequestDto);
     } else {
-      this.onSave.emit(dataToSend as CreateEventRequestDto);
+      this.onSave.emit(dataToSend);
     }
   }
 }
