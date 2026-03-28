@@ -16,6 +16,7 @@ import {
   EventSeatsConfirmModalComponent,
   type ModalAction,
 } from '../event-seats-confirm-modal/event-seats-confirm-modal.component';
+import EventSeatsPaymentActionsComponent from '../event-seats-payment-actions/event-seats-payment-actions.component';
 import { RequestStateClass } from 'src/app/core/request-state';
 
 @Component({
@@ -28,6 +29,7 @@ import { RequestStateClass } from 'src/app/core/request-state';
     ProgressComponent,
     PrimaryButtonComponent,
     EventSeatsConfirmModalComponent,
+    EventSeatsPaymentActionsComponent,
   ],
   templateUrl: './event-seats.component.html',
 })

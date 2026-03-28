@@ -64,7 +64,6 @@ export default class EventsComponent {
   }
 
   handleSearch(search: string) {
-    if (this.eventsResource.resource.value()?.data?.events?.length === 0) return;
     this.eventsResource.setSearch(search);
   }
 

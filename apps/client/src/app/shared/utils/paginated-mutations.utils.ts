@@ -14,14 +14,19 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
       const current = getCurrent();
       if (!current) return;
 
+      const newCount = current.data.count - 1;
+
       resource.set({
         ...current,
         data: {
           ...current.data,
           [dataKey]: getItems().filter((item) => item._id !== id),
-          ...(current.data.count >= 1 && { count: current.data.count - 1 }),
-          ...(current.data.count === 1 && { totalPages: current.data.totalPages - 1 }),
-          totalData: current.data.totalData > 0 ? current.data.totalData - 1 : 0,
+          count: Math.max(0, newCount),
+          totalData: Math.max(0, current.data.totalData - 1),
+          totalPages:
+            newCount === 0 && current.data.totalPages > 1
+              ? current.data.totalPages - 1
+              : current.data.totalPages,
         },
       });
     },
@@ -30,14 +35,18 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
       const current = getCurrent();
       if (!current) return;
 
+      const pageSize = 10;
+      const newCount = current.data.count + 1;
+      const overPageLimit = newCount > pageSize;
+
       resource.set({
         ...current,
         data: {
           ...current.data,
-          [dataKey]: [item, ...getItems()],
+          [dataKey]: overPageLimit ? getItems() : [item, ...getItems()],
+          count: Math.min(newCount, pageSize),
           totalData: current.data.totalData + 1,
-          ...(current.data.count < 10 && { count: current.data.count + 1 }),
-          ...(current.data.count === 10 && { totalPages: current.data.totalPages + 1 }),
+          totalPages: overPageLimit ? current.data.totalPages + 1 : current.data.totalPages,
         },
       });
     },

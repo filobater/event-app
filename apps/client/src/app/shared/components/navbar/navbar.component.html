@@ -23,11 +23,11 @@
         >
           <i-lucide [img]="TicketIcon" class="size-5" />
         </div>
-        <span class="text-white text-xl font-bold">Eventify</span>
+        <span class="text-white text-xl font-bold" tabindex="0">Eventify</span>
       </a>
     </div>
     <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal px-1">
+      <ul class="px-1 flex my-1">
         <!-- Nav tabs in the desktop menu -->
         @for (link of navLinks; track link.label) {
           <app-nav-tab [link]="link" />
@@ -56,10 +56,12 @@
           class="menu menu-sm dropdown-content bg-(--dark-gray-color) rounded-box z-1 mt-3 w-52 p-2 shadow"
         >
           <li>
-            <a [routerLink]="nav.profile.account" class="justify-between"> Profile </a>
+            <a [routerLink]="nav.profile.account" class="justify-between" (click)="closeUserMenu()">
+              Profile
+            </a>
           </li>
 
-          <li (click)="userService.logout()"><a>Logout</a></li>
+          <li (click)="userService.logout(); closeUserMenu()"><a>Logout</a></li>
         </ul>
       </div>
     </div>

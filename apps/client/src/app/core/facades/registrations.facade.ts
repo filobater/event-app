@@ -55,7 +55,6 @@ export class RegistrationsFacade {
           },
           isPaid: this.eventsFacade.event()?.type === 'paid' ? false : true,
         });
-
         this.registrationsResource.addItem({
           ...res.data.registration,
           event: this.eventsFacade.event()!,

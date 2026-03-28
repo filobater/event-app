@@ -1,11 +1,32 @@
 import type { Request, Response } from "express";
-import { Event } from "models/event.model.ts";
+import { Event, type EventDocument } from "models/event.model.ts";
 import { ApiFeatures } from "utils/ApiFeatures.ts";
 import { sendResponse } from "utils/sendResponse.ts";
 import { AppError } from "utils/AppError.ts";
 import { Registration } from "models/registration.model.ts";
 import { replaceFile } from "utils/replaceFile.ts";
 import type { SpeakerDto } from "@events-app/shared-dtos";
+
+const getEventWithRegistration = async (event: EventDocument, req: Request) => {
+  const registration = await Registration.findOne({
+    event: event._id,
+    user: req.user?._id,
+    $or: [{ status: "reserved" }, { status: "confirmed" }],
+  });
+  return {
+    registration: {
+      _id: registration?._id.toString(),
+      seatsCount: registration?.seatsCount,
+      totalAmount: registration?.totalAmount,
+    },
+    isPaid:
+      req.event?.type === "paid"
+        ? registration?.status === "confirmed"
+          ? true
+          : false
+        : undefined,
+  };
+};
 
 // here in all controllers we can directly take the req body and put it because of the validation
 
@@ -54,11 +75,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
 };
 
 export const getEvent = async (req: Request, res: Response) => {
-  const registration = await Registration.findOne({
-    event: req.event?._id,
-    user: req.user?._id,
-    $or: [{ status: "reserved" }, { status: "confirmed" }],
-  });
+  const eventWithRegistration = await getEventWithRegistration(req.event, req);
 
   sendResponse({
     res,
@@ -67,23 +84,14 @@ export const getEvent = async (req: Request, res: Response) => {
     data: {
       event: {
         ...req.event.toObject(),
-        registration: {
-          _id: registration?._id.toString(),
-          seatsCount: registration?.seatsCount,
-          totalAmount: registration?.totalAmount,
-        },
-        isPaid:
-          req.event?.type === "paid"
-            ? registration?.status === "confirmed"
-              ? true
-              : false
-            : undefined,
+        ...eventWithRegistration,
       },
     },
   });
 };
 
 export const updateEvent = async (req: Request, res: Response) => {
+  const eventWithRegistration = await getEventWithRegistration(req.event, req);
   if ("registeredSeats" in req.body && req.body.registeredSeats !== undefined) {
     throw new AppError("Registered seats cannot be updated", 400);
   }
@@ -98,7 +106,10 @@ export const updateEvent = async (req: Request, res: Response) => {
     statusCode: 200,
     message: "Event updated Successfully",
     data: {
-      event: updatedEvent,
+      event: {
+        ...updatedEvent.toObject(),
+        ...eventWithRegistration,
+      },
     },
   });
 };

@@ -1,0 +1,19 @@
+<div class="flex flex-col gap-3">
+  <div class="flex items-center gap-2 text-sm text-(--light-gray-color)">
+    <span class="text-(--light-gray-color)">Complete your payment:</span>
+    <span class="font-medium">
+      {{ (totalAmount() | currency: 'EGP') ?? '' }}
+    </span>
+  </div>
+
+  @if (!loading()) {
+    <app-primary-button (click)="pay.emit()" [label]="'Pay Now'" />
+    <button
+      class="btn px-4 py-2 rounded-lg w-full bg-(--destructive-color) disabled:opacity-50 disabled:cursor-not-allowed text-white hover:bg-(--destructive-color)/80 transition-colors"
+      type="button"
+      (click)="cancelRegistration.emit()"
+    >
+      Cancel Registration
+    </button>
+  }
+</div>

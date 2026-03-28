@@ -72,4 +72,11 @@ export class NavbarComponent {
     const isAdmin = this.user()?.role === 'admin';
     return isAdmin || !link.adminOnly;
   });
+
+  protected closeUserMenu(): void {
+    const active = document.activeElement;
+    if (active instanceof HTMLElement) {
+      active.blur();
+    }
+  }
 }

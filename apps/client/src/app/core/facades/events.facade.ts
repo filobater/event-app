@@ -83,10 +83,14 @@ export class EventsFacade {
       options,
     ).subscribe({
       next: (res) => {
+        const eventToSave = {
+          ...res.data.event,
+          registration: {},
+        } as EventDto;
         this.mutationState.success(res.message);
-        this.cache.set(this.cacheNamespace, res.data.event._id, res.data.event);
-        this.eventsResource.addItem(res.data.event);
-        options?.onSuccess?.(res.data.event);
+        this.cache.set(this.cacheNamespace, res.data.event._id, eventToSave);
+        this.eventsResource.addItem(eventToSave);
+        options?.onSuccess?.(eventToSave);
       },
       error: (err) => this.handleEventSaveError(err),
     });

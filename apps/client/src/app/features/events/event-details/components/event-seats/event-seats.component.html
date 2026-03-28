@@ -65,26 +65,13 @@
           "
         />
       }
-    } @else if (event().type === 'paid' && !event().isPaid) {
-      <div class="flex flex-col gap-3">
-        <div class="flex items-center gap-2 text-sm text-(--light-gray-color)">
-          <span class="text-(--light-gray-color)">Complete your payment:</span>
-          <span class="font-medium">
-            {{ (event().registration.totalAmount | currency: 'EGP') ?? '' }}
-          </span>
-        </div>
-
-        @if (!requestState()?.loading()) {
-          <app-primary-button (click)="openModal('pay')" [label]="'Pay Now'" />
-          <button
-            class="btn px-4 py-2 rounded-xl w-full bg-(--destructive-color) disabled:opacity-50 disabled:cursor-not-allowed text-white hover:bg-(--destructive-color)/80 transition-colors"
-            type="button"
-            (click)="openModal('cancel')"
-          >
-            Cancel Registration
-          </button>
-        }
-      </div>
+    } @else if (event().registration._id && event().type === 'paid' && !event().isPaid) {
+      <app-event-seats-payment-actions
+        [totalAmount]="event().registration.totalAmount"
+        [loading]="!!requestState()?.loading()"
+        (pay)="openModal('pay')"
+        (cancelRegistration)="openModal('cancel')"
+      />
     } @else {
       <button
         class="btn px-4 py-2 rounded-xl w-full bg-(--destructive-color) disabled:opacity-50 disabled:cursor-not-allowed text-white hover:bg-(--destructive-color)/80 transition-colors"
@@ -94,6 +81,19 @@
         Cancel Registration
       </button>
     }
+  } @else if (
+    event().status !== 'completed' &&
+    event().registration._id &&
+    event().type === 'paid' &&
+    !event().isPaid
+  ) {
+    <!-- User filled all seats but hasn't paid yet → show payment UI -->
+    <app-event-seats-payment-actions
+      [totalAmount]="event().registration.totalAmount"
+      [loading]="!!requestState()?.loading()"
+      (pay)="openModal('pay')"
+      (cancelRegistration)="openModal('cancel')"
+    />
   } @else {
     <div class="text-center text-sm text-(--light-gray-color) font-medium py-2">
       Registration closed
