@@ -36,6 +36,7 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
       if (!current) return;
 
       const pageSize = 10;
+      const currentItems = getItems();
       const newCount = current.data.count + 1;
       const overPageLimit = newCount > pageSize;
 
@@ -43,7 +44,7 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
         ...current,
         data: {
           ...current.data,
-          [dataKey]: overPageLimit ? getItems() : [item, ...getItems()],
+          [dataKey]: [item, ...currentItems].slice(0, pageSize),
           count: Math.min(newCount, pageSize),
           totalData: current.data.totalData + 1,
           totalPages: overPageLimit ? current.data.totalPages + 1 : current.data.totalPages,
