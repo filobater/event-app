@@ -30,7 +30,7 @@
   </div>
 
   @if (!isFull() && event().status !== 'completed') {
-    @if (!event().registration) {
+    @if (!event().registration._id) {
       <div class="flex items-center justify-between">
         <span class="text-sm text-(--light-gray-color)">Seats</span>
         <div class="flex items-center gap-3">
@@ -41,7 +41,10 @@
           >
             <i-lucide [img]="MinusIcon" class="size-4" />
           </button>
-          <span class="text-white font-semibold w-4 text-center flex items-center justify-center w-full">{{ seats() }}</span>
+          <span
+            class="text-white font-semibold text-center flex items-center justify-center w-full"
+            >{{ seats() }}</span
+          >
           <button
             class="btn size-8 rounded-lg bg-(--dark-color) border cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border-white/20 text-white"
             [disabled]="seats() >= availableSeats()"
@@ -67,7 +70,7 @@
         <div class="flex items-center gap-2 text-sm text-(--light-gray-color)">
           <span class="text-(--light-gray-color)">Complete your payment:</span>
           <span class="font-medium">
-            {{ (event().price * event().registeredSeats | currency: 'EGP') ?? '' }}
+            {{ (event().registration.totalAmount | currency: 'EGP') ?? '' }}
           </span>
         </div>
 
@@ -101,8 +104,6 @@
     [event]="event()"
     [action]="activeModal()"
     [seats]="seats()"
-    [totalPrice]="totalPrice()"
-    [requestState]="requestState()"
     (ok)="handleModalOk()"
     (cancelled)="closeModal()"
   />

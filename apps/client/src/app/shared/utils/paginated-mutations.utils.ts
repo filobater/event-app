@@ -21,7 +21,7 @@ export function createPaginatedMutations<Item extends { _id: string }, Key exten
           [dataKey]: getItems().filter((item) => item._id !== id),
           ...(current.data.count >= 1 && { count: current.data.count - 1 }),
           ...(current.data.count === 1 && { totalPages: current.data.totalPages - 1 }),
-          totalData: current.data.totalData - 1,
+          totalData: current.data.totalData > 0 ? current.data.totalData - 1 : 0,
         },
       });
     },

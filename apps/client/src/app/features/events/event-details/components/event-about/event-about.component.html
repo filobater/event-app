@@ -3,7 +3,7 @@
 
   <p class="text-(--light-gray-color) leading-relaxed">{{ event().description }}</p>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+  <div class="flex items-center flex-wrap justify-between gap-3 pt-1">
     <app-info-label
       [title]="
         (event().dateTime | date: 'shortDate') +

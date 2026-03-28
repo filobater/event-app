@@ -18,10 +18,9 @@ import UserFormComponent from '../components/user-form/user-form.component';
 import UserDetailsComponent from '../components/user-details/user-details.component';
 import { CreateUserRequestDto, UpdateUserRequestDto } from '@events-app/shared-dtos';
 import UserTableComponent from '../components/user-table/user-table.component';
-import { AdminLoadingComponent } from '../../components';
-import type { ModalType } from 'src/app/features/admin/types/modal.type';
-import type { SortParams } from 'src/app/features/admin/types/sort-params.type';
-import { UsersFacade } from 'src/app/features/admin/users/facades/users.facade';
+import { AdminLoadingComponent } from 'src/app/features/admin/components';
+import type { ModalType, SortParams } from 'src/app/features/admin/types';
+import { UsersFacade } from 'src/app/core/facades';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,0 @@
-- Admin cannot reserve event
-- Add speaker upload component to upload image
-- Add payments (optional)
-- Add pagination, sort for tables

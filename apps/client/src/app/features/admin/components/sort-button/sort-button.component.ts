@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LucideAngularModule, ArrowUpDown } from 'lucide-angular';
-import type { SortParams } from '../../types/sort-params.type';
+import type { SortParams } from 'src/app/features/admin/types';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

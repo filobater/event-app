@@ -1,11 +1,9 @@
 import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { defer, firstValueFrom, from, switchMap } from 'rxjs';
+import { CacheService, UploadService, ToastService } from 'src/app/core/services';
 import { UsersApiService } from '../services/users-api.service';
-import { CacheService } from 'src/app/core/services/cache.service';
 import { RequestStateClass } from 'src/app/core/request-state';
-import { UploadService } from 'src/app/core/services/upload.service';
-import { ToastService } from 'src/app/core/toast.service';
 import type { CreateUserRequestDto, UserDto, UpdateUserRequestDto } from '@events-app/shared-dtos';
 
 export type SaveUserOptions = {

@@ -11,7 +11,7 @@ import {
 } from 'src/app/shared/components';
 import AccountInfoSkeletonComponent from '../components/account-info-skeleton/account-info-skeleton.component';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
-import { ProfileService } from '../../services/profile.service';
+import { ProfileService } from 'src/app/features/profile/services/profile.service';
 import { UserDto } from '@events-app/shared-dtos';
 import { RequestStateClass } from 'src/app/core/request-state';
 import { AccountInfoFacade } from '../facades/account-info.facade';

@@ -1,5 +1,5 @@
 import { inject, signal } from '@angular/core';
-import { ToastService } from './toast.service';
+import { ToastService } from 'src/app/core/services';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export class RequestStateClass {

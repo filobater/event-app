@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, LogIn } from 'lucide-angular';
-import { AuthCardComponent } from '../../components';
+import { AuthCardComponent } from 'src/app/features/auth/components';
 import {
   PasswordInputComponent,
   TextInputComponent,
@@ -11,7 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ResendOtpRequestDto, SigninRequestDto } from '@events-app/shared-dtos';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { BASE_PATH, RequestStateClass, UserService } from 'src/app/core';
 import { NAV } from 'src/app/shared/constants';
 import { getValidationErrorMessage } from 'src/app/shared/utils';

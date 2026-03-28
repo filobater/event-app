@@ -14,6 +14,7 @@ export default class AlertModalComponent {
   description = input.required<string>();
   cancelLabel = input<string>('Cancel');
   okLabel = input<string>('OK');
+  okVariant = input<'primary' | 'destructive'>('destructive');
   disabled = input<boolean>(false);
   cancelled = output<void>();
   ok = output<void>();

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { DatePipe, TitleCasePipe, CurrencyPipe } from '@angular/common';
 import { EventDto } from '@events-app/shared-dtos';
 import {
@@ -7,11 +15,10 @@ import {
   type ColumnDef,
   type HeaderContext,
   type PaginationOptions,
-} from '../../../components';
+} from 'src/app/features/admin/components';
 import { BadgeComponent } from 'src/app/shared/components';
 import { STATUS_BADGE_COLORS } from 'src/app/shared/constants';
-import type { SortParams } from '../../../types/sort-params.type';
-import { ModalType } from '../../../types/modal.type';
+import type { SortParams, ModalType } from 'src/app/features/admin/types';
 import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -59,7 +66,9 @@ export default class EventsTableComponent {
 
   openModal = output<{ modal: ModalType; eventId: string }>();
 
-  readonly columns = computed<ColumnDef<EventDto & { actions?: TemplateRef<{ $implicit: EventDto }> }>[]>(() => [
+  readonly columns = computed<
+    ColumnDef<EventDto & { actions?: TemplateRef<{ $implicit: EventDto }> }>[]
+  >(() => [
     {
       label: 'Event',
       key: 'title',

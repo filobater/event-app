@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
-import { AuthCardComponent } from '../../components';
+import { AuthCardComponent } from 'src/app/features/auth/components';
 import { OtpInputComponent, PrimaryButtonComponent } from 'src/app/shared/components';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { RequestStateClass, UserService } from 'src/app/core';
 import { VerifyOtpRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/shared/constants';

@@ -62,7 +62,7 @@ export default class EventDetailsComponent {
   }
 
   handlePayment() {
-    const registrationId = this.eventsFacade.event()?.registration;
+    const registrationId = this.eventsFacade.event()?.registration._id;
     if (registrationId) {
       this.registrationsFacade.payRegistration(registrationId, () => {
         this.seatsRef()?.closeModal();
@@ -71,7 +71,7 @@ export default class EventDetailsComponent {
   }
 
   handleCancelRegistration() {
-    const registrationId = this.eventsFacade.event()?.registration;
+    const registrationId = this.eventsFacade.event()?.registration._id;
     if (registrationId) {
       this.registrationsFacade.cancelRegistration(registrationId, () => {
         this.seatsRef()?.closeModal();

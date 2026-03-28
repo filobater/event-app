@@ -15,12 +15,11 @@ import {
   SearchInputComponent,
 } from 'src/app/shared/components';
 import EventsTableComponent from '../components/events-table/events-table.component';
-import { AdminLoadingComponent } from '../../components';
-import type { ModalType } from '../../types/modal.type';
-import type { SortParams } from '../../types/sort-params.type';
+import { AdminLoadingComponent } from 'src/app/features/admin/components';
+import type { ModalType, SortParams } from 'src/app/features/admin/types';
 import EventFormComponent from '../components/event-form/event-form.component';
 import { CreateEventRequestDto, UpdateEventRequestDto } from '@events-app/shared-dtos';
-import { EventsFacade } from 'src/app/core/facades/events.facade';
+import { EventsFacade } from 'src/app/core/facades';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

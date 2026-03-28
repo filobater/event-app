@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { LucideAngularModule, KeyRound } from 'lucide-angular';
-import { AuthCardComponent } from '../../components';
+import { AuthCardComponent } from 'src/app/features/auth/components';
 import {
   PasswordInputComponent,
   PrimaryButtonComponent,
@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { RequestStateClass, BASE_PATH, NAV, UserService } from 'src/app/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResetPasswordRequestDto } from '@events-app/shared-dtos';

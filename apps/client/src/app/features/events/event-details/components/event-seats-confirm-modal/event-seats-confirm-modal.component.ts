@@ -1,7 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 import { EventDto } from '@events-app/shared-dtos';
 import AlertModalComponent from 'src/app/shared/components/alert-modal/alert-modal.component';
-import { RequestStateClass } from 'src/app/core/request-state';
+import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
 
 export type ModalAction = 'register' | 'pay' | 'cancel';
 
@@ -20,17 +28,29 @@ interface ModalConfig {
   templateUrl: './event-seats-confirm-modal.component.html',
 })
 export class EventSeatsConfirmModalComponent {
+  registrationsFacade = inject(RegistrationsFacade);
+  requestState = this.registrationsFacade.mutationState;
+
+  readonly modalRef = viewChild(AlertModalComponent);
+
   event = input.required<EventDto>();
   action = input<ModalAction | null>(null);
   seats = input<number>(1);
-  totalPrice = input<number>(0);
-  requestState = input<RequestStateClass>();
+
+  totalPrice = computed(
+    () => this.event().registration.totalAmount ?? this.event().price * this.seats(),
+  );
+
+  readonly okVariant = computed<'primary' | 'destructive'>(() => {
+    const action = this.action();
+    return action === 'register' || action === 'pay' ? 'primary' : 'destructive';
+  });
 
   ok = output<void>();
   cancelled = output<void>();
 
-  private readonly formatCurrency = (amount: number) =>
-    amount.toLocaleString('en-EG', { style: 'currency', currency: 'EGP' });
+  private readonly formatCurrency = (amount: number = 0) =>
+    amount ? amount.toLocaleString('en-EG', { style: 'currency', currency: 'EGP' }) : '0';
 
   readonly config = computed<ModalConfig | null>(() => {
     const action = this.action();
@@ -45,7 +65,7 @@ export class EventSeatsConfirmModalComponent {
               ? `You're about to register for ${this.event().title} with ${this.seats()} seat(s), completely free.`
               : `You're about to reserve ${this.seats()} seat(s) for ${this.event().title}. Total: ${this.formatCurrency(this.totalPrice())}. Payment will be required to confirm your seat.`,
           cancelLabel: 'Go Back',
-          okLabel: this.requestState()?.loading()
+          okLabel: this.requestState.loading()
             ? 'Registering...'
             : this.event().type === 'free'
               ? 'Register for Free'
@@ -57,7 +77,7 @@ export class EventSeatsConfirmModalComponent {
           title: 'Confirm Payment',
           description: `You're about to pay ${this.formatCurrency(this.totalPrice())} for your reservation of "${this.event().title}". This amount will be deducted from your balance.`,
           cancelLabel: 'Cancel',
-          okLabel: this.requestState()?.loading() ? 'Paying...' : 'Proceed to Payment',
+          okLabel: this.requestState.loading() ? 'Paying...' : 'Proceed to Payment',
         };
 
       case 'cancel':
@@ -68,7 +88,7 @@ export class EventSeatsConfirmModalComponent {
               ? `Are you sure you want to cancel your registration for ${this.event().title}? Your payment of ${this.formatCurrency(this.totalPrice())} will be refunded to your balance.`
               : `Are you sure you want to cancel your registration for ${this.event().title}? This action cannot be undone.`,
           cancelLabel: 'Keep Registration',
-          okLabel: this.requestState()?.loading() ? 'Cancelling...' : 'Yes, Cancel',
+          okLabel: this.requestState.loading() ? 'Cancelling...' : 'Yes, Cancel',
         };
     }
   });

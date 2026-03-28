@@ -20,7 +20,7 @@ import {
 import { CreateUserRequestDto, UpdateUserRequestDto, UserDto } from '@events-app/shared-dtos';
 import { confirmPasswordValidator, getValidationErrorMessage } from 'src/app/shared/utils';
 import { getDirtyFields } from 'src/app/shared/utils/get-dirty-fields.utils';
-import { UsersFacade } from 'src/app/features/admin/users/facades/users.facade';
+import { UsersFacade } from 'src/app/core/facades';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

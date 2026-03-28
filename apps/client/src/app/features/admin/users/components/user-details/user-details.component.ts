@@ -17,7 +17,7 @@ import {
 } from 'src/app/shared/components';
 import { RouterLink } from '@angular/router';
 import { NAV } from 'src/app/core';
-import { RegistrationService } from 'src/app/core/services/registration.service';
+import { RegistrationService } from 'src/app/core/services';
 
 const PREVIEW_LIMIT = 3;
 

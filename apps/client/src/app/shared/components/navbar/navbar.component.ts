@@ -13,7 +13,7 @@ import {
   LucideIconData,
 } from 'lucide-angular';
 import AvatarComponent from '../avatar/avatar.component';
-import { UserService } from 'src/app/core/services/user.service';
+import { UserService } from 'src/app/core/services';
 import { TitleCasePipe } from '@angular/common';
 
 type NavLink = {

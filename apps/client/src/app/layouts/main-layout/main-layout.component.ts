@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
+import { NavbarComponent } from 'src/app/shared/components/navbar/navbar.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

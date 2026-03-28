@@ -26,11 +26,9 @@
     [registrations]="registrationsResource.resource.value()?.data?.registrations ?? []"
     [isLoading]="registrationsResource.resource.isLoading()"
   />
-  <div class="mt-auto">
-    <app-pagination
-      [totalPages]="registrationsResource.resource.value()?.data?.totalPages ?? 0"
-      [currentPage]="registrationsResource.requestParams().page"
-      (pageChange)="registrationsResource.goToPage($event)"
-    />
-  </div>
+  <app-pagination
+    [totalPages]="registrationsResource.resource.value()?.data?.totalPages ?? 0"
+    [currentPage]="registrationsResource.requestParams().page"
+    (pageChange)="registrationsResource.goToPage($event)"
+  />
 </div>

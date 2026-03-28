@@ -1,5 +1,5 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { UserService } from '../services/user.service';
+import { UserService } from 'src/app/core/services';
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
@@ -24,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(addToken(req, userService.getToken())).pipe(
     catchError((error: HttpErrorResponse) => {
-      const skipRefresh = req.url.includes('refresh') || req.url.includes('signout');
+      const skipRefresh = req.url.includes('refresh');
       if (error.status === 401 && !skipRefresh) {
         return handle401(req, next, userService, authService, router);
       }

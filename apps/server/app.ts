@@ -35,7 +35,7 @@ const app = express();
 
 app.use(morgan("dev"));
 
-app.use(limiter);
+// app.use(limiter);
 // Enable security headers while still allowing cross-origin images (uploads)
 app.use(
   helmet({

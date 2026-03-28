@@ -4,8 +4,9 @@
     [description]="config()!.description"
     [cancelLabel]="config()!.cancelLabel"
     [okLabel]="config()!.okLabel"
+    [okVariant]="okVariant()"
     [isOpen]="action() !== null"
-    [disabled]="requestState()?.loading() ?? false"
+    [disabled]="requestState.loading()"
     (cancelled)="cancelled.emit()"
     (ok)="ok.emit()"
   />

@@ -1,12 +1,24 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, TemplateRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { UserDto } from '@events-app/shared-dtos';
-import { SortButtonComponent, TableComponent as AdminTableComponent } from '../../../components';
-import type { ColumnDef, HeaderContext, PaginationOptions } from '../../../components';
+import {
+  SortButtonComponent,
+  TableComponent as AdminTableComponent,
+  type ColumnDef,
+  type HeaderContext,
+  type PaginationOptions,
+} from 'src/app/features/admin/components';
 import { AvatarComponent, BadgeComponent } from 'src/app/shared/components';
 import { Eye, Pencil, Trash, LucideAngularModule, Shield } from 'lucide-angular';
-import type { ModalType } from '../../../types/modal.type';
-import type { SortParams } from '../../../types/sort-params.type';
+import type { ModalType, SortParams } from 'src/app/features/admin/types';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

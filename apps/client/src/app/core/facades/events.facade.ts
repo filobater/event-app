@@ -1,11 +1,8 @@
 import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { defer, firstValueFrom, forkJoin, from, map, of, switchMap, type Observable } from 'rxjs';
-import { EventsApiService } from '../services/events-api.service';
-import { CacheService } from '../services/cache.service';
-import { RequestStateClass } from '../request-state';
-import { UploadService } from '../services/upload.service';
-import { ToastService } from '../toast.service';
+import { EventsApiService, CacheService, UploadService, ToastService } from 'src/app/core/services';
+import { RequestStateClass } from 'src/app/core/request-state';
 import type {
   CreateEventRequestDto,
   EventDto,

@@ -5,10 +5,8 @@ import type {
   UpdateUserProfileRequestDto,
   UpdateUserProfileResponseDto,
 } from '@events-app/shared-dtos';
-import { ProfileService } from '../../services/profile.service';
-import { UploadService } from 'src/app/core/services/upload.service';
-import { ToastService } from 'src/app/core/toast.service';
-import { UserService } from 'src/app/core/services/user.service';
+import { ProfileService } from 'src/app/features/profile/services/profile.service';
+import { UploadService, ToastService, UserService } from 'src/app/core/services';
 import { RequestStateClass } from 'src/app/core/request-state';
 
 export type SubmitAccountProfileOptions = {

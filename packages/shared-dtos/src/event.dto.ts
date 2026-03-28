@@ -22,7 +22,11 @@ export type EventDto = {
   speakers: SpeakerDto[];
   price: number;
   type: "free" | "paid";
-  registration: RegistrationDto["_id"];
+  registration: {
+    _id: RegistrationDto["_id"];
+    seatsCount: RegistrationDto["seatsCount"];
+    totalAmount: RegistrationDto["totalAmount"];
+  };
   isPaid: boolean;
   category: "technology" | "business" | "design" | "marketing";
   createdAt: string;

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
-import { AuthCardComponent } from '../../components';
+import { AuthCardComponent } from 'src/app/features/auth/components';
 import {
   TextInputComponent,
   PasswordInputComponent,
@@ -12,7 +12,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { confirmPasswordValidator } from 'src/app/shared/utils';
 import { getValidationErrorMessage } from 'src/app/shared/utils';
 import { RequestStateClass } from 'src/app/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { SignupRequestDto } from '@events-app/shared-dtos';
 import { NAV } from 'src/app/shared/constants';
 @Component({

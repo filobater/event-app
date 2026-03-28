@@ -67,7 +67,11 @@ export const getEvent = async (req: Request, res: Response) => {
     data: {
       event: {
         ...req.event.toObject(),
-        registration: registration?._id ?? undefined,
+        registration: {
+          _id: registration?._id.toString(),
+          seatsCount: registration?.seatsCount,
+          totalAmount: registration?.totalAmount,
+        },
         isPaid:
           req.event?.type === "paid"
             ? registration?.status === "confirmed"
@@ -85,7 +89,7 @@ export const updateEvent = async (req: Request, res: Response) => {
   }
   replaceFile(req.event.photo, req, "photo");
   req.event.speakers.forEach((speaker: SpeakerDto) => {
-    replaceFile(speaker.image, req, "image");
+    replaceFile(speaker.image as string, req, "image");
   });
   const updatedEvent = Object.assign(req.event, req.body);
   await updatedEvent.save();
@@ -103,7 +107,7 @@ export const deleteEvent = async (req: Request, res: Response) => {
   const { event } = req;
   replaceFile(event.photo);
   event.speakers.forEach((speaker: SpeakerDto) => {
-    replaceFile(speaker.image);
+    replaceFile(speaker.image as string);
   });
   await event.deleteOne();
 

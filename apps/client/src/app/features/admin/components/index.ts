@@ -7,4 +7,3 @@ export {
   type PaginationOptions,
   type TableComponentInterface,
 } from './table/table.component';
-
