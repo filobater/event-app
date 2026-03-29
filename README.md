@@ -2,6 +2,12 @@
 
 A full-stack web application for discovering events, registering with seat selection, and managing users and events. The UI is an Angular 21 app, styled with Tailwind CSS and DaisyUI; the API is an Express server backed by MongoDB, with shared TypeScript packages for API contracts and DTOs.
 
+## Demo
+
+
+
+If you want to see the pages without running the project → open **[Pages Design](Pages%20Design/)** (static layouts / design references in that folder).
+
 ## Features
 
 - **Authentication** — Sign up, sign in, forgot password, reset password, and OTP verification; JWT access tokens and HTTP-only refresh cookies.
@@ -15,7 +21,7 @@ A full-stack web application for discovering events, registering with seat selec
 ```
 events-app/
 ├── apps/
-│   ├── client/                          # Angular frontend (SSR-capable)
+│   ├── client/                          # Angular frontend
 │   │   ├── public/
 │   │   ├── src/
 │   │   │   ├── app/
