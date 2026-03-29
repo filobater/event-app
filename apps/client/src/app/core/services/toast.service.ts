@@ -15,7 +15,6 @@ export class ToastService {
   error(message: string, title?: string) {
     toast.error(message, {
       description: title,
-      duration: 7000,
     });
   }
 

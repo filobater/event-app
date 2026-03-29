@@ -21,7 +21,11 @@ export class UsersApiService {
   private readonly baseUsersUrl = `${environment.apiUrl}${API_ENDPOINTS.users.base}`;
 
   private removeEmptyFields(data: Record<string, any>): Record<string, any> {
-    return Object.fromEntries(Object.entries(data).filter(([_, value]) => !!value));
+    return Object.fromEntries(
+      Object.entries(data).filter(([key, value]) =>
+        key === 'profilePicture' ? true : !!value && !(value instanceof File),
+      ),
+    );
   }
 
   createUser(data: CreateUserRequestDto): Observable<UserResponseDto> {

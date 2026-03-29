@@ -61,7 +61,6 @@ export default class UsersComponent {
   }
 
   handleSearch(search: string) {
-    if (this.usersResource.resource.value()?.data?.users?.length === 0) return;
     this.usersResource.setSearch(search);
   }
 

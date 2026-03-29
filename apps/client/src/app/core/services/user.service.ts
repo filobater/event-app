@@ -5,12 +5,16 @@ import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { Router } from '@angular/router';
 import { NAV } from 'src/app/shared/constants';
 import { RequestStateClass } from 'src/app/core/request-state';
+import { CacheService } from './cache.service';
+import { RegistrationsFacade } from 'src/app/core/facades/registrations.facade';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
   private authService = inject(AuthService);
+  private cacheService = inject(CacheService);
+  private registrationsFacade = inject(RegistrationsFacade);
   readonly requestState = new RequestStateClass();
   private router = inject(Router);
 
@@ -53,9 +57,15 @@ export class UserService {
     this.setUser(user);
   }
 
+  clearUserScopedCaches(): void {
+    this.cacheService.clear();
+    this.registrationsFacade.resetMyRegistrationsResource();
+  }
+
   clearSession() {
     this.setToken(null);
     this.setUser(null);
+    this.clearUserScopedCaches();
   }
 
   logout() {

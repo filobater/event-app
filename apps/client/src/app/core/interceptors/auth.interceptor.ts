@@ -72,6 +72,7 @@ const handle401 = (
       isRefreshing = false;
       userService.setToken(null);
       userService.setUser(null);
+      userService.clearUserScopedCaches();
       router.navigate([NAV.auth.signin]);
       return throwError(() => err);
     }),

@@ -26,6 +26,10 @@ export class RegistrationsFacade {
     return this._registrationsResource;
   }
 
+  resetMyRegistrationsResource(): void {
+    this._registrationsResource = undefined;
+  }
+
   readonly loadRegistrationState = new RequestStateClass();
   readonly mutationState = new RequestStateClass();
   readonly registration = signal<RegistrationDto | null>(null);
