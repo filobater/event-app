@@ -4,6 +4,7 @@ A full-stack web application for discovering events, registering with seat selec
 
 ## Demo
 
+https://github.com/user-attachments/assets/97984dbd-34d3-4930-ba13-315b84445eb8
 
 
 If you want to see the pages without running the project → open **[Pages Design](Pages%20Design/)** (static layouts / design references in that folder).
